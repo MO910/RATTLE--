@@ -3,6 +3,7 @@ export default defineNuxtConfig({
     serverMiddleware: [
         { path: "/apii", handler: "~/server-middleware/index.ts" },
     ],
+    // vuetify
     css: [
         "vuetify/lib/styles/main.sass",
         "@mdi/font/css/materialdesignicons.min.css",
@@ -15,7 +16,17 @@ export default defineNuxtConfig({
             "process.env.DEBUG": false,
         },
     },
+    // env vars
     runtimeConfig: {
         MONGO_URL: process.env.MONGO_URL,
+    },
+    // apollo
+    modules: ["@nuxtjs/apollo"],
+    apollo: {
+        clients: {
+            default: {
+                httpEndpoint: `https://rickandmortyapi.com/graphql`,
+            },
+        },
     },
 });
