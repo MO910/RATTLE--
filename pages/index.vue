@@ -11,6 +11,6 @@
 
 <script setup>
 const counter = useState("counter", () => Math.round(Math.random() * 1000));
-const dataa = await useFetch(`/api/books`);
+const dataa = await useFetch(`/api/mongo`, {});
 // console.log(dataa);
 </script>
