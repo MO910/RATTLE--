@@ -1,5 +1,5 @@
-const mongoose = require("mongoose"),
-    Schema = mongoose.Schema;
+import mongoose from "mongoose";
+Schema = mongoose.Schema;
 const Centers = new Schema(
     {
         organization_id: mongoose.ObjectId,
@@ -11,4 +11,4 @@ const Centers = new Schema(
     { timestamps: true, collection: "Centers" }
 );
 
-module.exports = mongoose.model("Centers", Centers);
+export default mongoose.model("Centers", Centers);

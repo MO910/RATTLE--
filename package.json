@@ -11,9 +11,11 @@
     "nuxt": "3.0.0"
   },
   "dependencies": {
+    "@apollo/server": "^4.3.0",
     "@mdi/font": "^7.0.96",
     "body-parser": "^1.20.1",
     "express": "^4.18.2",
+    "express-graphql": "^0.12.0",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
     "mongoose": "^6.8.0",

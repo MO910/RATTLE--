@@ -1,5 +1,5 @@
-const mongoose = require("mongoose"),
-    Schema = mongoose.Schema;
+import mongoose from "mongoose";
+Schema = mongoose.Schema;
 const Plan_History = new Schema(
     {
         custom_plan_id: mongoose.ObjectId,
@@ -17,4 +17,4 @@ const Plan_History = new Schema(
     { timestamps: true, collection: "Plan_History" }
 );
 
-module.exports = mongoose.model("Plan_History", Plan_History);
+export default mongoose.model("Plan_History", Plan_History);

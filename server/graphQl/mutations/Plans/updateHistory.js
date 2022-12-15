@@ -1,12 +1,7 @@
-const {
-    GraphQLString,
-    GraphQLInt,
-    GraphQLID,
-    GraphQLBoolean,
-} = require("graphql");
-const History_Schema = require("../../../models/Plans/Plan_History");
+import { GraphQLString, GraphQLInt, GraphQLID, GraphQLBoolean } from "graphql";
+import History_Schema from "../../../models/Plans/Plan_History";
 // Function
-module.exports = {
+export default {
     type: GraphQLBoolean,
     args: {
         student_id: { type: GraphQLID },

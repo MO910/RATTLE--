@@ -1,4 +1,4 @@
-const {
+import {
     GraphQLObjectType,
     GraphQLString,
     GraphQLID,
@@ -6,9 +6,9 @@ const {
     GraphQLList,
     GraphQLBoolean,
     GraphQLInputObjectType,
-} = require("graphql");
+} from "graphql";
 // User Type
-module.exports = new GraphQLInputObjectType({
+export default new GraphQLInputObjectType({
     name: "Input_Custom_Plan",
     fields: () => ({
         id: { type: GraphQLID },

@@ -1,5 +1,5 @@
-const mongoose = require("mongoose"),
-    Schema = mongoose.Schema;
+import mongoose from "mongoose";
+Schema = mongoose.Schema;
 const Const_Salaries = new Schema(
     {
         staff_member_id: mongoose.ObjectId,
@@ -9,4 +9,4 @@ const Const_Salaries = new Schema(
     { timestamps: true, collection: "Const_Salaries" }
 );
 
-module.exports = mongoose.model("Const_Salaries", Const_Salaries);
+export default mongoose.model("Const_Salaries", Const_Salaries);

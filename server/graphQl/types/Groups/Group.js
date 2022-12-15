@@ -1,21 +1,21 @@
-const {
+import {
     GraphQLObjectType,
     GraphQLString,
     GraphQLID,
     GraphQLInt,
     GraphQLList,
     GraphQLBoolean,
-} = require("graphql");
+} from "graphql";
 
-const // Users
-    // courses
-    Courses_schema = require("../../../models/Courses/Courses"),
-    Course_type = require("./Course");
+// Users
+// courses
+import Courses_schema from "../../../models/Courses/Courses";
+import Course_type from "./Course";
 //     // Goals
-//     Goal_type = require("../Goals/Goal"),
-//     Goals_schema = require("../../../models/Courses/Goals/Goals"),
+//     import Goal_type from "../Goals/Goal"
+//     import Goals_schema from "../../../models/Courses/Goals/Goals"
 // export Type
-module.exports = new GraphQLObjectType({
+export default new GraphQLObjectType({
     name: "Group",
     fields: () => ({
         id: { type: GraphQLID },

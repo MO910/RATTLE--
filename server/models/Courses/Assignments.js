@@ -1,5 +1,5 @@
-const mongoose = require("mongoose"),
-    Schema = mongoose.Schema;
+import mongoose from "mongoose";
+Schema = mongoose.Schema;
 const Assignments = new Schema(
     {
         subgroup_id: mongoose.ObjectId,
@@ -8,4 +8,4 @@ const Assignments = new Schema(
     { timestamps: true, collection: "Assignments" }
 );
 
-module.exports = mongoose.model("Assignments", Assignments);
+export default mongoose.model("Assignments", Assignments);

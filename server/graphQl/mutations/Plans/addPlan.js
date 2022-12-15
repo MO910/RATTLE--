@@ -1,14 +1,14 @@
-const {
+import {
     GraphQLString,
     GraphQLInt,
     GraphQLID,
     GraphQLList,
     GraphQLBoolean,
-} = require("graphql");
-const Plan_type = require("../../types/Plans/Plan"),
-    Plans_Schema = require("../../../models/Plans/Plans");
+} from "graphql";
+import Plan_type from "../../types/Plans/Plan";
+import Plans_Schema from "../../../models/Plans/Plans";
 // Function
-module.exports = {
+export default {
     type: Plan_type,
     args: {
         rabt_for_plan_id: { type: GraphQLID },
