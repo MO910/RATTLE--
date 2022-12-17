@@ -1,14 +1,14 @@
-import {
+const {
     GraphQLString,
     GraphQLInt,
     GraphQLID,
     GraphQLBoolean,
     GraphQLList,
-} from "graphql";
-import Centers_Schema from "../../models/Centers";
-import Center_type from "../types/Center";
+} = require("graphql");
+const Centers_Schema = require("../../models/Centers"),
+    Center_type = require("../types/Center");
 // Function
-export default {
+module.exports = {
     type: Center_type,
     args: {
         organization_id: { type: GraphQLID },

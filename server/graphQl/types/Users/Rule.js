@@ -1,13 +1,13 @@
-// import {
-//     GraphQLObjectType,
-//     GraphQLString,
-//     GraphQLID,
-//     GraphQLInt,
-//     GraphQLList,
-//     GraphQLBoolean,
-// } from "graphql";
+const {
+    GraphQLObjectType,
+    GraphQLString,
+    GraphQLID,
+    GraphQLInt,
+    GraphQLList,
+    GraphQLBoolean,
+} = require("graphql");
 // User Type
-export default new GraphQLObjectType({
+module.exports = new GraphQLObjectType({
     name: "Rule",
     fields: () => ({
         id: { type: GraphQLID },

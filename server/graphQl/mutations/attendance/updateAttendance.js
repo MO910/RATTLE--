@@ -1,15 +1,15 @@
-import {
+const {
     GraphQLString,
     GraphQLInt,
     GraphQLID,
     GraphQLList,
     GraphQLBoolean,
-} from "graphql";
-// Attendance
-import Attendances_Schema from "../../../models/Users/Attendances";
-import Attendance_type from "../../types/Users/Attendance";
+} = require("graphql");
+const // Attendance
+    Attendances_Schema = require("../../../models/Users/Attendances"),
+    Attendance_type = require("../../types/Users/Attendance");
 // Function
-export default {
+module.exports = {
     type: GraphQLBoolean,
     args: {
         user_id: { type: GraphQLID },

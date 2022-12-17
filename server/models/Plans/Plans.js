@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-Schema = mongoose.Schema;
+const mongoose = require("mongoose"),
+    Schema = mongoose.Schema;
 const Plans = new Schema(
     {
         rabt_for_plan_id: mongoose.ObjectId,
@@ -23,4 +23,4 @@ const Plans = new Schema(
     { timestamps: true, collection: "Plans" }
 );
 
-export default mongoose.model("Plans", Plans);
+module.exports = mongoose.model("Plans", Plans);

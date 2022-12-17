@@ -1,6 +1,6 @@
-import Rules_schema from "../../../models/Users/Rules";
+const Rules_schema = require("../../../models/Users/Rules");
 // to do Type
-export default async ({ rules, rule_ids }) => {
+module.exports = async ({ rules, rule_ids }) => {
     // from titles to ids
     if (rules) {
         rules = await Promise.all(

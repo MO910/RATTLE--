@@ -1,14 +1,14 @@
-import {
+const {
     GraphQLString,
     GraphQLInt,
     GraphQLID,
     GraphQLBoolean,
     GraphQLList,
-} from "graphql";
-import Subgroups_Schema from "../../../models/Groups/Subgroups";
-import Subgroup_type from "../../types/Groups/Subgroup";
+} = require("graphql");
+const Subgroups_Schema = require("../../../models/Groups/Subgroups"),
+    Subgroup_type = require("../../types/Groups/Subgroup");
 // Function
-export default {
+module.exports = {
     type: Subgroup_type,
     args: {
         course_id: { type: GraphQLID },

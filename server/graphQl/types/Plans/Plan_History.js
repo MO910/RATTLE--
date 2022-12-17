@@ -1,14 +1,14 @@
-import {
+const {
     GraphQLObjectType,
     GraphQLString,
     GraphQLID,
     GraphQLInt,
     GraphQLList,
     GraphQLBoolean,
-} from "graphql";
-import timestamps from "../shared/timestamps";
+} = require("graphql");
+const timestamps = require("../shared/timestamps");
 // User Type
-export default new GraphQLObjectType({
+module.exports = new GraphQLObjectType({
     name: "Plan_History",
     fields: () => ({
         id: { type: GraphQLID },

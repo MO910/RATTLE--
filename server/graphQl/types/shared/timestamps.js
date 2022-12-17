@@ -1,6 +1,6 @@
 const { GraphQLString } = require("graphql");
 // to do Type
-export default {
+module.exports = {
     createdAt: { type: GraphQLString },
     updatedAt: { type: GraphQLString },
 };

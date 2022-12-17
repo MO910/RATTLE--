@@ -1,23 +1,16 @@
-import {
+const {
     GraphQLObjectType,
     GraphQLString,
     GraphQLID,
     GraphQLInt,
     GraphQLList,
     GraphQLBoolean,
-} from "graphql";
-import {
-    GraphQLID,
-    GraphQLObjectType,
-    GraphQLList,
-    GraphQLString,
-    GraphQLSchema,
-} from "graphql";
+} = require("graphql");
 //
-import Center_type from "./Center";
-import Centers_schema from "../../models/Centers";
+const Center_type = require("./Center"),
+    Centers_schema = require("../../models/Centers");
 // User Type
-export default new GraphQLObjectType({
+module.exports = new GraphQLObjectType({
     name: "Organization",
     fields: () => ({
         id: { type: GraphQLID },

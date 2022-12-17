@@ -1,24 +1,24 @@
-import {
+const {
     GraphQLString,
     GraphQLInt,
     GraphQLID,
     GraphQLBoolean,
     GraphQLList,
     GraphQLObjectType,
-} from "graphql";
+} = require("graphql");
 // schemas
-import Custom_Plans_Schema from "../../../models/Plans/Custom_Plans";
-import Plan_History_Schema from "../../../models/Plans/Plan_History";
-import Plans_Schema from "../../../models/Plans/Plans";
+const Custom_Plans_Schema = require("../../../models/Plans/Custom_Plans"),
+    Plan_History_Schema = require("../../../models/Plans/Plan_History"),
+    Plans_Schema = require("../../../models/Plans/Plans");
 // types
-import Custom_Plans_Type from "../../types/Plans/output_Custom_Plan";
-removeOutType = new GraphQLObjectType({
-    name: "removePlanOut",
-    fields: () => ({
-        hasRemoved: { type: GraphQLBoolean },
-        customsRemainingId: { type: new GraphQLList(GraphQLID) },
-    }),
-});
+const Custom_Plans_Type = require("../../types/Plans/output_Custom_Plan"),
+    removeOutType = new GraphQLObjectType({
+        name: "removePlanOut",
+        fields: () => ({
+            hasRemoved: { type: GraphQLBoolean },
+            customsRemainingId: { type: new GraphQLList(GraphQLID) },
+        }),
+    });
 //
 const deletePlan = async (plan_id, force) => {
     const customs = await Custom_Plans_Schema.find({ plan_id });
@@ -45,7 +45,7 @@ const deletePlan = async (plan_id, force) => {
     return out;
 };
 // Function
-export default {
+module.exports = {
     type: new GraphQLList(removeOutType),
     args: {
         id: { type: GraphQLID },

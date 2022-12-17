@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-Schema = mongoose.Schema;
+const mongoose = require("mongoose"),
+    Schema = mongoose.Schema;
 const Organizations = new Schema(
     {
         owner_id: mongoose.ObjectId,
@@ -9,4 +9,4 @@ const Organizations = new Schema(
     { timestamps: true, collection: "Organizations" }
 );
 
-export default mongoose.model("Organizations", Organizations);
+module.exports = mongoose.model("Organizations", Organizations);

@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-Schema = mongoose.Schema;
+const mongoose = require("mongoose"),
+    Schema = mongoose.Schema;
 const Rules = new Schema(
     {
         title: String,
@@ -8,4 +8,4 @@ const Rules = new Schema(
     { timestamps: true, collection: "Rules" }
 );
 
-export default mongoose.model("Rules", Rules);
+module.exports = mongoose.model("Rules", Rules);

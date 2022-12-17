@@ -1,8 +1,8 @@
-import Groups_schema from "../../../models/Groups/Groups";
-import Courses_schema from "../../../models/Courses/Courses";
-import Subgroups_schema from "../../../models/Groups/Subgroups";
+const Groups_schema = require("../../../models/Groups/Groups"),
+    Courses_schema = require("../../../models/Courses/Courses"),
+    Subgroups_schema = require("../../../models/Groups/Subgroups");
 // getGroupFromStudentId
-export default async ({ id, group_id }) => {
+module.exports = async ({ id, group_id }) => {
     let groups = [];
     // *if not assigned to subgroup yet
     if (group_id) groups.push(await Groups_schema.findById(group_id));

@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-Schema = mongoose.Schema;
+const mongoose = require("mongoose"),
+    Schema = mongoose.Schema;
 const Courses = new Schema(
     {
         group_id: mongoose.ObjectId,
@@ -9,4 +9,4 @@ const Courses = new Schema(
     { timestamps: true, collection: "Courses" }
 );
 
-export default mongoose.model("Courses", Courses);
+module.exports = mongoose.model("Courses", Courses);

@@ -1,8 +1,13 @@
-import { GraphQLString, GraphQLInt, GraphQLID, GraphQLBoolean } from "graphql";
-import Organizations_Schema from "../../models/Organizations";
-import Organization_type from "../types/Organization";
+const {
+    GraphQLString,
+    GraphQLInt,
+    GraphQLID,
+    GraphQLBoolean,
+} = require("graphql");
+const Organizations_Schema = require("../../models/Organizations"),
+    Organization_type = require("../types/Organization");
 // Function
-export default {
+module.exports = {
     type: Organization_type,
     args: {
         name: { type: GraphQLString },

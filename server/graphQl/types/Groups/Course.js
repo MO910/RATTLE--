@@ -1,20 +1,20 @@
-import {
+const {
     GraphQLObjectType,
     GraphQLString,
     GraphQLID,
     GraphQLInt,
     GraphQLList,
     GraphQLBoolean,
-} from "graphql";
+} = require("graphql");
 //
-// User
-import User_type from "../Users/User";
-import Users_schema from "../../../models/Users/Users";
-// Subgroups
-import subgroup_type from "./Subgroup";
-import subgroups_schema from "../../../models/Groups/Subgroups";
+const // User
+    User_type = require("../Users/User"),
+    Users_schema = require("../../../models/Users/Users"),
+    // Subgroups
+    subgroup_type = require("./Subgroup"),
+    subgroups_schema = require("../../../models/Groups/Subgroups");
 // User Type
-export default new GraphQLObjectType({
+module.exports = new GraphQLObjectType({
     name: "Course",
     fields: () => ({
         id: { type: GraphQLID },

@@ -1,18 +1,18 @@
-import {
+const {
     GraphQLObjectType,
     GraphQLString,
     GraphQLID,
     GraphQLInt,
     GraphQLList,
     GraphQLBoolean,
-} from "graphql";
+} = require("graphql");
 //
-import history_type from "./Plan_History";
-import history_schema from "../../../models/Plans/Plan_History";
-import output_Custom_Plan from "./output_Custom_Plan";
-import custom_plans_schema from "../../../models/Plans/Custom_Plans";
+const history_type = require("./Plan_History"),
+    history_schema = require("../../../models/Plans/Plan_History"),
+    output_Custom_Plan = require("./output_Custom_Plan"),
+    custom_plans_schema = require("../../../models/Plans/Custom_Plans");
 // User Type
-export default new GraphQLObjectType({
+module.exports = new GraphQLObjectType({
     name: "Plans",
     fields: () => ({
         id: { type: GraphQLID },

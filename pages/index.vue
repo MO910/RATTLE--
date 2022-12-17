@@ -15,9 +15,11 @@ const counter = useState("counter", () => Math.round(Math.random() * 1000));
 
 const query = gql`
     query {
-        user
+        user(id: "634d4b4fc7bcf336fb038892") {
+            id
+            first_name
+        }
     }
 `;
 const data = await useAsyncQuery(query);
-// console.log(data);
 </script>

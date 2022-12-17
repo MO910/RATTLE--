@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-Schema = mongoose.Schema;
+const mongoose = require("mongoose"),
+    Schema = mongoose.Schema;
 const Groups = new Schema(
     {
         admin_id: mongoose.ObjectId,
@@ -12,4 +12,4 @@ const Groups = new Schema(
     { timestamps: true, collection: "Groups" }
 );
 
-export default mongoose.model("Groups", Groups);
+module.exports = mongoose.model("Groups", Groups);

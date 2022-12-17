@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-Schema = mongoose.Schema;
+const mongoose = require("mongoose"),
+    Schema = mongoose.Schema;
 const Fees = new Schema(
     {
         student_id: mongoose.ObjectId,
@@ -11,4 +11,4 @@ const Fees = new Schema(
     { timestamps: true, collection: "Fees" }
 );
 
-export default mongoose.model("Fees", Fees);
+module.exports = mongoose.model("Fees", Fees);

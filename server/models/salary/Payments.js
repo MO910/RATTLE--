@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-Schema = mongoose.Schema;
+const mongoose = require("mongoose"),
+    Schema = mongoose.Schema;
 const Payments = new Schema(
     {
         const_salary_id: mongoose.ObjectId,
@@ -11,4 +11,4 @@ const Payments = new Schema(
     { timestamps: true, collection: "Payments" }
 );
 
-export default mongoose.model("Payments", Payments);
+module.exports = mongoose.model("Payments", Payments);

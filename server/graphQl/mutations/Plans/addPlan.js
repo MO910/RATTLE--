@@ -1,14 +1,14 @@
-import {
+const {
     GraphQLString,
     GraphQLInt,
     GraphQLID,
     GraphQLList,
     GraphQLBoolean,
-} from "graphql";
-import Plan_type from "../../types/Plans/Plan";
-import Plans_Schema from "../../../models/Plans/Plans";
+} = require("graphql");
+const Plan_type = require("../../types/Plans/Plan"),
+    Plans_Schema = require("../../../models/Plans/Plans");
 // Function
-export default {
+module.exports = {
     type: Plan_type,
     args: {
         rabt_for_plan_id: { type: GraphQLID },
@@ -25,8 +25,6 @@ export default {
 
         working_days: { type: new GraphQLList(GraphQLInt) },
         starting_at: { type: GraphQLString },
-        note: { type: GraphQLString },
-
         note: { type: GraphQLString },
     },
     async resolve(_, args) {

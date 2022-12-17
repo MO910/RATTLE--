@@ -1,4 +1,4 @@
-import {
+const {
     GraphQLString,
     GraphQLInt,
     GraphQLID,
@@ -6,11 +6,11 @@ import {
     GraphQLList,
     GraphQLInputObjectType,
     GraphQLObjectType,
-} from "graphql";
-import Custom_Plans_Schema from "../../../models/Plans/Custom_Plans";
-import Input_Custom_Plan from "../../types/Plans/Input_Custom_Plan";
+} = require("graphql");
+const Custom_Plans_Schema = require("../../../models/Plans/Custom_Plans"),
+    Input_Custom_Plan = require("../../types/Plans/Input_Custom_Plan");
 // Function
-export default {
+module.exports = {
     type: GraphQLBoolean,
     args: {
         custom_plan_id: { type: GraphQLID },

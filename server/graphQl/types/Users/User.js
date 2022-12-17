@@ -1,29 +1,29 @@
-import {
+const {
     GraphQLObjectType,
     GraphQLString,
     GraphQLID,
     GraphQLInt,
     GraphQLList,
     GraphQLBoolean,
-} from "graphql";
-// shared function
-import getGroupFromStudentId from "../shared/getGroupFromStudentId";
-// Users
-import Users_schema from "../../../models/Users/Users";
-//Attendance
-import Attendance_type from "./Attendance";
-import Attendances_schema from "../../../models/Users/Attendances";
-// rules
-import Rule_type from "./Rule";
-import Rules_schema from "../../../models/Users/Rules";
-// Plans
-import Plan_type from "../Plans/Plan";
-import Plans_schema from "../../../models/Plans/Plans";
-// Advancements
-import Plan_History_type from "../Plans/Plan_History";
-import Plans_History_schema from "../../../models/Plans/Plan_History";
-// rule convert function
-import rulesConverter from "../shared/rulesConverter";
+} = require("graphql");
+const // shared function
+    getGroupFromStudentId = require("../shared/getGroupFromStudentId"),
+    // Users
+    Users_schema = require("../../../models/Users/Users"),
+    //Attendance
+    Attendance_type = require("./Attendance"),
+    Attendances_schema = require("../../../models/Users/Attendances"),
+    // rules
+    Rule_type = require("./Rule"),
+    Rules_schema = require("../../../models/Users/Rules"),
+    // Plans
+    Plan_type = require("../Plans/Plan"),
+    Plans_schema = require("../../../models/Plans/Plans"),
+    // Advancements
+    Plan_History_type = require("../Plans/Plan_History"),
+    Plans_History_schema = require("../../../models/Plans/Plan_History"),
+    // rule convert function
+    rulesConverter = require("../shared/rulesConverter");
 // User Type
 const User_type = new GraphQLObjectType({
     name: `User${~~(Math.random() * 1000)}`,
@@ -91,12 +91,12 @@ const User_type = new GraphQLObjectType({
     }),
 });
 // export
-export default User_type;
+module.exports = User_type;
 // This is here to prevent circular dependencies problem which will lead to the formation of infinite loop
-// Groups
-import Group_type from "../Groups/Group";
-import Groups_schema from "../../../models/Groups/Groups";
-import Courses_schema from "../../../models/Courses/Courses";
-// Subgroups
-import Subgroup_type from "../Groups/Subgroup";
-import Subgroups_schema from "../../../models/Groups/Subgroups";
+const // Groups
+    Group_type = require("../Groups/Group"),
+    Groups_schema = require("../../../models/Groups/Groups"),
+    Courses_schema = require("../../../models/Courses/Courses"),
+    // Subgroups
+    Subgroup_type = require("../Groups/Subgroup"),
+    Subgroups_schema = require("../../../models/Groups/Subgroups");

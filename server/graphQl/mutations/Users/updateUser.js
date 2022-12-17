@@ -1,17 +1,17 @@
-import {
+const {
     GraphQLString,
     GraphQLInt,
     GraphQLID,
     GraphQLList,
     GraphQLBoolean,
-} from "graphql";
-// User
-import User_Schema from "../../../models/Users/Users";
-import User_type from "../../types/Users/User";
-// rule convert function
-import rulesConverter from "../../types/shared/rulesConverter";
+} = require("graphql");
+const // User
+    User_Schema = require("../../../models/Users/Users"),
+    User_type = require("../../types/Users/User"),
+    // rule convert function
+    rulesConverter = require("../../types/shared/rulesConverter");
 // Function
-export default {
+module.exports = {
     type: User_type,
     args: {
         id: { type: GraphQLID },

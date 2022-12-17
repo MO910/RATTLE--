@@ -1,8 +1,5 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-    serverMiddleware: [
-        { path: "/apii", handler: "~/server-middleware/index.ts" },
-    ],
     // vuetify
     css: [
         "vuetify/lib/styles/main.sass",
@@ -29,4 +26,6 @@ export default defineNuxtConfig({
             },
         },
     },
+    // pinia
+    modules: ["@pinia/nuxt"],
 });

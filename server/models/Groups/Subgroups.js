@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-const Schema = mongoose.Schema;
+const mongoose = require("mongoose"),
+    Schema = mongoose.Schema;
 const Subgroups = new Schema(
     {
         title: String,
@@ -9,4 +9,4 @@ const Subgroups = new Schema(
     { timestamps: true, collection: "Subgroups" }
 );
 
-export default mongoose.model("Subgroups", Subgroups);
+module.exports = mongoose.model("Subgroups", Subgroups);
