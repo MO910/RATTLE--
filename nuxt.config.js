@@ -17,8 +17,8 @@ export default defineNuxtConfig({
     runtimeConfig: {
         MONGO_URL: process.env.MONGO_URL,
     },
-    // apollo
-    modules: ["@nuxtjs/apollo"],
+    // apollo and pinia
+    modules: ["@nuxtjs/apollo", "@pinia/nuxt"],
     apollo: {
         clients: {
             default: {
@@ -26,6 +26,4 @@ export default defineNuxtConfig({
             },
         },
     },
-    // pinia
-    modules: ["@pinia/nuxt"],
 });
