@@ -26,4 +26,11 @@ export default defineNuxtConfig({
             },
         },
     },
+    //
+    // auth: {
+    //     origin: process.env.URL,
+    //     basePath: "/api/auth",
+
+    //     enableGlobalAppMiddleware: true,
+    // },
 });
