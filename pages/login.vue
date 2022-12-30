@@ -21,6 +21,8 @@ v-form(v-model="valid")
                     @click:append="showPassword = !showPassword"
                 )
         v-row
+            | {{userId}}
+            | {{user}}
             v-btn(
                 class="text-capitalize text-start px-10"
                 :loading="loading"
