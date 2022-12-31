@@ -1,5 +1,6 @@
 import decodeUserId from "./decodeUserId";
 export default async function () {
+    this.loading = true;
     try {
         const res = await useFetch(`/api/auth/login`, {
             body: {
@@ -19,4 +20,5 @@ export default async function () {
     } catch (err) {
         console.log(err);
     }
+    this.loading = false;
 }

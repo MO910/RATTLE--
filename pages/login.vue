@@ -38,8 +38,10 @@ import { useAuthStore } from "~/store/auth";
 import { storeToRefs } from "pinia";
 export default {
     async setup() {
-        const authStore = useAuthStore();
+        // fetch user
         definePageMeta({ middleware: "fetch-user" });
+        // use auth data
+        const authStore = useAuthStore();
         return { authStore, ...storeToRefs(authStore) };
     },
 };

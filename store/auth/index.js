@@ -5,6 +5,7 @@ import getUserData from "./actions/getUserData";
 
 export const useAuthStore = defineStore("auth", {
     state: () => ({
+        loading: false,
         userId: null,
         loggedIn: false,
 
@@ -17,7 +18,6 @@ export const useAuthStore = defineStore("auth", {
         email: "",
         password: "",
     }),
-    getters: {},
     actions: {
         // text field rules
         requiredRule: (v) => !!v || "this field is required",
