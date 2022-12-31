@@ -32,6 +32,7 @@ v-form(v-model="valid")
                 variant="outlined"
             ) login #[template(v-slot:loader) #[span loging in...]]
 </template>
+
 <script>
 import { useAuthStore } from "~/store/auth";
 import { storeToRefs } from "pinia";
@@ -41,7 +42,5 @@ export default {
         definePageMeta({ middleware: "fetch-user" });
         return { authStore, ...storeToRefs(authStore) };
     },
-    data: () => ({}),
-    methods: {},
 };
 </script>

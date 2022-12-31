@@ -9,13 +9,13 @@ export default async function () {
             method: "post",
         });
         // save in cookies
-        console.log(res.data);
         const cookies = useCookie("authorization");
         cookies.value = res.data.value.token;
         // sign as logged in
         this.loggedIn = true;
         // decode data to store
-        await decodeUserId(res.data.value.token);
+        //  decodeUserId(this, );
+        await decodeUserId.apply(this, [res.data.value.token]);
     } catch (err) {
         console.log(err);
     }
