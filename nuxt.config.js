@@ -1,5 +1,12 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
+    app: {
+        head: {
+            titleTemplate: "%s - rattel",
+            title: "rattel",
+            meta: [{ name: "description", content: "testttt Nuxt 3" }],
+        },
+    },
     // vuetify
     css: [
         "vuetify/lib/styles/main.sass",

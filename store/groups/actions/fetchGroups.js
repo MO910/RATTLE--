@@ -1,5 +1,8 @@
 import { useAuthStore } from "~/store/auth";
 export default async function () {
+    // do not fetch if already fetched
+    if (this.groups) return;
+    // repair query
     const authStore = useAuthStore();
     const query = gql`
         query groups {

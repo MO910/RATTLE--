@@ -3,7 +3,7 @@ v-app
     navigation-drawer
     v-main
         v-container
-            v-btn(v-if="!userId" nuxt to="/login") login
+            v-btn(v-if="!loggedIn" nuxt to="/login") login
             //- v-breadcrumbs(:items="breadcrumbs")
                 template(v-slot:divider)
                     v-icon mdi-chevron-{{$vuetify.rtl ? 'left' : 'right'}}
@@ -21,3 +21,9 @@ export default {
     data: () => ({}),
 };
 </script>
+
+<style lang="sass">
+a
+    text-decoration: none !important
+    color: inherit !important
+</style>

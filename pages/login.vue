@@ -21,8 +21,6 @@ v-form(v-model="valid")
                     @click:append="showPassword = !showPassword"
                 )
         v-row
-            | {{userId}}
-            | {{user}}
             v-btn(
                 class="text-capitalize text-start px-10"
                 :loading="loading"
@@ -31,6 +29,10 @@ v-form(v-model="valid")
                 @click="authStore.login"
                 variant="outlined"
             ) login #[template(v-slot:loader) #[span loging in...]]
+        div(v-for='item in badfsafasdf')
+            v-tooltip(:text="item" left)
+                template(v-slot:activator="{ props }")
+                    v-btn(v-bind="props") Tooltip
 </template>
 
 <script>
@@ -44,5 +46,8 @@ export default {
         const authStore = useAuthStore();
         return { authStore, ...storeToRefs(authStore) };
     },
+    data: () => ({
+        badfsafasdf: ["home", "about"],
+    }),
 };
 </script>

@@ -9,7 +9,7 @@ export const useAuthStore = defineStore("auth", {
         userId: null,
         loggedIn: false,
 
-        user: {},
+        user: null,
 
         valid: false,
         loading: false,

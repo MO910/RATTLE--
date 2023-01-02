@@ -1,11 +1,6 @@
 <template lang="pug">
 v-container
-    v-row.pt-10
-        v-col.mb-5.col-lg-4.col-md-6.col-xs-12.col-sm-12(
-            cols='12'
-            v-for='folder in folders'
-        )
-            folder(:title='$vuetify.locale.t(folder.title)' :to='folder.to')
+    folder(:each='folders' to='to' translate)
 </template>
 
 <script>

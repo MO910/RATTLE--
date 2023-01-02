@@ -3,7 +3,7 @@ import fetchGroups from "./actions/fetchGroups";
 
 export const useGroupsStore = defineStore("groups", {
     state: () => ({
-        groups: [],
+        groups: null,
     }),
     actions: { fetchGroups },
 });

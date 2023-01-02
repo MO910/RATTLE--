@@ -1,6 +1,6 @@
 <template lang="pug">
 v-container
-    folder(:each='groups')
+    folder(:each='courses')
 </template>
 
 <script>
@@ -17,6 +17,12 @@ export default {
         await groupsStore.fetchGroups();
         // return the store
         return { ...storeToRefs(groupsStore) };
+    },
+    computed: {
+        courses() {
+            const { groupId } = useRoute().params;
+            return this.groups?.filter((g) => g.id == groupId)[0]?.courses;
+        },
     },
 };
 </script>

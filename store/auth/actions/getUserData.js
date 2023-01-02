@@ -41,6 +41,7 @@ export default async function () {
             },
         } = await useAsyncQuery(query);
         this.user = user[0];
+        this.loggedIn = true;
     } catch (err) {
         console.log(err);
     }

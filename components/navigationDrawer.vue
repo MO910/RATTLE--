@@ -3,7 +3,11 @@ v-navigation-drawer(rail)
     v-container.py-10.px-0.d-flex.flex-column.align-center.justify-space-around
         v-row.d-flex.align-start H
         v-row.d-flex.flex-column.justify-center
-            v-tooltip(v-for='item in items' :text='item.title')
+            div(v-for='item in items2')
+                v-tooltip( :text="item")
+                    template(v-slot:activator="{ props }")
+                        v-btn(v-bind="props") Tooltip
+            //- v-tooltip(v-for='item in items' :text='item.title')
                 template(v-slot:activator="{ props }")
                     NuxtLink(v-slot="{ navigate }" :to='item.to')
                         v-btn(
@@ -37,6 +41,7 @@ export default {
                 to: "/groups",
             },
         ],
+        items2: ["home", "about"],
     }),
     computed: {
         list() {
