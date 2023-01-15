@@ -1,12 +1,21 @@
 <template lang="pug">
+//- Floating Students
 v-container
-    v-row(v-if='floatingStudentsExists')
+    div(v-if='floatingStudentsExists')
         v-col.text-h3(cols='12') الطلاب
-        v-col(
-            md='4' sm='6' xs='12'
-            v-for='student in course.floatingStudents'
+        folder(
+            :each='course.floatingStudents'
+            :evalTitle='fullName'
         )
-            div(v-if='!student.hide') {{student.first_name}}
+//- Subgroups
+v-container
+    div(v-if='course.subgroups')
+        v-col.text-h3(cols='12') المجموعات الفرعية
+        folder(
+            :each='course.subgroups'
+            chips='students'
+            :evalChipsTitle='fullName'
+        )
 </template>
 
 <script>
@@ -24,15 +33,6 @@ export default {
         // return the store
         return { ...storeToRefs(groupsStore) };
     },
-    mounted() {
-        console.log(this.course);
-    },
-    computed: {
-        courses() {
-            const { groupId, courseId } = useRoute().params;
-            return this.groups?.filter((g) => g.id == groupId)[0]?.courses;
-        },
-    },
     computed: {
         group() {
             const { groupId } = useRoute().params;
@@ -47,6 +47,12 @@ export default {
         },
         floatingStudentsExists() {
             return !!this.course?.floatingStudents?.length;
+        },
+    },
+    methods: {
+        // get full name or title
+        fullName(entity) {
+            return `${entity.first_name} ${entity.parent_name || ""}`;
         },
     },
 };

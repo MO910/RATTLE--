@@ -1,4 +1,5 @@
 import decodeUserId from "./decodeUserId";
+
 export default async function () {
     this.loading = true;
     try {

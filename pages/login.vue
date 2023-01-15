@@ -26,7 +26,7 @@ v-form(v-model="valid")
                 :loading="loading"
                 :disabled="loading || (!loading && !valid)"
                 color="success darken-2"
-                @click="authStore.login"
+                @click="callLogin"
                 variant="outlined"
             ) login #[template(v-slot:loader) #[span loging in...]]
         div(v-for='item in badfsafasdf')
@@ -49,5 +49,12 @@ export default {
     data: () => ({
         badfsafasdf: ["home", "about"],
     }),
+    methods: {
+        async callLogin() {
+            await authStore.login();
+            // const i = useContext();
+            this.$router.push("/");
+        },
+    },
 };
 </script>

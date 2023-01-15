@@ -1,13 +1,12 @@
 <template lang="pug">
 v-container
-    v-row.mt-8
-        v-col(cols='3' v-for='rule in user.rules') 
-            folder(:title='rule.title' :to='ruleRouter(rule.title)')
+    folder(:each='user.rules' to='title' :evalRouter='ruleRouter' translate)
 </template>
 
 <script>
 import { useAuthStore } from "~/store/auth";
 import { storeToRefs } from "pinia";
+
 export default {
     async setup() {
         // fetch user

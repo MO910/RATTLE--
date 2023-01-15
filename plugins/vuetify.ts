@@ -16,7 +16,7 @@ export default defineNuxtPlugin((nuxtApp) => {
             locale: "ar",
             messages: { ar, en },
             rtl: { ar: true },
-        },
+        }
     });
 
     nuxtApp.vueApp.use(vuetify);

@@ -23,6 +23,7 @@ export default {
     newCenter: "new center",
     newTeacher: "new teacher",
     cancel: "cancel",
+    select: "select",
     add: "add",
     date: "date",
     // titles
@@ -33,6 +34,7 @@ export default {
     //
     weekDays:
         '["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]',
+    weekDaysShort: '["S", "M", "T", "W", "T", "F", "S"]',
     //
     removePlan: "removePlan",
     addPlan: "add plan",

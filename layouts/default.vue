@@ -23,6 +23,8 @@ export default {
 </script>
 
 <style lang="sass">
+@import "@/assets/variables"
+@import "@/assets/general"
 a
     text-decoration: none !important
     color: inherit !important

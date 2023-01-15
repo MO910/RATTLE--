@@ -40,6 +40,7 @@ export default {
     newCenter: "مركز جديد",
     newTeacher: "معلم جديد",
     cancel: "الغاء",
+    select: "اختيار",
     add: "اضف",
     date: "التاريخ",
     // titles
@@ -50,6 +51,7 @@ export default {
     //
     weekDays:
         '["الاحد", "الاثنين", "الثلاثاء", "الاربعاء", "الخميس", "الجمعة", "السبت"]',
+    weekDaysShort: '["ح", "ن", "ث", "ر", "خ", "ج", "س"]',
     //
     removePlan: "احذف خطة",
     addPlan: "اضف خطة",
