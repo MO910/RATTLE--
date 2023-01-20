@@ -51,7 +51,7 @@ export default {
     }),
     methods: {
         async callLogin() {
-            await authStore.login();
+            await this.authStore.login();
             // const i = useContext();
             this.$router.push("/");
         },
