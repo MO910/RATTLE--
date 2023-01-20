@@ -50,9 +50,7 @@ export default {
     },
     computed: {
         searchResults() {
-            const searchForReg = new RegExp(
-                    this.surahSearch.replace(/\s/g, "")
-                ),
+            const searchForReg = new RegExp(this.search.replace(/\s/g, "")),
                 cleanReg = new RegExp("[^\u0621-\u063A^\u0641-\u064A]", "g");
             // get results
             let results = this.items.filter((s) =>
