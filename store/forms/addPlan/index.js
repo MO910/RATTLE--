@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { useQuranStore } from "~/store/quran";
 
 export const useAddPlanStore = defineStore("addPlan", {
     state: () => ({
@@ -15,10 +16,15 @@ export const useAddPlanStore = defineStore("addPlan", {
             "deep-orange",
         ],
         directions: ["descending", "Progressive"],
-        // selected
-        selectedColor: 1,
-        selectedType: 0,
-        selectedDirection: 0,
     }),
-    actions: {},
+    getters: {
+        surahsNames() {
+            const { surahAdj } = useQuranStore();
+            return surahAdj.chapters
+                .map((s) => s.name_arabic)
+                .reduce((acc, name, index) => {
+                    return [...acc, { name, index }];
+                }, []);
+        },
+    },
 });

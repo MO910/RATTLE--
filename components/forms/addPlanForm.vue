@@ -5,20 +5,29 @@ v-dialog(width="570" :persistent='loading')
     v-card
         v-card-title.text-h5.text-capitalize.d-inline-block {{$vuetify.locale.t('$vuetify.addPlan')}}
         //- color picker
-        color-picker
+        color-picker(:colors='colors' selectedVar='color')
         //- text field
         v-card-text
             v-form(:disabled='loading')
+                //- select plan type
                 btn-toggle-row(
                     title='$vuetify.type'
-                    selectedVar='selectedType'
+                    selectedVar='type'
                     :each='types'
                 )
+                //- select plan direction
                 btn-toggle-row(
                     title='$vuetify.direction'
-                    selectedVar='selectedDirection'
+                    selectedVar='direction'
                     :each='directions'
                 )
+                //- select surah
+                select-with-search(
+                    :label="$vuetify.locale.t('$vuetify.surah')"
+                    selectedVar='surahIndex'
+                    :items='surahsNames'
+                )
+
 </template>
 
 <script>
@@ -28,9 +37,10 @@ import { storeToRefs } from "pinia";
 // components
 import colorPicker from "~/components/forms/pieces/colorPicker";
 import btnToggleRow from "~/components/forms/pieces/btnToggleRow";
+import selectWithSearch from "~/components/forms/pieces/selectWithSearch";
 
 export default {
-    components: { colorPicker, btnToggleRow },
+    components: { colorPicker, btnToggleRow, selectWithSearch },
     async setup() {
         // use store data
         const addPlanStore = useAddPlanStore();

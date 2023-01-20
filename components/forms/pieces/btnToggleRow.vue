@@ -13,16 +13,17 @@ v-row
 <script>
 // stores
 import { storeToRefs } from "pinia";
-import { useBtnToggleStore } from "~/store/forms/btnToggle.js";
+import { useSelectedVarsStore } from "~/store/forms/selectedVars";
 
 export default {
     props: ["title", "each", "selectedVar", "translate"],
     setup() {
         // use stores data
-        const btnToggleStore = useBtnToggleStore();
+        const selectedVarsStore = useSelectedVarsStore();
         // return the store
-        return { ...storeToRefs(btnToggleStore) };
+        return { ...storeToRefs(selectedVarsStore) };
     },
+    // update store value when select
     data: () => ({ selected: null }),
     watch: {
         selected(val) {

@@ -2,11 +2,10 @@
 v-menu(offset-y)
     template(v-slot:activator='{ props }')
         v-btn(
-            v-bind='props '
-            icon
-            dark
-            x-small
-            :color="selectedColor"
+            v-bind='props'
+            size='x-small'
+            icon dark
+            :color="selected"
         )
     v-card
         v-card-text
@@ -14,23 +13,37 @@ v-menu(offset-y)
                 v-for='color in colors'
                 :key='color'
                 :color="color"
-                @click='this.selectedColor = color'
-                icon
-                dark
-                x-small
+                @click='selected = color'
+                size='x-small'
+                icon dark 
             )
                 v-icon(v-if='color == selectedColor') mdi-check-circle
 </template>
 
 <script>
-import { useAddPlanStore } from "~/store/forms/addPlan";
 import { storeToRefs } from "pinia";
+import { useSelectedVarsStore } from "~/store/forms/selectedVars";
 
 export default {
-    async setup() {
-        // use store data
-        const addPlanStore = useAddPlanStore();
-        return { ...storeToRefs(addPlanStore) };
+    props: ["selectedVar", "colors"],
+    setup() {
+        // use stores data
+        const selectedVarsStore = useSelectedVarsStore();
+        // return the store
+        return { ...storeToRefs(selectedVarsStore) };
+    },
+    mounted() {
+        // pick a random color to initialize the component
+        const randomIndex = Math.random() * this.colors.length;
+        this.selected = this.colors[~~randomIndex];
+    },
+    // update store value when select
+    data: () => ({ selected: null }),
+    watch: {
+        selected(val) {
+            this[this.selectedVar] = val;
+            return val;
+        },
     },
 };
 </script>
