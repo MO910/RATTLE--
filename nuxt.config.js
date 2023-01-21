@@ -5,6 +5,17 @@ export default defineNuxtConfig({
             titleTemplate: "%s - rattel",
             title: "rattel",
             meta: [{ name: "description", content: "testttt Nuxt 3" }],
+            script: [
+                {
+                    src: "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js",
+                },
+                {
+                    src: "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/gsap.min.js",
+                },
+                // {
+                //     src: "js/inputNumber.js",
+                // },
+            ],
         },
     },
     // vuetify
@@ -33,11 +44,4 @@ export default defineNuxtConfig({
             },
         },
     },
-    //
-    // auth: {
-    //     origin: process.env.URL,
-    //     basePath: "/api/auth",
-
-    //     enableGlobalAppMiddleware: true,
-    // },
 });

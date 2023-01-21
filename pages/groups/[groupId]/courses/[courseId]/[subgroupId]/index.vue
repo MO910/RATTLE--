@@ -45,6 +45,7 @@ import addPlanForm from "~/components/forms/addPlanForm";
 export default {
     components: { datePickerRow, addPlanForm },
     async setup() {
+        // useHead({ script: [{ src: "/js/inputNumber.js" }] });
         // fetch user
         definePageMeta({ middleware: "fetch-user" });
         // use stores data

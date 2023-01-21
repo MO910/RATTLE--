@@ -27,7 +27,16 @@ v-dialog(width="570" :persistent='loading')
                     selectedVar='surahIndex'
                     :items='surahsNames'
                 )
-
+                //- 
+                inputNumber(
+                    model='addPlanForm.ayahValue'
+                    key='ayahValue'
+                    id_key='ayahValue'
+                    :digitWidth='5'
+                    :min='1'
+                    :max='10'
+                    :init='1'
+                )
 </template>
 
 <script>
@@ -38,9 +47,10 @@ import { storeToRefs } from "pinia";
 import colorPicker from "~/components/forms/pieces/colorPicker";
 import btnToggleRow from "~/components/forms/pieces/btnToggleRow";
 import selectWithSearch from "~/components/forms/pieces/selectWithSearch";
+import inputNumber from "~/components/forms/pieces/inputNumber";
 
 export default {
-    components: { colorPicker, btnToggleRow, selectWithSearch },
+    components: { colorPicker, btnToggleRow, selectWithSearch, inputNumber },
     async setup() {
         // use store data
         const addPlanStore = useAddPlanStore();
