@@ -1,15 +1,16 @@
 <template lang="pug">
 v-container 
-    date-picker-row
+    date-picker
 //- Plans
 v-container 
-    v-row.mt-10(v-if='plansOfDate.length')
+    v-row.mt-10()
         v-col.text-h4(cols='12')
             p.d-inline-block {{$vuetify.locale.t('$vuetify.plans')}}
-            add-plan-form
+            add-plan-form(:default_days='groupWorkingDays')
         v-col.px-0.text-h4(
-            md='4' sm='6' xs='12'
+            v-if='plansOfDate.length'
             v-for='plan in plansOfDate'
+            md='4' sm='6' xs='12'
         )
             v-card.mx-5(v-if='!plan.hide' :color='plan.color')
                 v-btn(icon='mdi-delete' variant="text")
@@ -18,6 +19,7 @@ v-container
                     v-for='strings in getPlanString(plan, false)'
                     v-text='strings'
                 )
+        v-col(v-else) {{$vuetify.locale.t(`$vuetify.noPlansMsg`)}}
 //- Students of Subgroup
 v-container(v-if='subgroup.students')
     v-row.mt-10
@@ -39,11 +41,11 @@ import { useQuranStore } from "~/store/quran";
 import { stringify } from "~/static/js/stringify";
 import { extractISODate } from "~/static/js/extractISODate";
 // components
-import datePickerRow from "~/components/forms/pieces/datePickerRow";
+import datePicker from "~/components/forms/pieces/datePicker";
 import addPlanForm from "~/components/forms/addPlanForm";
 
 export default {
-    components: { datePickerRow, addPlanForm },
+    components: { datePicker, addPlanForm },
     async setup() {
         // useHead({ script: [{ src: "/js/inputNumber.js" }] });
         // fetch user
@@ -101,6 +103,9 @@ export default {
                     );
                     return pClone;
                 });
+        },
+        groupWorkingDays() {
+            return this.group?.working_days;
         },
     },
     methods: {

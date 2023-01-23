@@ -5,9 +5,11 @@ v-row
         | {{variable}}
         v-btn-toggle(
             v-model='selected'
+            :multiple='multiple'
+            :color="color"
             mandatory group borderless
         )
-            v-btn.mr-3(v-for='item in each') {{evalEach(item)}}
+            v-btn.mr-3(v-for='item in each' size='small') {{evalEach(item)}}
 </template>
 
 <script>
@@ -16,7 +18,14 @@ import { storeToRefs } from "pinia";
 import { useSelectedVarsStore } from "~/store/forms/selectedVars";
 
 export default {
-    props: ["title", "each", "selectedVar", "translate"],
+    props: {
+        title: String,
+        each: Array,
+        selectedVar: String,
+        translate: { type: Boolean, default: true },
+        multiple: Boolean,
+        color: String,
+    },
     setup() {
         // use stores data
         const selectedVarsStore = useSelectedVarsStore();
@@ -32,9 +41,15 @@ export default {
             return val;
         },
     },
+    // add default value from model
+    mounted() {
+        this.selected = this[this.selectedVar];
+    },
     methods: {
         evalEach(item) {
-            return this.$vuetify.locale.t(`$vuetify.${item}`);
+            return !this.translate
+                ? item
+                : this.$vuetify.locale.t(`$vuetify.${item}`);
         },
     },
 };

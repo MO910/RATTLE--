@@ -111,4 +111,5 @@ export default {
     confirmForceRemoveMsg:
         "هل انت متأكد من رغبتك في حذف التقدم المحفوظ مع الخطة؟",
     forceRemove: "حذف اجباري",
+    noPlansMsg: "لا يوجد خطط",
 };

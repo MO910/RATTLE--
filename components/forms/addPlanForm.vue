@@ -1,7 +1,14 @@
 <template lang="pug">
-v-dialog(width="570" :persistent='loading')
-    template(v-slot:activator="{ props }")
-        v-btn(v-bind="props" icon='mdi-plus')
+v-btn(
+    @click='dialog = true'
+    icon='mdi-plus'
+)
+v-dialog(
+    width="570"
+    v-model='dialog'
+    :persistent='loading'
+    transition="scale-transition"
+)
     v-card
         v-card-title.text-h5.text-capitalize.d-inline-block {{$vuetify.locale.t('$vuetify.addPlan')}}
         //- color picker
@@ -27,34 +34,125 @@ v-dialog(width="570" :persistent='loading')
                     selectedVar='surahIndex'
                     :items='surahsNames'
                 )
-                //- 
-                inputNumber(
-                    model='addPlanForm.ayahValue'
-                    key='ayahValue'
-                    id_key='ayahValue'
-                    :digitWidth='5'
-                    :min='1'
-                    :max='10'
-                    :init='1'
+                //- select ayah value
+                v-row
+                    v-col.d-flex.justify-start.align-center.text-h6(cols='6')
+                        | {{$vuetify.locale.t('$vuetify.from')}} {{$vuetify.locale.t('$vuetify.ayah')}}
+                    v-col.d-flex.justify-end.align-center(cols='6')
+                        inputNumber(
+                            model='ayahValue'
+                            :max='10'
+                            :init='ayahValue || 1'
+                        )
+                //- select pages per day
+                v-row
+                    v-col.d-flex.justify-start.align-center.text-h6(cols='6')
+                        | {{$vuetify.locale.t('$vuetify.pagesPerDay')}}
+                    v-col.d-flex.justify-end.align-center(cols='6')
+                        inputNumber(
+                            model='pagesValue'
+                            :max='10'
+                            :init='pagesValue || 1'
+                        )
+                //- week number
+                v-row
+                    v-col.d-flex.justify-start.align-center.text-h6(cols='6')
+                        | {{$vuetify.locale.t('$vuetify.weeks')}}:
+                    v-col.d-flex.justify-end.align-center(cols='6')
+                        inputNumber(
+                            model='weeks'
+                            :max='10'
+                            :init='pagesValue || 1'
+                        )
+                //- rabt
+                v-row
+                    v-col(cols='12')
+                        v-divider
+                    v-col.text-h6(cols='12')
+                        v-switch(
+                            v-model="hasRabt"
+                            :label="$vuetify.locale.t('$vuetify.hasRabt')"
+                        )
+                v-row(v-if='hasRabt')
+                    v-col.d-flex.justify-start.align-center.text-h6(cols='6')
+                        | {{$vuetify.locale.t('$vuetify.rabtPages')}}
+                    v-col.d-flex.justify-end.align-center(cols='6')
+                        inputNumber(
+                            model='rabtPagesValue'
+                            :max='10'
+                            :init='rabtPagesValue || 1'
+                        )
+                //- select days
+                v-row
+                    v-col(cols='12')
+                        v-divider
+                btn-toggle-row(
+                    title='$vuetify.workingDays'
+                    selectedVar='days_selected'
+                    :each='days'
+                    :translate='false'
+                    color="cyan darken-3"
+                    multiple
                 )
+                //- starting day
+                v-row
+                    v-col.d-flex.justify-start.align-center.text-h6(cols='6')
+                        | {{$vuetify.locale.t('$vuetify.startingDate')}}
+                    v-col.d-flex.justify-start.align-center.text-h6(cols='6')
+                        date-picker(selectedVar='startingDate')
+        v-card-actions
+            v-spacer
+            v-btn(
+                color='error' text
+                @click='dialog = false' :disabled='loading'
+            ) {{$vuetify.locale.t('$vuetify.cancel')}}
+            v-btn(
+                color='primary'
+                @click='add' :loading='loading'
+            ) {{$vuetify.locale.t('$vuetify.add')}}
 </template>
 
 <script>
 // store
 import { useAddPlanStore } from "~/store/forms/addPlan";
+import { useInputNumberStore } from "~/store/forms/inputNumber";
+import { useSelectedVarsStore } from "~/store/forms/selectedVars";
 import { storeToRefs } from "pinia";
 // components
 import colorPicker from "~/components/forms/pieces/colorPicker";
 import btnToggleRow from "~/components/forms/pieces/btnToggleRow";
 import selectWithSearch from "~/components/forms/pieces/selectWithSearch";
 import inputNumber from "~/components/forms/pieces/inputNumber";
+import datePicker from "~/components/forms/pieces/datePicker";
 
 export default {
-    components: { colorPicker, btnToggleRow, selectWithSearch, inputNumber },
+    components: {
+        colorPicker,
+        btnToggleRow,
+        selectWithSearch,
+        inputNumber,
+        datePicker,
+    },
+    props: ["default_days", "subgroup_id", "group", "isStudent"],
     async setup() {
         // use store data
         const addPlanStore = useAddPlanStore();
-        return { ...storeToRefs(addPlanStore) };
+        const inputNumberStore = useInputNumberStore();
+        const selectedVarsStore = useSelectedVarsStore();
+        return {
+            ...storeToRefs(addPlanStore),
+            ...storeToRefs(inputNumberStore),
+            ...storeToRefs(selectedVarsStore),
+        };
+    },
+    data: () => ({ hasRabt: false, dialog: false }),
+    mounted() {
+        this.days_selected = this.default_days;
+    },
+    computed: {
+        days() {
+            return JSON.parse(this.$vuetify.locale.t("$vuetify.weekDays"));
+        },
     },
 };
 </script>

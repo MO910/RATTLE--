@@ -42,30 +42,35 @@
 </template>
 
 <script>
+// store
+import { useInputNumberStore } from "~/store/forms/inputNumber";
+import { storeToRefs } from "pinia";
+// function
 import { counter } from "~/static/js/inputNumber.js";
 
 export default {
+    async setup() {
+        // use store data
+        const inputNumberStore = useInputNumberStore();
+        return { ...storeToRefs(inputNumberStore) };
+    },
     data: () => ({
         contenteditable: false,
         tooltip: false,
     }),
-    props: [
-        "id_key",
-        "model",
-        "maxModel",
-        "action",
-        "background",
-        "text_color",
-        "init",
-        "before",
-        "after",
-        "digitWidth",
-        "min",
-        "max",
-        "format",
-        "freeze",
-        "arithmetic",
-    ],
+    props: {
+        model: String,
+        maxModel: String,
+        background: String,
+        text_color: String,
+        init: Number,
+        digitWidth: { type: Number, default: 5 },
+        min: { type: Number, default: 1 },
+        max: Number,
+        format: String,
+        freeze: Boolean,
+        arithmetic: Boolean,
+    },
     mounted() {
         const content = $(`.inputNumber#${this.id_key} .content`);
         $(window).on("mouseup", () => (this.tooltip = false));
@@ -74,11 +79,12 @@ export default {
             mutations.forEach((mutation) => {
                 // update the current model when change
                 const newCurrent = mutation.target.dataset.current;
-                // this.updateModel([this.model, newCurrent]);
+                // update pinia model
+                this[this.model] = newCurrent;
                 //
                 const newMax = mutation.target.dataset.max;
-                // console.log("data-max", newMax);
-                // this.updateModel([this.maxModel, newMax]);
+                // update pinia model
+                this[this.maxModel] = newMax;
             });
         });
         observer.observe(content[0], {
@@ -97,6 +103,9 @@ export default {
         },
         isEn() {
             return this.$vuetify.locale.current == "en";
+        },
+        id_key() {
+            return this.model;
         },
     },
 };

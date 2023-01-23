@@ -93,4 +93,5 @@ export default {
         "the plan was removed partially because there is some progress been made by other users like:",
     confirmForceRemoveMsg: "do you want to force delete ### plan?",
     forceRemove: "force remove",
+    noPlansMsg: "there is no plans",
 };
