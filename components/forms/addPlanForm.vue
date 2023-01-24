@@ -70,10 +70,10 @@ v-dialog(
                         v-divider
                     v-col.text-h6(cols='12')
                         v-switch(
-                            v-model="hasRabt"
+                            v-model="has_rabt"
                             :label="$vuetify.locale.t('$vuetify.hasRabt')"
                         )
-                v-row(v-if='hasRabt')
+                v-row(v-if='has_rabt')
                     v-col.d-flex.justify-start.align-center.text-h6(cols='6')
                         | {{$vuetify.locale.t('$vuetify.rabtPages')}}
                     v-col.d-flex.justify-end.align-center(cols='6')
@@ -140,18 +140,28 @@ export default {
         const inputNumberStore = useInputNumberStore();
         const selectedVarsStore = useSelectedVarsStore();
         return {
+            addPlanStore,
             ...storeToRefs(addPlanStore),
             ...storeToRefs(inputNumberStore),
             ...storeToRefs(selectedVarsStore),
         };
     },
-    data: () => ({ hasRabt: false, dialog: false }),
+    data: () => ({ hasRabt: false }),
     mounted() {
         this.days_selected = this.default_days;
     },
     computed: {
         days() {
             return JSON.parse(this.$vuetify.locale.t("$vuetify.weekDays"));
+        },
+    },
+    methods: {
+        async add() {
+            this.addPlanStore.addPlan({
+                group: this.group,
+                subgroup_id: this.subgroup_id,
+                isStudent: this.isStudent,
+            });
         },
     },
 };

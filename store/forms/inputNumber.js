@@ -5,5 +5,6 @@ export const useInputNumberStore = defineStore("inputNumber", {
         ayahValue: 1,
         pagesValue: 1,
         weeks: 1,
+        rabtPagesValue: 1,
     }),
 });

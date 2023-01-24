@@ -6,7 +6,12 @@ v-container
     v-row.mt-10()
         v-col.text-h4(cols='12')
             p.d-inline-block {{$vuetify.locale.t('$vuetify.plans')}}
-            add-plan-form(:default_days='groupWorkingDays')
+            add-plan-form(
+                :default_days='groupWorkingDays'
+                :group='group'
+                :subgroup_id='subgroup.id'
+                :isStudent='isStudent'
+            )
         v-col.px-0.text-h4(
             v-if='plansOfDate.length'
             v-for='plan in plansOfDate'

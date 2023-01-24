@@ -8,6 +8,7 @@ export default defineEventHandler(async (event) => {
     const { MONGO_URL } = process.env;
     await connect(mongoose, MONGO_URL);
     // get the data and make the graphQl request
-    const { query: source } = await readBody(event);
+    const body = await readBody(event);
+    const { query: source } = body;
     return await graphql({ schema, source });
 });

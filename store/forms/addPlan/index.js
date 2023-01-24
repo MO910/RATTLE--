@@ -1,8 +1,12 @@
 import { defineStore } from "pinia";
 import { useQuranStore } from "~/store/quran";
+// actions
+import addPlan from "./actions/addPlan";
 
 export const useAddPlanStore = defineStore("addPlan", {
     state: () => ({
+        loading: false,
+        dialog: false,
         types: ["new", "old", "tajweed", "tafseer", "custom"],
         colors: [
             "indigo",
@@ -27,4 +31,5 @@ export const useAddPlanStore = defineStore("addPlan", {
                 }, []);
         },
     },
+    actions: { addPlan },
 });

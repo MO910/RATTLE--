@@ -5,7 +5,8 @@ export const useSelectedVarsStore = defineStore("selectedVars", {
         type: null,
         direction: null,
         color: null,
-        surahIndex: null,
+        surahIndex: 0,
+        has_rabt: false,
         days_selected: [0],
     }),
 });
