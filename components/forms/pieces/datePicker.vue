@@ -44,7 +44,7 @@ export default {
     data: () => ({
         isStudent: null,
         overlay: false,
-        selected: "2022-11-30",
+        selected: new Date(),
     }),
     // update store value when select
     watch: {

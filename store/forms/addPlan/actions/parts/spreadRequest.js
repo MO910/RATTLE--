@@ -12,5 +12,5 @@ export default async function (stringifySpreadArgs) {
     `;
     // mutate default client
     const { clients } = useApollo();
-    return await clients.default.mutate({ mutation });
+    return (await clients.default.mutate({ mutation })).data;
 }

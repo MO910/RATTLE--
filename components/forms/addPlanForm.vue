@@ -44,6 +44,15 @@ v-dialog(
                             :max='10'
                             :init='ayahValue || 1'
                         )
+                        inputNumber(
+                            model='ayahValue'
+                            key='ayahValue'
+                            id_key='ayahValue'
+                            :digitWidth='5'
+                            :min='1'
+                            :max='10'
+                            :init='ayahValue || 1'
+                        )
                 //- select pages per day
                 v-row
                     v-col.d-flex.justify-start.align-center.text-h6(cols='6')

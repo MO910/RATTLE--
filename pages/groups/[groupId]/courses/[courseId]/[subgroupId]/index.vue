@@ -42,6 +42,7 @@ v-container(v-else)
 import { storeToRefs } from "pinia";
 import { useGroupsStore } from "~/store/groups";
 import { useQuranStore } from "~/store/quran";
+import { useDatesStore } from "~/store/forms/dates";
 // functions
 import { stringify } from "~/static/js/stringify";
 import { extractISODate } from "~/static/js/extractISODate";
@@ -58,19 +59,33 @@ export default {
         // use stores data
         const groupsStore = useGroupsStore();
         const quranStore = useQuranStore();
+        const datesStore = useDatesStore();
         // fetch groups
         await groupsStore.fetchGroups();
         // return the store
-        return { ...storeToRefs(groupsStore), ...storeToRefs(quranStore) };
+        return {
+            ...storeToRefs(groupsStore),
+            ...storeToRefs(quranStore),
+            ...storeToRefs(datesStore),
+        };
     },
     data: () => ({
         isStudent: null,
         overlay: false,
         datePicker: {
             fetching: false,
-            selectedDate: "2022-11-30",
+            selectedDate: "2023-01-22",
         },
     }),
+    mounted() {
+        console.log(this.plansOfDate);
+
+        console.log(
+            extractISODate({
+                date: this.datePicker.selectedDate,
+            })
+        );
+    },
     computed: {
         group() {
             const { groupId } = useRoute().params;
@@ -99,13 +114,20 @@ export default {
                 .filter((plan) => !plan.hide)
                 .map((plan) => {
                     let pClone = { ...plan };
-                    pClone.day = plan.custom_plans?.filter(
-                        (d) =>
-                            extractISODate({ date: d.date }) ==
+                    pClone.day = plan.custom_plans?.filter((day) => {
+                        // console.log(
+                        //     extractISODate({ date: day.date }),
+                        //     extractISODate({
+                        //         date: this.datePicker.selectedDate,
+                        //     })
+                        // );
+                        return (
+                            extractISODate({ date: day.date }) ==
                             extractISODate({
-                                date: this.datePicker.selectedDate,
+                                date: this.globalDate,
                             })
-                    );
+                        );
+                    });
                     return pClone;
                 });
         },
