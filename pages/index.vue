@@ -1,6 +1,6 @@
 <template lang="pug">
 v-container
-    folder(:each='user.rules' to='title' :evalRouter='ruleRouter' translate)
+    customCard(:each='user.rules' to='title' :evalRouter='ruleRouter' translate)
 </template>
 
 <script>

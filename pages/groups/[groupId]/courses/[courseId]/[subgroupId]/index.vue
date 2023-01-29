@@ -1,6 +1,10 @@
 <template lang="pug">
-v-container 
-    date-picker
+//- v-container 
+date-picker(
+    :historyAction='groupsStore.getSubgroupHistoryAtDate'
+    :historyParams='historyParams'
+    :allowedDates='allowedDates'
+)
 //- Plans
 v-container 
     v-row.mt-10()
@@ -29,10 +33,18 @@ v-container
 v-container(v-if='subgroup.students')
     v-row.mt-10
         v-col.text-h4(cols='12') {{$vuetify.locale.t('$vuetify.students')}}
-    folder(
+    customCard(
         :each='subgroup.students'
         :evalTitle='fullName'
+        v-slot="slotProps"
+        lg=6
+        :link='false'
     )
+        advantage(
+            v-for='plan in eachDay'
+            :plan='plan'
+            :student_id='slotProps.student_id'
+        )
 //- floating student plans
 v-container(v-else)
 </template>
@@ -47,11 +59,12 @@ import { useDatesStore } from "~/store/forms/dates";
 import { stringify } from "~/static/js/stringify";
 import { extractISODate } from "~/static/js/extractISODate";
 // components
+import advantage from "~/components/customCard/advantage";
 import datePicker from "~/components/forms/pieces/datePicker";
 import addPlanForm from "~/components/forms/addPlanForm";
 
 export default {
-    components: { datePicker, addPlanForm },
+    components: { advantage, datePicker, addPlanForm },
     async setup() {
         // useHead({ script: [{ src: "/js/inputNumber.js" }] });
         // fetch user
@@ -64,6 +77,7 @@ export default {
         await groupsStore.fetchGroups();
         // return the store
         return {
+            groupsStore,
             ...storeToRefs(groupsStore),
             ...storeToRefs(quranStore),
             ...storeToRefs(datesStore),
@@ -134,6 +148,25 @@ export default {
         groupWorkingDays() {
             return this.group?.working_days;
         },
+        // each day advantage
+        eachDay() {
+            // let advantage = this.advantage.map((plan) => plan.day);
+            return (
+                this.plansOfDate?.reduce((acc, plan) => {
+                    plan.day?.forEach((day) => {
+                        acc.push({
+                            ...plan,
+                            day,
+                        });
+                    });
+                    return acc;
+                }, []) || []
+            );
+        },
+        // for date picker
+        historyParams() {
+            return { subgroup_id: this.subgroup?.id };
+        },
     },
     methods: {
         // get full name or title
@@ -159,6 +192,11 @@ export default {
             return forToday?.length
                 ? forToday
                 : [this.$vuetify.locale.t("$vuetify.nothingTodayMessage")];
+        },
+        // get allowed dates in calender (avoiding not working days)
+        allowedDates(val) {
+            const weekDay = new Date(val).getDay();
+            return weekDay in this.groupWorkingDays;
         },
     },
 };

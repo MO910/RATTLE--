@@ -4,5 +4,6 @@ export const useDatesStore = defineStore("dates", {
     state: () => ({
         startingDate: null,
         globalDate: null,
+        selectedDateHistory: [],
     }),
 });

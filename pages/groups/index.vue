@@ -1,6 +1,6 @@
 <template lang="pug">
 v-container
-    folder(:each='groups')
+    customCard(:each='groups')
 </template>
 
 <script>

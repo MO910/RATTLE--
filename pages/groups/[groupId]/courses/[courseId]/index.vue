@@ -3,7 +3,7 @@
 v-container
     div(v-if='floatingStudentsExists')
         v-col.text-h3(cols='12') الطلاب
-        folder(
+        customCard(
             :each='course.floatingStudents'
             :evalTitle='fullName'
         )
@@ -11,7 +11,7 @@ v-container
 v-container
     div(v-if='course.subgroups')
         v-col.text-h3(cols='12') المجموعات الفرعية
-        folder(
+        customCard(
             :each='course.subgroups'
             chips='students'
             :evalChipsTitle='fullName'

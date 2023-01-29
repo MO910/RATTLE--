@@ -20,22 +20,27 @@ Datepicker(
     template(#trigger)
         v-btn(:color='color')
             v-icon mdi-calendar
-            span.mx-3 {{dateStyled}}
+            span.mx-3 {{text}}
 </template>
 
 <script>
+// Stores
 import { useDatesStore } from "~/store/forms/dates";
 import { storeToRefs } from "pinia";
-//
+// components
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+// Functions
+import { extractISODate } from "~/static/js/extractISODate";
 
 export default {
     props: {
         selectedVar: { type: String, default: "globalDate" },
         color: { type: String, default: "primary" },
+        historyAction: Function,
+        historyParams: Object,
     },
-    async setup() {
+    setup() {
         // use stores data
         const datesStore = useDatesStore();
         // return the store
@@ -45,29 +50,49 @@ export default {
         isStudent: null,
         overlay: false,
         selected: new Date(),
+        text: null,
     }),
     // update store value when select
     watch: {
-        selected(val) {
+        selected(date) {
             // update store value
-            this[this.selectedVar] = val;
-            return val;
+            this[this.selectedVar] = extractISODate({ date });
+            this.getHistory(date);
+            this.dateStyled(date);
+            return date;
         },
     },
     mounted() {
         this.selected = new Date();
+        this.getHistory(this.selected);
+        this.dateStyled();
     },
     components: { Datepicker },
     computed: {
         weekDaysShort() {
             return JSON.parse(this.$vuetify.locale.t("$vuetify.weekDaysShort"));
         },
-        dateStyled() {
+    },
+    methods: {
+        dateStyled(val) {
             // if (!this.plansOfDate.length) return;
             let lang = this.$vuetify.locale.current == "en" ? "en-GB" : "ar-EG";
             const options = { dateStyle: "full", numberingSystem: "latn" },
                 formatter = new Intl.DateTimeFormat(lang, options);
-            return formatter.format(new Date(this.selected));
+            this.text = formatter.format(new Date(val || this.selected));
+        },
+        // get history
+        async getHistory(newDate) {
+            this.fetching = true;
+            // style the date to from
+            let date = extractISODate({ date: newDate });
+            // do action
+            await this.historyAction({
+                ...this.historyParams,
+                date,
+                // date: this.datePicker.selectedDate,
+            });
+            this.fetching = false;
         },
     },
 };

@@ -1,6 +1,6 @@
 <template lang="pug">
 v-container
-    folder(:each='folders' to='to' translate)
+    customCard(:each='folders' to='to' translate)
 </template>
 
 <script>
@@ -8,6 +8,7 @@ import { useGroupsStore } from "~/store/groups";
 import { storeToRefs } from "pinia";
 
 export default {
+    components: { customCard },
     async setup() {
         // fetch user
         definePageMeta({ middleware: "fetch-user" });

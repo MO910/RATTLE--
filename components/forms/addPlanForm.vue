@@ -113,7 +113,7 @@ v-dialog(
             v-spacer
             v-btn(
                 color='error' text
-                @click='dialog = false' :disabled='loading'
+                @click='close' :disabled='loading'
             ) {{$vuetify.locale.t('$vuetify.cancel')}}
             v-btn(
                 color='primary'
@@ -150,6 +150,8 @@ export default {
         const selectedVarsStore = useSelectedVarsStore();
         return {
             addPlanStore,
+            inputNumberStore,
+            selectedVarsStore,
             ...storeToRefs(addPlanStore),
             ...storeToRefs(inputNumberStore),
             ...storeToRefs(selectedVarsStore),
@@ -166,11 +168,22 @@ export default {
     },
     methods: {
         async add() {
-            this.addPlanStore.addPlan({
+            this.addPlanStore.loading = true;
+            // do add
+            await this.addPlanStore.addPlan({
                 group: this.group,
                 subgroup_id: this.subgroup_id,
                 isStudent: this.isStudent,
             });
+            // close and reset the store
+            this.close();
+        },
+        close() {
+            // this.addPlanStore.loading = false;
+            // this.addPlanStore.dialog = false;
+            this.addPlanStore.$reset();
+            this.selectedVarsStore.$reset();
+            this.inputNumberStore.$reset();
         },
     },
 };
