@@ -22,7 +22,11 @@ v-container
                             :ripple='false'
                             :disabled='day.inactive'
                         ) {{formatter(day.date, {month: day.day == 1, day: true})}}
-                v-card.calendar-event(v-for='event in dayEvents(day)' :color='event.color')
+                v-card.calendar-event(
+                    v-for='event in dayEvents(day)'
+                    @click='editEvent(event)'
+                    :color='event.color'
+                )
                     v-card-text {{event.name}}
 </template>
 <script>
@@ -36,11 +40,13 @@ import { extractISODate } from "~/static/js/extractISODate";
 export default {
     setup() {
         const calendarStore = useCalendarStore();
-        return {
-            ...storeToRefs(calendarStore),
-        };
+        return { ...storeToRefs(calendarStore) };
     },
-    props: { updateEvents: Function, eventsVar: { default: "events" } },
+    props: {
+        updateEvents: Function,
+        editEvent: Function,
+        eventsVar: { default: "events" },
+    },
     mounted() {
         const { currentDate, weeksList } = renderCalendar();
         this.currentDate = currentDate;
@@ -68,7 +74,7 @@ export default {
             });
             // }
         },
-
+        // formatter
         formatter(date, { year, month, day } = {}) {
             const lang = this.$vuetify.locale?.current;
             // options

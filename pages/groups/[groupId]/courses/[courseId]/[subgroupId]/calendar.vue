@@ -1,6 +1,9 @@
 <template lang="pug">
 v-container
-    custom-calendar(:updateEvents='updateEvents')
+    custom-calendar(
+        :updateEvents='updateEvents'
+        :editEvent='editEvent'
+    )
     //- edit events dialog
     edit-event-dialog(
         :isStudent='isStudent'
@@ -17,8 +20,11 @@ import { useQuranStore } from "~/store/quran";
 // Functions
 import { calendarEvents } from "~/static/js/calendarEvents";
 import { stringify } from "~/static/js/stringify";
+// components
+import editEventDialog from "~/components/customCalendar/editEventDialog";
 
 export default {
+    components: { editEventDialog },
     async setup() {
         // fetch user
         definePageMeta({ middleware: "fetch-user" });
@@ -81,6 +87,34 @@ export default {
                 stringify,
             });
             // this.updateModel(["calenderEvents", events]);
+        },
+        // event
+        editEvent(event) {
+            // get custom plan
+            let custom_plans = this.subgroup.plans
+                .map((plan) => plan.custom_plans)
+                .flat();
+            custom_plans = custom_plans.find((cp) => cp.id === event.id);
+            // *update state
+            let [fromSurahIndex, fromAyah] = custom_plans.from?.split(":"),
+                [toSurahIndex, toAyah] = custom_plans.to?.split(":");
+            console.log([fromSurahIndex, fromAyah], [toSurahIndex, toAyah]);
+            // date
+            this.eventForm.form.date = event.start;
+            // from
+            this.eventForm.form.fromSurahIndex = fromSurahIndex - 1;
+            this.eventForm.form.maxFrom =
+                this.surahAdj.chapters[fromSurahIndex - 1].verses_count;
+            this.eventForm.form.fromAyah = fromAyah;
+            // to
+            this.eventForm.form.toSurahIndex = toSurahIndex - 1;
+            this.eventForm.form.maxTo =
+                this.surahAdj.chapters[toSurahIndex - 1].verses_count;
+            this.eventForm.form.toAyah = toAyah;
+            // for all
+            this.eventForm.data = custom_plans;
+            this.eventForm.edit = true;
+            this.eventForm.dialog = true;
         },
     },
 };

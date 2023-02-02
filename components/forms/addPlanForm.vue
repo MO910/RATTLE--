@@ -126,6 +126,7 @@ v-dialog(
 import { useAddPlanStore } from "~/store/forms/addPlan";
 import { useInputNumberStore } from "~/store/forms/inputNumber";
 import { useSelectedVarsStore } from "~/store/forms/selectedVars";
+import { useQuranStore } from "~/store/quran";
 import { storeToRefs } from "pinia";
 // components
 import colorPicker from "~/components/forms/pieces/colorPicker";
@@ -148,10 +149,12 @@ export default {
         const addPlanStore = useAddPlanStore();
         const inputNumberStore = useInputNumberStore();
         const selectedVarsStore = useSelectedVarsStore();
+        const quranStore = useQuranStore();
         return {
             addPlanStore,
             inputNumberStore,
             selectedVarsStore,
+            ...storeToRefs(quranStore),
             ...storeToRefs(addPlanStore),
             ...storeToRefs(inputNumberStore),
             ...storeToRefs(selectedVarsStore),
