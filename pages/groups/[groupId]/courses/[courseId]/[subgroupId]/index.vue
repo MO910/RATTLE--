@@ -9,18 +9,6 @@ date-picker(
 v-container 
     v-row.mt-10()
         v-col.text-h4(cols='12')
-            | testSlider {{testSlider}}
-            v-slider(
-                v-model='testSlider'
-                :label='testSlider'
-                @update:modelValue='modelValue'
-                color="orange"
-                label="color"
-            )
-            v-btn(@click='change') +
-            //- @update:focused='focused'
-            //- @mouseup='mouseup'
-            //- @mousedown.stop='mousedown'
             p.d-inline-block {{$vuetify.locale.t('$vuetify.plans')}}
             add-plan-form(
                 :default_days='groupWorkingDays'
@@ -88,16 +76,7 @@ export default {
         const datesStore = useDatesStore();
         // fetch groups
         await groupsStore.fetchGroups();
-        // return the store
-        let testSlider = ref(1);
-        const change = () => {
-            ++testSlider.value;
-        };
-        change();
-        // expose({ change });
         return {
-            change,
-            testSlider,
             groupsStore,
             ...storeToRefs(groupsStore),
             ...storeToRefs(quranStore),
@@ -107,14 +86,8 @@ export default {
     data: () => ({
         isStudent: null,
         overlay: false,
-        // testSlider: 1,
     }),
-    mounted() {
-        console.log(this.plansOfDate);
-        // setTimeout(() => {
-        //     this.change();
-        // }, 0);
-    },
+    mounted() {},
     computed: {
         group() {
             const { groupId } = useRoute().params;

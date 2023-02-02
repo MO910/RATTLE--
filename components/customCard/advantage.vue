@@ -1,8 +1,5 @@
 <template lang="pug">
 v-row
-    //- v-col(cols='4')
-    //-     v-card-text {{verseName}}
-    | {{amount_done}}
     v-col.d-flex.justify-end.align-center(cols='12')
         v-slider.align-center(
             @update:modelValue="changeAmount"
@@ -15,7 +12,7 @@ v-row
         )
     template(v-if='!disableRatting')
         v-col(cols='4')
-            v-card-text {{$vuetify.locale.t("$vuetify.grade")}}: {{this.history && this.history.grade}} / 10
+            v-card-text {{$vuetify.locale.t("$vuetify.grade")}}: {{this.grade * ratio}} / 10
         v-col.d-flex.justify-end.align-center(cols='8')
             v-rating.d-flex.justify-space-between.align-center(
                 @update:modelValue="changeRating"
@@ -46,12 +43,20 @@ export default {
         const groupsStore = useGroupsStore();
         const datesStore = useDatesStore();
         const quranStore = useQuranStore();
-
         const datesStoreRefs = storeToRefs(datesStore);
-
+        // variables
         let historyIndex = ref(null),
             amount_done = ref(1),
-            grade = ref(0);
+            grade = ref(0),
+            ratio = ref(2),
+            componentDate = datesStoreRefs.globalDate.value.toString();
+        // reset variables
+        function resetVariables() {
+            historyIndex.value = null;
+            amount_done.value = 1;
+            grade.value = 0;
+        }
+        resetVariables();
         // history
         function history() {
             const historyFiltered =
@@ -66,43 +71,42 @@ export default {
                         h.plan_id == props.plan.id &&
                         h.student_id == props.student_id &&
                         h.custom_plan_id == props.plan.day.id;
-                    if (conditions) {
-                        historyIndex.value = i;
-                        console.log({ historyIndex });
-                    }
-
+                    if (conditions) historyIndex.value = i;
                     return conditions;
                 })?.[0];
             return {
                 get: historyFiltered,
                 set: () => {
-                    // update
+                    // update variables
                     amount_done.value =
                         historyFiltered?.amount_done || amount_done.value;
-                    grade.value = historyFiltered?.grade || grade.value;
+                    grade.value =
+                        historyFiltered?.grade / ratio.value || grade.value;
                     return historyFiltered;
                 },
             };
         }
-
         // watch the store and update
-        datesStore.$subscribe((mutation, state) => history().set());
+        datesStore.$subscribe((mutation, state) => {
+            if (componentDate !== datesStoreRefs.globalDate.value)
+                resetVariables();
+            history().set();
+        });
         // return the store
         return {
+            // variables
             history,
             historyIndex,
             amount_done,
             grade,
-            //
+            ratio,
+            // Stores
             groupsStore,
             ...datesStoreRefs,
             ...storeToRefs(quranStore),
         };
     },
-    // mounted() {
-    //     console.log("advantage", this.student_id, this.verseName);
-    // },
-    data: () => ({ ratingLength: 5 }),
+    data: () => ({}),
     props: ["plan", "student_id", "divider"],
     computed: {
         // verse
@@ -129,12 +133,6 @@ export default {
         disableRatting() {
             return this.amount_done < this.versesKeys.length;
         },
-        // amount_done() {
-        //     return this.history?.amount_done || 1;
-        // },
-        // ratingRatio() {
-        //     return (this.history?.grade || 0) / 10;
-        // },
     },
     methods: {
         updateHistoryWrapper(obj, key, locallyOnly) {
@@ -148,19 +146,16 @@ export default {
                 // new value
                 ...obj,
             };
-            // console.log({ history: this.history().get });
-            // console.log(this.selectedDateHistory, this.historyIndex, key);
             // update locally
             if (this.history().get)
                 this.selectedDateHistory[this.historyIndex][key] = obj[key];
             else {
                 this.historyIndex = this.selectedDateHistory.length;
-                let date = extractISODate({ date: this.selectedDate });
-                let newObj = {
+                let date = extractISODate({ date: this.globalDate });
+                this.selectedDateHistory.push({
                     ...obj,
                     date,
-                };
-                this.selectedDateHistory.push(newObj);
+                });
             }
             // update DB
             delete obj.plan_id;
@@ -184,9 +179,11 @@ export default {
         },
         changeRating(grade) {
             this.debounce(() => {
-                // const grade = (n / this.ratingLength) * 10;
                 // update
-                this.updateHistoryWrapper({ grade }, "grade");
+                this.updateHistoryWrapper(
+                    { grade: grade * this.ratio },
+                    "grade"
+                );
             });
         },
     },

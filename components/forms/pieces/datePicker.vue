@@ -36,7 +36,7 @@ import { extractISODate } from "~/static/js/extractISODate";
 export default {
     props: {
         selectedVar: { type: String, default: "globalDate" },
-        color: { type: String, default: "primary" },
+        color: { type: String, default: "blue" },
         historyAction: Function,
         historyParams: Object,
     },

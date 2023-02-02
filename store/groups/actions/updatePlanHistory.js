@@ -11,7 +11,6 @@ export default async function (args) {
     try {
         const { clients } = useApollo();
         const { data } = await clients.default.mutate({ mutation });
-        console.log("mutation", data);
     } catch (err) {
         console.log(err);
     }
