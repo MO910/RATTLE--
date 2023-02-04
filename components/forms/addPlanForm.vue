@@ -108,7 +108,7 @@ v-dialog(
                     v-col.d-flex.justify-start.align-center.text-h6(cols='6')
                         | {{$vuetify.locale.t('$vuetify.startingDate')}}
                     v-col.d-flex.justify-start.align-center.text-h6(cols='6')
-                        date-picker(selectedVar='startingDate')
+                        date-picker(selectedVar='newPlanStartingDate' color)
         v-card-actions
             v-spacer
             v-btn(

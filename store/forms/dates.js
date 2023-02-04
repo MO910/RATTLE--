@@ -2,8 +2,12 @@ import { defineStore } from "pinia";
 
 export const useDatesStore = defineStore("dates", {
     state: () => ({
-        startingDate: null,
+        // global
         globalDate: null,
         selectedDateHistory: [],
+        // add plan
+        newPlanStartingDate: null,
+        // edit plan
+        editEventDate: null,
     }),
 });

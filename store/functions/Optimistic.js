@@ -142,7 +142,8 @@ export default class {
         const oldValue = eval(`state.${fullPath}`);
         // update state optimistically
         // commit("updateModel", [fullPath, { ...oldValue, ...requestData }]);
-        eval(`state.${fullPath} = ${{ ...oldValue, ...requestData }}`);
+        const newVal = { ...oldValue, ...requestData };
+        eval(`state.${fullPath} = newVal`);
         // try the request
         try {
             this.data = await this.request();
@@ -150,7 +151,7 @@ export default class {
             console.log(err);
             // undo optimistic
             // commit("updateModel", [fullPath, oldValue]);
-            eval(`state.${fullPath} = ${oldValue}`);
+            eval(`state.${fullPath} = oldValue`);
         }
     }
     // transport from array to another

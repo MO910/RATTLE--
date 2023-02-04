@@ -1,10 +1,24 @@
 <template lang="pug">
 v-container
-    v-row.px-7.py-4(v-text='currentDate')
+    v-row
+        v-col.v-col-auto.d-flex
+            .align-self-center {{formatter(currentDate, {month: true, year: true})}}
+        v-col.d-flex
+            v-switch.align-self-center(
+                v-model='showAll'
+                size='x-small'
+                label="Show All" inset
+            )
+        v-col.d-flex.justify-end
+            v-btn.px-0(variant='text' @click='navigate("right")')
+                v-icon(color='grey-lighten-1' size="x-large") mdi-chevron-right
+            v-btn(variant='text' @click='navigate("today")') {{$vuetify.locale.t("$vuetify.today")}}
+            v-btn.px-0(variant='text' @click='navigate("left")')
+                v-icon(color='grey-lighten-1' size="x-large") mdi-chevron-left
     v-row.py-4
         v-col.text-center(v-for='day in weekDays') {{day}}
     v-sheet
-        v-row.ma-0(v-for='week in weeksList')
+        v-row.ma-0(v-for='week in visibleWeeksList')
             v-col.calendar-day.py-5.text-center(
                 v-for='day in week'
             )
@@ -27,14 +41,14 @@ v-container
                     @click='editEvent(event)'
                     :color='event.color'
                 )
-                    v-card-text {{event.name}}
+                    v-card-text.text-start {{event.name}}
 </template>
 <script>
 // stores
 import { storeToRefs } from "pinia";
 import { useCalendarStore } from "~/store/calendar";
 // function
-import { renderCalendar } from "~/static/js/calender.js";
+import calenderDays from "~/static/js/calender.js";
 import { extractISODate } from "~/static/js/extractISODate";
 
 export default {
@@ -45,25 +59,39 @@ export default {
     props: {
         updateEvents: Function,
         editEvent: Function,
+        groupWorkingDays: Array,
         eventsVar: { default: "events" },
     },
     mounted() {
-        const { currentDate, weeksList } = renderCalendar();
-        this.currentDate = currentDate;
-        this.weeksList = weeksList;
-        this.updateEvents();
-        console.log({ events: this[this.eventsVar], weeksList });
+        this.initMonth();
     },
     data: () => ({
-        currentDate: "",
+        currentDate: new Date(),
+        currentMonth: "",
         weeksList: [],
+        showAll: true,
     }),
     computed: {
         weekDays() {
-            return JSON.parse(this.$vuetify.locale.t("$vuetify.weekDays"));
+            let allDays = JSON.parse(
+                this.$vuetify.locale.t("$vuetify.weekDays")
+            );
+            if (this.showAll) return allDays;
+            return allDays.filter((_, i) => this.groupWorkingDays.includes(i));
+        },
+        visibleWeeksList() {
+            if (this.showAll) return this.weeksList;
+            return this.weeksList.map((week) =>
+                week.filter((_, i) => this.groupWorkingDays.includes(i))
+            );
         },
     },
     methods: {
+        initMonth() {
+            const weeksList = calenderDays(this.currentDate);
+            this.weeksList = weeksList;
+            this.updateEvents();
+        },
         dayEvents(day) {
             // if (!day.inactive) {
             return this[this.eventsVar].filter((event) => {
@@ -85,6 +113,23 @@ export default {
             // format date
             const formatter = new Intl.DateTimeFormat(lang, options);
             return formatter.format(new Date(date));
+        },
+        // month swapping
+        navigate(direction) {
+            let dateAfterNav;
+            if (direction === "today")
+                this.currentDate = dateAfterNav = new Date();
+            else {
+                let langDirection =
+                        this.$vuetify.locale.current === "en" ? 1 : -1,
+                    magnitude = direction === "right" ? 1 : -1,
+                    newMonth =
+                        this.currentDate.getMonth() + magnitude * langDirection;
+                dateAfterNav = this.currentDate.setMonth(newMonth);
+            }
+            this.currentDate = new Date(dateAfterNav);
+            // recalculate
+            this.initMonth();
         },
     },
 };

@@ -48,6 +48,10 @@ export default {
             return val;
         },
     },
+    mounted() {
+        // initiate start value
+        this.selected = this[this.selectedVar];
+    },
     computed: {
         searchResults() {
             const searchForReg = new RegExp(this.search.replace(/\s/g, "")),

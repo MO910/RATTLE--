@@ -94,4 +94,5 @@ export default {
     confirmForceRemoveMsg: "do you want to force delete ### plan?",
     forceRemove: "force remove",
     noPlansMsg: "there is no plans",
+    today: "today",
 };

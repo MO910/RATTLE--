@@ -8,5 +8,10 @@ export const useSelectedVarsStore = defineStore("selectedVars", {
         surahIndex: 0,
         has_rabt: false,
         days_selected: [0],
+        // events
+        fromSurahIndex: null,
+        fromAyah: null,
+        toSurahIndex: null,
+        toAyah: null,
     }),
 });

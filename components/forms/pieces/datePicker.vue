@@ -18,7 +18,7 @@ Datepicker(
     @closed="overlay = false"
 )
     template(#trigger)
-        v-btn(:color='color')
+        v-btn(:color='color' flat)
             v-icon mdi-calendar
             span.mx-3 {{text}}
 </template>
@@ -35,8 +35,8 @@ import { extractISODate } from "~/static/js/extractISODate";
 
 export default {
     props: {
-        selectedVar: { type: String, default: "globalDate" },
-        color: { type: String, default: "blue" },
+        selectedVar: { default: "globalDate" },
+        color: { default: "blue" },
         historyAction: Function,
         historyParams: Object,
     },
@@ -83,6 +83,7 @@ export default {
         },
         // get history
         async getHistory(newDate) {
+            if (!this.historyAction) return;
             this.fetching = true;
             // style the date to from
             let date = extractISODate({ date: newDate });

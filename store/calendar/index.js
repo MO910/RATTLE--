@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import editCustomPlan from "./actions/editCustomPlan";
 
 export const useCalendarStore = defineStore("calendar", {
     state: () => ({
@@ -20,4 +21,5 @@ export const useCalendarStore = defineStore("calendar", {
             },
         },
     }),
+    actions: { editCustomPlan },
 });

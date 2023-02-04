@@ -3,11 +3,13 @@ v-container
     custom-calendar(
         :updateEvents='updateEvents'
         :editEvent='editEvent'
+        :groupWorkingDays='group.working_days'
     )
     //- edit events dialog
     edit-event-dialog(
         :isStudent='isStudent'
         :update='updateEvents'
+        :subgroup_id='subgroup_id'
     )
 </template>
 
@@ -16,6 +18,7 @@ v-container
 import { storeToRefs } from "pinia";
 import { useGroupsStore } from "~/store/groups";
 import { useCalendarStore } from "~/store/calendar";
+import { useSelectedVarsStore } from "~/store/forms/selectedVars";
 import { useQuranStore } from "~/store/quran";
 // Functions
 import { calendarEvents } from "~/static/js/calendarEvents";
@@ -32,6 +35,7 @@ export default {
         const groupsStore = useGroupsStore();
         const quranStore = useQuranStore();
         const calendarStore = useCalendarStore();
+        const selectedVarsStore = useSelectedVarsStore();
         // fetch groups
         await groupsStore.fetchGroups();
         // return the store
@@ -39,6 +43,7 @@ export default {
             ...storeToRefs(groupsStore),
             ...storeToRefs(quranStore),
             ...storeToRefs(calendarStore),
+            ...storeToRefs(selectedVarsStore),
         };
     },
     computed: {
@@ -62,15 +67,17 @@ export default {
             this.isStudent = !sub;
             return student;
         },
+        subgroup_id() {
+            return this.subgroup?.id;
+        },
         // week days
-        groupWorkingDays() {
-            return this.group.working_days;
-        },
-        weekDays() {
-            // let weekDays = JSON.parse(this.$vuetify.lang.locales.en.weekDays);
-            // return this.groupWorkingDays.map((di) => weekDays[di]);
-            return JSON.parse(this.$vuetify.locale.t("$vuetify.weekDays"));
-        },
+        // groupWorkingDays() {
+        //     return this.group.working_days;
+        // },
+        // weekDays() {
+        //     let weekDays = JSON.parse(this.$vuetify.locale.locales.en.weekDays);
+        //     return this.groupWorkingDays.map((di) => weekDays[di]);
+        // },
     },
     methods: {
         updateEvents() {
@@ -102,15 +109,15 @@ export default {
             // date
             this.eventForm.form.date = event.start;
             // from
-            this.eventForm.form.fromSurahIndex = fromSurahIndex - 1;
+            this.fromSurahIndex = fromSurahIndex - 1;
             this.eventForm.form.maxFrom =
                 this.surahAdj.chapters[fromSurahIndex - 1].verses_count;
-            this.eventForm.form.fromAyah = fromAyah;
+            this.fromAyah = fromAyah;
             // to
-            this.eventForm.form.toSurahIndex = toSurahIndex - 1;
+            this.toSurahIndex = toSurahIndex - 1;
             this.eventForm.form.maxTo =
                 this.surahAdj.chapters[toSurahIndex - 1].verses_count;
-            this.eventForm.form.toAyah = toAyah;
+            this.toAyah = toAyah;
             // for all
             this.eventForm.data = custom_plans;
             this.eventForm.edit = true;
