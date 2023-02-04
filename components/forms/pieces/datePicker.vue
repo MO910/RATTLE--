@@ -20,7 +20,7 @@ Datepicker(
     template(#trigger)
         v-btn(:color='color' flat)
             v-icon mdi-calendar
-            span.mx-3 {{text}}
+            span.mx-3 {{dateStyled}}
 </template>
 
 <script>
@@ -58,29 +58,26 @@ export default {
             // update store value
             this[this.selectedVar] = extractISODate({ date });
             this.getHistory(date);
-            this.dateStyled(date);
             return date;
         },
     },
     mounted() {
-        this.selected = new Date();
+        this.selected = this[this.selectedVar] || new Date();
         this.getHistory(this.selected);
-        this.dateStyled();
     },
     components: { Datepicker },
     computed: {
         weekDaysShort() {
             return JSON.parse(this.$vuetify.locale.t("$vuetify.weekDaysShort"));
         },
-    },
-    methods: {
-        dateStyled(val) {
-            // if (!this.plansOfDate.length) return;
+        dateStyled() {
             let lang = this.$vuetify.locale.current == "en" ? "en-GB" : "ar-EG";
             const options = { dateStyle: "full", numberingSystem: "latn" },
                 formatter = new Intl.DateTimeFormat(lang, options);
-            this.text = formatter.format(new Date(val || this.selected));
+            return formatter.format(new Date(this.selected));
         },
+    },
+    methods: {
         // get history
         async getHistory(newDate) {
             if (!this.historyAction) return;

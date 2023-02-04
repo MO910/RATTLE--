@@ -5,10 +5,10 @@ v-row
             :label="label"
             v-model='selected'
             :items='searchResults'
-            item-title="name"
-            item-value="index"
+            :item-title="itemTitle"
+            :item-value="itemValue"
         )
-            template(v-slot:prepend-item)
+            template(v-if='enableSearch' v-slot:prepend-item)
                 v-list-item
                     v-text-field.d-block(
                         v-model="search"
@@ -25,7 +25,16 @@ import { useSelectedVarsStore } from "~/store/forms/selectedVars";
 import { useQuranStore } from "~/store/quran";
 
 export default {
-    props: ["label", "items", "selectedVar", "translate"],
+    // props: ["label", "items", "item-title", "selectedVar", "translate"],
+    props: {
+        label: String,
+        items: Array,
+        itemTitle: { default: "name" },
+        itemValue: { default: "index" },
+        selectedVar: String,
+        translate: Boolean,
+        enableSearch: { default: true },
+    },
     setup() {
         // use stores data
         const selectedVarsStore = useSelectedVarsStore();
@@ -54,11 +63,12 @@ export default {
     },
     computed: {
         searchResults() {
+            if (!this.enableSearch) return this.items;
             const searchForReg = new RegExp(this.search.replace(/\s/g, "")),
                 cleanReg = new RegExp("[^\u0621-\u063A^\u0641-\u064A]", "g");
             // get results
-            let results = this.items.filter((s) =>
-                s.name.replace(cleanReg, "").match(searchForReg)
+            let results = this.items.filter((item) =>
+                item[this.itemTitle].replace(cleanReg, "").match(searchForReg)
             );
             // reversed
             if (this.direction) results = results.reverse();

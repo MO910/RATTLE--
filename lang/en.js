@@ -95,4 +95,5 @@ export default {
     forceRemove: "force remove",
     noPlansMsg: "there is no plans",
     today: "today",
+    plan: "plan",
 };

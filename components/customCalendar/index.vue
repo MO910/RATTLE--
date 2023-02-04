@@ -27,7 +27,7 @@ v-container
                         v-btn.calendar-add(
                             position='absolute' flat
                             location='left' icon
-                            @click=''
+                            @click='addEvent(day.date)'
                         ) #[v-icon mdi-plus]
                         v-btn.calendar-day__date(
                             :color='day.isToday ? "blue" : ""'
@@ -47,6 +47,7 @@ v-container
 // stores
 import { storeToRefs } from "pinia";
 import { useCalendarStore } from "~/store/calendar";
+import { useDatesStore } from "~/store/forms/dates";
 // function
 import calenderDays from "~/static/js/calender.js";
 import { extractISODate } from "~/static/js/extractISODate";
@@ -54,7 +55,12 @@ import { extractISODate } from "~/static/js/extractISODate";
 export default {
     setup() {
         const calendarStore = useCalendarStore();
-        return { ...storeToRefs(calendarStore) };
+        const datesStore = useDatesStore();
+        return {
+            calendarStore,
+            ...storeToRefs(calendarStore),
+            ...storeToRefs(datesStore),
+        };
     },
     props: {
         updateEvents: Function,
@@ -130,6 +136,12 @@ export default {
             this.currentDate = new Date(dateAfterNav);
             // recalculate
             this.initMonth();
+        },
+        // add event at date
+        addEvent(date) {
+            this.editEventDate = date;
+            this.eventForm.edit = false;
+            this.eventForm.dialog = true;
         },
     },
 };

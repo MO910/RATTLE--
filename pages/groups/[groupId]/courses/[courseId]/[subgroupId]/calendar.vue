@@ -9,7 +9,7 @@ v-container
     edit-event-dialog(
         :isStudent='isStudent'
         :update='updateEvents'
-        :subgroup_id='subgroup_id'
+        :subgroup='subgroup'
     )
 </template>
 
@@ -19,6 +19,8 @@ import { storeToRefs } from "pinia";
 import { useGroupsStore } from "~/store/groups";
 import { useCalendarStore } from "~/store/calendar";
 import { useSelectedVarsStore } from "~/store/forms/selectedVars";
+import { useInputNumberStore } from "~/store/forms/inputNumber";
+import { useDatesStore } from "~/store/forms/dates";
 import { useQuranStore } from "~/store/quran";
 // Functions
 import { calendarEvents } from "~/static/js/calendarEvents";
@@ -36,6 +38,8 @@ export default {
         const quranStore = useQuranStore();
         const calendarStore = useCalendarStore();
         const selectedVarsStore = useSelectedVarsStore();
+        const inputNumberStore = useInputNumberStore();
+        const datesStore = useDatesStore();
         // fetch groups
         await groupsStore.fetchGroups();
         // return the store
@@ -44,6 +48,8 @@ export default {
             ...storeToRefs(quranStore),
             ...storeToRefs(calendarStore),
             ...storeToRefs(selectedVarsStore),
+            ...storeToRefs(inputNumberStore),
+            ...storeToRefs(datesStore),
         };
     },
     computed: {
@@ -107,7 +113,7 @@ export default {
                 [toSurahIndex, toAyah] = custom_plans.to?.split(":");
             console.log([fromSurahIndex, fromAyah], [toSurahIndex, toAyah]);
             // date
-            this.eventForm.form.date = event.start;
+            this.editEventDate = new Date(event.start);
             // from
             this.fromSurahIndex = fromSurahIndex - 1;
             this.eventForm.form.maxFrom =

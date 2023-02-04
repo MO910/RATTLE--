@@ -113,4 +113,5 @@ export default {
     forceRemove: "حذف اجباري",
     noPlansMsg: "لا يوجد خطط",
     today: "اليوم",
+    plan: "الخطة",
 };

@@ -64,7 +64,7 @@ export const counter = (content) => {
         freqChangeInterval,
         firstTap,
         current = +content.attr("data-current"),
-        freeze = content.attr("data-freeze"),
+        freeze = eval(content.attr("data-freeze")),
         max = +content.attr("data-max") || 10000,
         min = +content.attr("data-min") || 0,
         digitWidth = +content.attr("data-digitWidth") || max.toString().length,
@@ -77,6 +77,7 @@ export const counter = (content) => {
     });
     // drag action
     const dragUpdate = (xValue) => {
+        console.log(xValue, preventChange);
         // check if it is an animation during now
         if (preventChange) return;
         // add instentenius flag to animate
@@ -250,7 +251,11 @@ export const counter = (content) => {
     content
         .parents(".inputNumber")
         .children(".v-icon.increase")
-        .on("click", () => !freeze && dragUpdate(dragLimit));
+        .on("click", () => {
+            console.log("clicked after");
+            console.log(typeof freeze);
+            !freeze && dragUpdate(dragLimit);
+        });
     // click on the before arrows events
     content
         .parents(".inputNumber")

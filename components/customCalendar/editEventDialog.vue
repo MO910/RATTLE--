@@ -2,6 +2,7 @@
 v-dialog(
     width="570"
     v-model='eventForm.dialog'
+    @update:modelValue='close'
     :persistent='removeLoading || editLoading'
     transition="scale-transition"
 )
@@ -12,10 +13,20 @@ v-dialog(
         v-card-text
             v-form(:disabled='disabled')
                 v-row
+                    //- from surah
+                    v-col(cols='12' v-if='!eventForm.edit')
+                        select-with-search(
+                            :label='this.$vuetify.locale.t("$vuetify.plan")'
+                            selectedVar='toPlanIndex' 
+                            :items='subgroup.plans'
+                            itemTitle='title'
+                            itemValue='id'
+                            enableSearch=false
+                        )
                     //- select date
                     v-col.d-flex.justify-start.align-center.text-h6(cols='6')
                         | {{$vuetify.locale.t('$vuetify.date')}}
-                    v-col.d-flex.justify-start.align-center.text-h6(cols='6')
+                    v-col.d-flex.justify-end.align-center(cols='6')
                         date-picker(selectedVar='editEventDate' color)
                     //- from surah
                     v-col(cols='12')
@@ -64,7 +75,7 @@ v-dialog(
                     ) {{$vuetify.locale.t('$vuetify.edit')}}
                 v-btn(
                     v-else
-                    color='primary'
+                    color='blue'
                     @click='add' :loading='addLoading'
                 ) {{$vuetify.locale.t('$vuetify.add')}}
 </template>
@@ -75,6 +86,7 @@ import { useGroupsStore } from "~/store/groups";
 import { useCalendarStore } from "~/store/calendar";
 import { useQuranStore } from "~/store/quran";
 import { useSelectedVarsStore } from "~/store/forms/selectedVars";
+import { useInputNumberStore } from "~/store/forms/inputNumber";
 import { useDatesStore } from "~/store/forms/dates";
 // components
 import selectWithSearch from "~/components/forms/pieces/selectWithSearch";
@@ -82,7 +94,7 @@ import inputNumber from "~/components/forms/pieces/inputNumber";
 import datePicker from "~/components/forms/pieces/datePicker";
 
 export default {
-    props: ["isStudent", "subgroup_id", "update"],
+    props: ["isStudent", "subgroup", "update"],
     components: { selectWithSearch, inputNumber, datePicker },
     setup() {
         // use stores data
@@ -90,6 +102,7 @@ export default {
         const calendarStore = useCalendarStore();
         const quranStore = useQuranStore();
         const selectedVarsStore = useSelectedVarsStore();
+        const inputNumberStore = useInputNumberStore();
         const datesStore = useDatesStore();
         return {
             calendarStore,
@@ -97,6 +110,7 @@ export default {
             ...storeToRefs(calendarStore),
             ...storeToRefs(quranStore),
             ...storeToRefs(selectedVarsStore),
+            ...storeToRefs(inputNumberStore),
             ...storeToRefs(datesStore),
         };
     },
@@ -104,12 +118,7 @@ export default {
         removeLoading: false,
         editLoading: false,
     }),
-    computed: {
-        // for date picker
-        historyParams() {
-            return { subgroup_id: this.subgroup_id };
-        },
-    },
+    computed: {},
     methods: {
         // translate
         surahD(end) {
@@ -123,7 +132,9 @@ export default {
             )} ${this.$vuetify.locale.t("$vuetify.ayah")}`;
         },
         // close dialog
-        close() {
+        close(model) {
+            if (model === true) return;
+            this.calendarStore.resetEventForm();
             this.eventForm.dialog = false;
         },
         // edit
