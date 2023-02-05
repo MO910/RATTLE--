@@ -6,10 +6,10 @@ const {
     GraphQLList,
     GraphQLBoolean,
 } = require("graphql");
-//
-const User_type = require("../Users/User"),
+const // user
+    ShortUser_type = require("../Users/ShortUser"),
     Users_schema = require("../../../models/Users/Users"),
-    //
+    // plan
     Plan_type = require("../Plans/Plan"),
     Plans_schema = require("../../../models/Plans/Plans");
 // export Type
@@ -29,7 +29,7 @@ module.exports = new GraphQLObjectType({
             },
         },
         students: {
-            type: new GraphQLList(User_type),
+            type: new GraphQLList(ShortUser_type),
             async resolve({ student_ids }) {
                 const students = await Promise.all(
                     student_ids.map(async (studentId) => {

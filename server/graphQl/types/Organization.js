@@ -18,6 +18,7 @@ module.exports = new GraphQLObjectType({
         centers: {
             type: new GraphQLList(Center_type),
             async resolve({ id: organization_id }) {
+                // return [{ id: "khlekj" }];
                 return await Centers_schema.find({
                     organization_id,
                 });

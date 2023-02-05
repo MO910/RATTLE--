@@ -48,13 +48,7 @@ const // Goals
     transportToSubgroup = require("./mutations/Groups/transportToSubgroup"),
     // attendance
     updateAttendance = require("./mutations/attendance/updateAttendance");
-/*
-    removeGoal = require("./mutations/Goals/removeGoal"),
-    updateGoalsHistory = require("./mutations/Goals/updateHistory"),
-    // Organization
-    createOrganization = require("./mutations/createOrganization"),
-    */
-//
+// Queries
 const query = new GraphQLObjectType({
         name: "RootQueryType",
         fields: {
@@ -103,16 +97,16 @@ const query = new GraphQLObjectType({
                     return await Groups_schema.find({ teacher_id: userId });
                 },
             },
-            // organization: {
-            //     type: Organization_type,
-            //     args: { userId: { type: GraphQLID } },
-            //     async resolve(_, { userId }) {
-            //         const user = await Users_schema.findById(userId);
-            //         return await Organizations_schema.findById(
-            //             user.organization_id
-            //         );
-            //     },
-            // },
+            organization: {
+                type: Organization_type,
+                args: { userId: { type: GraphQLID } },
+                async resolve(_, { userId }) {
+                    const user = await Users_schema.findById(userId);
+                    return await Organizations_schema.findById(
+                        user.organization_id
+                    );
+                },
+            },
             subgroupHistoryAtDate: {
                 type: new GraphQLList(Plan_History_type),
                 args: {

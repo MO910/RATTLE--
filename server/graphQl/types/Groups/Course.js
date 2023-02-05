@@ -8,7 +8,7 @@ const {
 } = require("graphql");
 //
 const // User
-    User_type = require("../Users/User"),
+    ShortUser_type = require("../Users/ShortUser"),
     Users_schema = require("../../../models/Users/Users"),
     // Subgroups
     subgroup_type = require("./Subgroup"),
@@ -22,7 +22,7 @@ module.exports = new GraphQLObjectType({
         title: { type: GraphQLString },
         description: { type: GraphQLString },
         floatingStudents: {
-            type: new GraphQLList(User_type),
+            type: new GraphQLList(ShortUser_type),
             async resolve({ id: course_id, group_id }) {
                 const subgroups = await subgroups_schema.find({ course_id }),
                     // get an array of ids only
