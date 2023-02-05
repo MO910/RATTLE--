@@ -1,5 +1,6 @@
 <template lang="pug">
-v-overlay.datePickerOverlay(v-model="overlay" persistent :scrim='false')
+//- v-overlay.datePickerOverlay(v-model="overlay" persistent :scrim='false')
+//- v-container
 Datepicker(
     v-model='selected'
     :enable-time-picker="false"
@@ -48,7 +49,7 @@ export default {
     },
     data: () => ({
         isStudent: null,
-        overlay: false,
+        // overlay: false,
         selected: new Date(),
         text: null,
     }),
@@ -88,7 +89,6 @@ export default {
             await this.historyAction({
                 ...this.historyParams,
                 date,
-                // date: this.datePicker.selectedDate,
             });
             this.fetching = false;
         },
