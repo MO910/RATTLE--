@@ -4,7 +4,7 @@ v-navigation-drawer(rail)
         v-row.d-flex.align-start H
         v-row.d-flex.flex-column.justify-center
             div(v-for='item in items2')
-                v-tooltip( :text="item")
+                v-tooltip(:text="item")
                     template(v-slot:activator="{ props }")
                         v-btn(v-bind="props") Tooltip
             //- v-tooltip(v-for='item in items' :text='item.title')
