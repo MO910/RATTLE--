@@ -4,8 +4,8 @@ v-container
 </template>
 
 <script>
-import { useAuthStore } from "~/store/auth";
 import { storeToRefs } from "pinia";
+import { useAuthStore } from "~/store/auth";
 
 export default {
     async setup() {
