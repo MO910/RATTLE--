@@ -10,12 +10,12 @@ v-row.pt-10
                 :v-ripple='link'
                 @contextmenu.prevent='openContext'
             )
-                v-card-title.text-h5 {{applyEvalTitle(item)}}
+                v-card-title.text-h {{applyEvalTitle(item)}}
                 v-card-text(v-if='chips')
                     v-chip.ma-2(
                         v-for='chip in evalChips(item)'
                     ) {{evalChipsTitle(chip)}}
-                v-card-text
+                //- v-card-text
                     slot(:student_id='item.id')
                 //- contextmenu
 slot(name='contextmenu')
@@ -26,7 +26,7 @@ slot(name='contextmenu')
 import { storeToRefs } from "pinia";
 import { useCustomCardStore } from "~/store/customCard";
 // components
-import linkOr from "./linkOr.vue";
+import linkOr from "./linkOr";
 
 export default {
     props: {

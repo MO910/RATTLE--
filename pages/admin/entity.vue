@@ -48,7 +48,15 @@ v-container
                 variant='solo'
             )
     //- users cards
-    v-row
+    customCard(
+        :each='searchResults'
+        :evalTitle='fullName'
+        chips='rules'
+        :evalChipsTitle='(rule) => rule.title'
+        translate
+        link=false
+    )
+    //- v-row
         v-col(
             v-for='entity in searchResults'
             md=4 sm=6 xs=12
@@ -69,10 +77,11 @@ import { storeToRefs } from "pinia";
 import { useAdminStore } from "~/store/admin";
 import { useAuthStore } from "~/store/auth";
 // components
+import customCard from "~/components/customCard";
 import addUserDialog from "~/components/admin/addUserDialog";
 
 export default {
-    components: { addUserDialog },
+    components: { customCard, addUserDialog },
     async setup() {
         const authStore = useAuthStore();
         const adminStore = useAdminStore();

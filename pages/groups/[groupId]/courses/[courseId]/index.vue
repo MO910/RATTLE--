@@ -6,7 +6,10 @@ v-container
         customCard(
             :each='course.floatingStudents'
             :evalTitle='fullName'
+            :openContext="openContext('student')"
         )
+            template(#contextmenu)
+                contextmenu(:ele='course.subgroups.id')
 //- Subgroups
 v-container
     div(v-if='course.subgroups')
@@ -15,10 +18,10 @@ v-container
             :each='course.subgroups'
             chips='students'
             :evalChipsTitle='fullName'
-            :openContext='openContext'
+            :openContext="openContext('subgroup')"
         )
             template(#contextmenu)
-                subgroup-contextmenu(:ele='course.subgroups.id')
+                contextmenu(:ele='course.subgroups.id')
 </template>
 
 <script>
@@ -27,10 +30,10 @@ import { storeToRefs } from "pinia";
 import { useGroupsStore } from "~/store/groups";
 import { useCustomCardStore } from "~/store/customCard";
 // components
-import subgroupContextmenu from "~/components/customCard/contextmenu/subgroup";
+import contextmenu from "~/components/customCard/contextmenu";
 
 export default {
-    components: { subgroupContextmenu },
+    components: { contextmenu },
     async setup() {
         // fetch user
         definePageMeta({ middleware: "fetch-user" });
@@ -59,22 +62,25 @@ export default {
         },
     },
     methods: {
-        openContext(e) {
-            // reposition
-            $(".subgroupContextMenu").css({
-                top: e.clientY + "" + "px",
-                left: e.clientX + "px",
-            });
+        openContext(type) {
             // open
-            this.subgroupContextMenu.show = false;
+            this.contextMenu.show = false;
+            this.contextMenu.type = type;
             // this.subgroupContextMenu.x = e.clientX;
             // this.subgroupContextMenu.y = e.clientY;
             // this.updateModel(["contextmenu.entity", this.entity]);
             // this.updateModel(["contextmenu.subgroups", this.subgroups]);
             // this.updateModel(["contextmenu.type", this.type]);
             this.$nextTick(() => {
-                this.subgroupContextMenu.show = true;
+                this.contextMenu.show = true;
             });
+            return (e) => {
+                // reposition
+                $(".contextMenu").css({
+                    top: e.clientY + "" + "px",
+                    left: e.clientX + "px",
+                });
+            };
         },
         // get full name or title
         fullName(entity) {
