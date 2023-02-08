@@ -9,20 +9,20 @@ date-picker(
 v-container 
     v-row.mt-10
         v-col(cols='12')
-            v-btn(
-                nuxt :to='calendarRouter'
-                color='blue lighten-2'
-                variant='outlined' block
-                size='x-large'
-            )
-                v-icon.mx-5 mdi-calendar-today
-                | {{$vuetify.locale.t('$vuetify.showCalendar')}}
+            NuxtLink(:to='calendarRouter')
+                v-btn(
+                    color='blue lighten-2'
+                    variant='outlined' block
+                    size='x-large'
+                )
+                    v-icon.mx-5 mdi-calendar-today
+                    | {{$vuetify.locale.t('$vuetify.showCalendar')}}
         v-col.text-h4(cols='12')
             p.d-inline-block {{$vuetify.locale.t('$vuetify.plans')}}
             add-plan-form(
                 :default_days='groupWorkingDays'
                 :group='group'
-                :subgroup_id='subgroup.id'
+                :subgroup_id='subgroup?.id'
                 :isStudent='isStudent'
             )
         v-col.px-0.text-h4(
@@ -39,7 +39,7 @@ v-container
                 )
         v-col(v-else) {{$vuetify.locale.t(`$vuetify.noPlansMsg`)}}
 //- Students of Subgroup
-v-container(v-if='subgroup.students')
+v-container(v-if='subgroup?.students')
     v-row.mt-10
         v-col.text-h4(cols='12') {{$vuetify.locale.t('$vuetify.students')}}
     customCard(
@@ -119,7 +119,7 @@ export default {
         },
         // get this day plans
         plansOfDate() {
-            const plans = [...this.subgroup.plans];
+            const plans = [...(this.subgroup?.plans || [])];
             return plans
                 .filter((plan) => !plan.hide)
                 .map((plan) => {
@@ -159,7 +159,8 @@ export default {
         },
         // rout to calendar
         calendarRouter() {
-            return `${this.$router.currentRoute.path}/calendar`;
+            const fullPath = useRoute().fullPath;
+            return `${fullPath.replace(/\/$/, "")}/calendar`;
         },
     },
     methods: {

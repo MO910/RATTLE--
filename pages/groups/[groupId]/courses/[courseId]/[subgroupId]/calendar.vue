@@ -87,6 +87,7 @@ export default {
     },
     methods: {
         updateEvents() {
+            console.log({ subgroup: this.subgroup });
             this.events = calendarEvents({
                 courseTitle: this.course.title,
                 plans: this.subgroup.plans,
