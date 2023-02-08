@@ -7,7 +7,16 @@ date-picker(
 )
 //- Plans
 v-container 
-    v-row.mt-10()
+    v-row.mt-10
+        v-col(cols='12')
+            v-btn(
+                nuxt :to='calendarRouter'
+                color='blue lighten-2'
+                variant='outlined' block
+                size='x-large'
+            )
+                v-icon.mx-5 mdi-calendar-today
+                | {{$vuetify.locale.t('$vuetify.showCalendar')}}
         v-col.text-h4(cols='12')
             p.d-inline-block {{$vuetify.locale.t('$vuetify.plans')}}
             add-plan-form(
@@ -66,8 +75,7 @@ import addPlanForm from "~/components/forms/addPlanForm";
 
 export default {
     components: { advantage, datePicker, addPlanForm },
-    async setup(_, { expose }) {
-        // useHead({ script: [{ src: "/js/inputNumber.js" }] });
+    async setup() {
         // fetch user
         definePageMeta({ middleware: "fetch-user" });
         // use stores data
@@ -148,6 +156,10 @@ export default {
         // for date picker
         historyParams() {
             return { subgroup_id: this.subgroup?.id };
+        },
+        // rout to calendar
+        calendarRouter() {
+            return `${this.$router.currentRoute.path}/calendar`;
         },
     },
     methods: {

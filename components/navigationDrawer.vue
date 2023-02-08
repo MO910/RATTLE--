@@ -8,8 +8,6 @@ v-navigation-drawer(rail)
                 :to='item.to' nuxt
                 color='blue' icon
                 variant='text'
-                v-bind="attrs"
-                v-on="on"
             ) 
                 v-icon.text-white.text-secondary {{item.icon}}
                 v-tooltip(activator="parent" :text="item.title")

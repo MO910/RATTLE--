@@ -8,7 +8,7 @@ v-row.pt-10
             v-card.py-7.px-5(
                 :id='item.id'
                 :v-ripple='link'
-                @contextmenu.prevent='openContext'
+                @contextmenu.prevent='openContext($event, item)'
             )
                 v-card-title.text-h {{applyEvalTitle(item)}}
                 v-card-text(v-if='chips')

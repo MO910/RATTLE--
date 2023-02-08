@@ -22,6 +22,7 @@ export default {
     // dialogs
     newCenter: "new center",
     newTeacher: "new teacher",
+    newSubgroup: "new subgroup",
     cancel: "cancel",
     select: "select",
     add: "add",

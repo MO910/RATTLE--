@@ -39,6 +39,7 @@ export default {
     // dialogs
     newCenter: "مركز جديد",
     newTeacher: "معلم جديد",
+    newSubgroup: "مجموعة فرعية جديدة",
     cancel: "الغاء",
     select: "اختيار",
     add: "اضف",

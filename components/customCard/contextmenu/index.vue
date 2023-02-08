@@ -1,7 +1,8 @@
 <template lang="pug">
 v-menu(
-    content-class='contextMenu'
     v-model='contextMenu.show'
+    @update:modelValue='updateModel'
+    content-class='contextMenu'
     transition="scroll-y-transition" eager
 )
     v-list(width='200')
@@ -13,9 +14,6 @@ v-menu(
             template(v-slot:prepend)
                 v-icon.text--secondary(size='small') {{item.icon}}
             v-list-item-title {{$vuetify.locale.t(`$vuetify.${item.title}`)}}
-//- confirm message dialog
-confirmDialog(type='edit' confirmMessage='edit form')
-confirmDialog(type='remove' confirmMessage='546')
 </template>
 
 <script>
@@ -33,11 +31,22 @@ export default {
         // return the store
         return { ...storeToRefs(customCardStore) };
     },
+    mounted() {
+        console.log(this.ele);
+    },
     components: { confirmDialog },
     methods: {
         openDialog(type) {
             this.contextMenu.dialog.show = true;
             this.contextMenu.dialog.type = type;
+        },
+        updateModel(val) {
+            this.contextMenu.show = val;
+            if (val || this.contextMenu.dialog.show) return;
+            setTimeout(() => {
+                this.contextMenu.type = "";
+                this.contextMenu.entity = {};
+            }, 500);
         },
     },
 };

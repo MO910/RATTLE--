@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 
 export const useCustomCardStore = defineStore("customCard", {
     state: () => ({
+        confirmDialogLoading: false,
         contextMenu: {
             // items:
             show: false,
@@ -14,7 +15,6 @@ export const useCustomCardStore = defineStore("customCard", {
     }),
     getters: {
         contextMenuItems() {
-            // console.log(this.type);
             if (this.contextMenu.type === "subgroup")
                 return [
                     { title: "edit", icon: "mdi-pencil" },
@@ -24,6 +24,8 @@ export const useCustomCardStore = defineStore("customCard", {
                         color: "red",
                     },
                 ];
+            else if (this.contextMenu.type.includes("student"))
+                return [{ title: "transport", icon: "mdi-arrow-decision" }];
         },
     },
 });

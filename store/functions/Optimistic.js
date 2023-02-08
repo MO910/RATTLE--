@@ -13,11 +13,9 @@ function push(state, [obj, value, method = "push", spread = false]) {
 }
 // export
 export default class {
-    constructor({ state, dispatch, request, dataKey, stringifyArgs }) {
+    constructor({ state, request, dataKey, stringifyArgs }) {
         this.state = state;
-        // this.commit = commit;
         this.stringifyArgs = stringifyArgs;
-        this.dispatch = dispatch;
         this.request = request;
         this.dataKey = dataKey;
     }
@@ -73,6 +71,7 @@ export default class {
     }
     // remove item response
     async remove({ id, tree, callbackBefore, callbackAfter }) {
+        console.log({ id, tree });
         const { state } = this;
         const nodePath = treeFinder({
                 id,
