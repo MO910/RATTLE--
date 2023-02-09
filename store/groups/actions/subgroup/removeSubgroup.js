@@ -1,4 +1,4 @@
-import Optimistic from "~/store/functions/optimistic";
+import Optimistic from "~/store/functions/Optimistic";
 import { useGroupsStore } from "~/store/groups";
 
 export default async function ({ id, course_id }) {

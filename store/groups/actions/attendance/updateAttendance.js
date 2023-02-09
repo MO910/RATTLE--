@@ -1,5 +1,5 @@
 import stringify from "~/store/functions/stringify";
-import Optimistic from "~/store/functions/optimistic";
+import Optimistic from "~/store/functions/Optimistic";
 
 export default async function (args) {
     // do not fetch if already fetched
