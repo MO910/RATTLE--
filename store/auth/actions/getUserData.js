@@ -14,7 +14,7 @@ export default async function () {
                     title
                     permissions
                 }
-                groups {
+                groupsAsTeacher {
                     id
                     title
                     working_days

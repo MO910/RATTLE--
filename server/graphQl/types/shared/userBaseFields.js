@@ -23,7 +23,8 @@ const // shared function
 
 module.exports = {
     id: { type: GraphQLID },
-    group_id: { type: GraphQLID },
+    group_ids: { type: new GraphQLList(GraphQLString) },
+    // group_id: { type: GraphQLID },
     organization_id: { type: GraphQLID },
     first_name: { type: GraphQLString },
     parent_name: { type: GraphQLString },

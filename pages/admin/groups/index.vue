@@ -30,10 +30,10 @@ import { useUserFormStore } from "~/store/admin/userForm";
 import { useAuthStore } from "~/store/auth";
 import { useCustomCardStore } from "~/store/customCard";
 // components
-import students from "~/components/admin/students";
+// import students from "~/components/admin/students";
 
 export default {
-    components: { students },
+    // components: { students },
     async setup() {
         // fetch data middleware
         definePageMeta({

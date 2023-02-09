@@ -3,7 +3,7 @@ export default async function () {
     // repair query
     const authStore = useAuthStore();
     const query = gql`
-        query groups {
+        query {
             groups(userId: "${authStore.userId}") {
                 id
                 title

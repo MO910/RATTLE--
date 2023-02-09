@@ -4,7 +4,7 @@ const Groups = new Schema(
     {
         admin_id: mongoose.ObjectId,
         center_id: mongoose.ObjectId,
-        teacher_ids: Array,
+        teacher_id: mongoose.ObjectId,
         title: String,
         working_days: Array,
         description: String,

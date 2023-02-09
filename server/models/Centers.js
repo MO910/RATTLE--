@@ -3,7 +3,7 @@ const mongoose = require("mongoose"),
 const Centers = new Schema(
     {
         organization_id: mongoose.ObjectId,
-        admin_ids: Array,
+        owner_id: mongoose.ObjectId,
         title: String,
         working_days: Array, // encode like [sat, sun, mon, tue, wed, thu, fri]
         description: String,

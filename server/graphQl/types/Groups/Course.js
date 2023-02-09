@@ -29,7 +29,9 @@ module.exports = new GraphQLObjectType({
                     studentsInSubgroups = subgroups
                         .map((sub) => sub.student_ids)
                         .flat(),
-                    allGroupStudents = await Users_schema.find({ group_id });
+                    allGroupStudents = await Users_schema.find({
+                        group_ids: group_id.toString(),
+                    });
                 // filter out the students who is already in subgroup
                 return allGroupStudents.filter(
                     ({ id }) => !studentsInSubgroups.some((s_id) => s_id == id)

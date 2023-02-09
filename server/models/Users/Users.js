@@ -3,7 +3,7 @@ const mongoose = require("mongoose"),
 const Users = new Schema(
     {
         organization_id: mongoose.ObjectId,
-        group_id: mongoose.ObjectId,
+        group_ids: Array,
         parent_id: mongoose.ObjectId,
         first_name: String,
         parent_name: String,
