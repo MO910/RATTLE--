@@ -35,13 +35,19 @@ export const useCustomCardStore = defineStore("customCard", {
                     const userFormStore = useUserFormStore();
                     const { first_name, parent_name, email, phone } =
                         this.contextMenu.entity;
-                    let newData = {
+                    const selectedRules = this.contextMenu.entity.rules.map(
+                        (rule) =>
+                            userFormStore.userForm.rules.indexOf(rule.title)
+                    );
+                    console.log({ selectedRules });
+                    const newData = {
                         dialog: true,
                         edit: true,
                         first_name,
                         parent_name,
                         email,
                         phone,
+                        selectedRules,
                         // selectedCenterId: null,
                         // selectedGroupId: null,
                     };

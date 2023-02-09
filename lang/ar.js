@@ -115,4 +115,8 @@ export default {
     noPlansMsg: "لا يوجد خطط",
     today: "اليوم",
     plan: "الخطة",
+    groups: "المجموعات",
+    competitions: "المسابقات",
+    about: "حول",
+    parents: "اولياء الامور",
 };

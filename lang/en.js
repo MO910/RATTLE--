@@ -97,4 +97,8 @@ export default {
     noPlansMsg: "there is no plans",
     today: "today",
     plan: "plan",
+    groups: "groups",
+    competitions: "competitions",
+    about: "about",
+    parents: "parents",
 };

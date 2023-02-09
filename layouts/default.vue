@@ -1,6 +1,16 @@
 <template lang="pug">
 v-app
     navigation-drawer
+    v-app-bar
+        v-app-bar-nav-icon
+        v-app-bar-title ايبش
+        //- v-spacer
+        v-btn(
+            v-for="link in links"
+            :to='link.to' nuxt
+            variant='text'
+            :active='isActive(link)'
+        ) {{link.title}}
     v-main
         v-container
             v-btn(v-if="!loggedIn" nuxt to="/login") login
@@ -26,6 +36,27 @@ export default {
         };
     },
     data: () => ({}),
+    computed: {
+        links() {
+            return [
+                {
+                    icon: "mdi-account-multiple",
+                    title: this.$vuetify.locale.t("$vuetify.groups"),
+                    to: "/admin/groups",
+                },
+                {
+                    icon: "mdi-home",
+                    title: this.$vuetify.locale.t("$vuetify.competitions"),
+                    to: "/admin/competitions",
+                },
+            ];
+        },
+    },
+    methods: {
+        isActive(link) {
+            return link.to === "/admin/groups";
+        },
+    },
 };
 </script>
 

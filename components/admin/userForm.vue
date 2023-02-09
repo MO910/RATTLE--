@@ -11,7 +11,7 @@ v-dialog(
             v-btn delete
         v-card-text
             v-container
-                v-form(v-model="userForm.textFieldsValid" ref="userForm")
+                v-form(v-model="userForm.textFieldsValid" ref="userFormRef")
                     v-row
                         v-col(cols='12')
                             v-chip-group(
@@ -115,7 +115,7 @@ export default {
         form: null,
     }),
     mounted() {
-        console.log({ form: this.form });
+        // console.log({ form: this.form });
     },
     computed: {
         selectedCenterGroups() {
@@ -133,9 +133,8 @@ export default {
     methods: {
         // validate
         async close(val) {
-            console.log({ form: this.form });
             // validate
-            await this.$refs?.userForm?.validate();
+            await this.$refs?.userFormRef?.validate();
             // if open do nothing
             if (val) return;
             this.userForm.dialog = false;

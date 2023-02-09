@@ -1,8 +1,8 @@
 <template lang="pug">
 v-container
     v-row
-        v-col.text-h3(cols='12') {{$vuetify.locale.t(`$vuetify.${mode}`)}}
-        v-col(cols='12')
+        //- v-col.text-h3(cols='12') {{$vuetify.locale.t(`$vuetify.${mode}`)}}
+        //- v-col(cols='12')
             //- add user
             v-btn.mx-2(
                 v-if='mode == "users"'
@@ -31,38 +31,16 @@ v-container
             //-     icon='mdi-pencil'
             //-     variant='outlined'
             //- ) 
-        //- searching
-        v-col(cols='12' v-if='mode == "users"')
-            | Rules:
-            v-chip-group(
-                v-model='tags'
-                selected-class='text-blue' column multiple mandatory
-            )
-                v-chip(v-for='rule in rules' filter) {{ rule }}
-        v-col(cols='12')
-            v-text-field(
-                v-model="search"
-                append-icon="mdi-magnify"
-                :label="$vuetify.locale.t(`$vuetify.search`)"
-                single-line hide-details
-                variant='solo'
-            )
     //- users cards
     custom-card(
-        :each='searchResults'
+        :each="searchResults"
         :evalTitle='fullName'
-        chips='rules'
-        :evalChipsTitle='(rule) => rule.title'
         :openContext="openStudentContext"
         :link='false' translate
         :description='mode == "centers"'
     )
         template(#contextmenu)
             contextmenu
-//- dialogs
-user-form(v-if='mode === "users"')
-confirm-dialog(type='remove' :action='removeAction')
-    span(v-html='confirmRemoveMsg')
 </template>
 
 <script>
@@ -80,12 +58,13 @@ import userForm from "~/components/admin/userForm";
 import confirmDialog from "~/components/customCard/contextmenu/confirmDialog";
 
 export default {
+    props: ["searchResults"],
     components: { customCard, contextmenu, userForm, confirmDialog },
     async setup() {
         // fetch data middleware
-        definePageMeta({
-            middleware: ["fetch-user", "fetch-groups", "admin-entity"],
-        });
+        // definePageMeta({
+        //     middleware: ["fetch-user", "fetch-groups", "admin-entity"],
+        // });
         const authStore = useAuthStore();
         const adminStore = useAdminStore();
         const userFormStore = useUserFormStore();
@@ -102,15 +81,17 @@ export default {
     },
     mounted() {
         // select all rules
-        if (this.mode == "users")
-            this.tags = Array.from(
-                { length: this.rules.length },
-                (_, i) => i * 1
-            );
+        // if (this.mode == "users")
+        //     this.tags = Array.from(
+        //         { length: this.rules.length },
+        //         (_, i) => i * 1
+        //     );
     },
     data() {
         return {
-            mode: this.$route.query?.mode,
+            tab: null,
+            // mode: this.$route.query?.mode,
+            mode: "users",
             page: 1,
             pageCount: 2,
             itemsPerPage: 10,
@@ -132,46 +113,44 @@ export default {
             return this.group?.courses?.find((s) => s.id == courseId);
         },
         //
-        allEntitiesInfo() {
-            return this.users?.map((user) => {
-                const group = user.groups?.map((g) => g.title)?.join(", ");
-                const subgroup = user.subgroups
-                    ?.map((g) => g.title)
-                    ?.join(", ");
-                return { ...user, group, subgroup };
-            });
-        },
-        searchResults() {
-            let results;
-            if (this.mode == "users") {
-                let selectedRules = this.tags?.map((ti) => this.rules[ti]);
-                //search by rules
-                results = this.allEntitiesInfo.filter((user) =>
-                    user.rules.some(
-                        (rule) => selectedRules?.indexOf(rule.title) !== -1
-                    )
-                );
-                // search by name
-                results = results.filter((user) =>
-                    this.fullName(user).match(this.search)
-                );
-                // sort by name
-                results.sort((x, y) =>
-                    this.fullName(x).localeCompare(this.fullName(y))
-                );
-            } else if (this.mode == "centers")
-                results = this.organization.centers.filter((center) =>
-                    `${center.title} ${center.description}`.match(this.search)
-                );
-            return results || [];
-        },
-        rules() {
-            let rules = this.allEntitiesInfo
-                .map((u) => u.rules)
-                .flat()
-                .map((r) => r.title);
-            return Array.from(new Set(rules));
-        },
+        // allEntitiesInfo() {
+        //     return this.users?.map((user) => {
+        //         const group = user.groups?.map((g) => g.title)?.join(", ");
+        //         const subgroup = user.subgroups
+        //             ?.map((g) => g.title)
+        //             ?.join(", ");
+        //         return { ...user, group, subgroup };
+        //     });
+        // },
+        // searchResults() {
+        //     let results;
+        //     // if (this.mode == "users") {
+        //     let selectedRules = this.tags?.map((ti) => this.rules[ti]);
+        //     //search by rules
+        //     results = this.allEntitiesInfo.filter((user) =>
+        //         user.rules.some((rule) => "student" === rule.title)
+        //     );
+        //     // search by name
+        //     results = results.filter((user) =>
+        //         this.fullName(user).match(this.search)
+        //     );
+        //     // sort by name
+        //     results.sort((x, y) =>
+        //         this.fullName(x).localeCompare(this.fullName(y))
+        //     );
+        //     // } else if (this.mode == "centers")
+        //     //     results = this.organization.centers.filter((center) =>
+        //     //         `${center.title} ${center.description}`.match(this.search)
+        //     //     );
+        //     return results || [];
+        // },
+        // rules() {
+        //     let rules = this.allEntitiesInfo
+        //         .map((u) => u.rules)
+        //         .flat()
+        //         .map((r) => r.title);
+        //     return Array.from(new Set(rules));
+        // },
         // translate remove text
         confirmRemoveMsg() {
             const translate = this.$vuetify.locale.t(

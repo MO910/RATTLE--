@@ -10,6 +10,9 @@ export const useAdminStore = defineStore("admin", {
         organization_id: null,
         organization: null,
         users: [],
+        // tabs
+        activeTab: null,
+        activeSubTab: null,
     }),
     actions: { getUsers, getOrganization, createUser, updateUser },
 });
