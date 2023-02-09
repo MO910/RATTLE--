@@ -9,6 +9,7 @@ export default async function () {
                 id
                 organization_id
                 first_name
+                parent_name
                 email
                 phone
                 rules {

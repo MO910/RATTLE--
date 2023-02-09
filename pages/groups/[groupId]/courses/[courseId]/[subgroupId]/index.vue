@@ -42,24 +42,22 @@ v-container
 v-container(v-if='subgroup?.students')
     v-row.mt-10
         v-col.text-h4(cols='12') {{$vuetify.locale.t('$vuetify.students')}}
-    customCard(
+    custom-card(
         :each='subgroup.students'
         :evalTitle='fullName'
-        v-slot="slotProps"
-        lg=6
-        :link='false'
+        v-slot="{ student_id }"
+        :link='false' lg=6
     )
         advantage(
             v-for='plan in eachDay'
             :plan='plan'
-            :student_id='slotProps.student_id'
+            :student_id='student_id'
         )
 //- floating student plans
 v-container(v-else)
 </template>
 
 <script>
-import { ref } from "vue";
 // stores
 import { storeToRefs } from "pinia";
 import { useGroupsStore } from "~/store/groups";
@@ -77,13 +75,11 @@ export default {
     components: { advantage, datePicker, addPlanForm },
     async setup() {
         // fetch user
-        definePageMeta({ middleware: "fetch-user" });
+        definePageMeta({ middleware: ["fetch-user", "fetch-groups"] });
         // use stores data
         const groupsStore = useGroupsStore();
         const quranStore = useQuranStore();
         const datesStore = useDatesStore();
-        // fetch groups
-        await groupsStore.fetchGroups();
         return {
             groupsStore,
             ...storeToRefs(groupsStore),

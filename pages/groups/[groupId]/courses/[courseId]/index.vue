@@ -3,13 +3,13 @@
 v-container
     div(v-if='floatingStudentsExists')
         v-col.text-h3(cols='12') الطلاب
-        customCard(
+        custom-card(
             :each='course.floatingStudents'
             :evalTitle='fullName'
             :openContext="openStudentContext"
         )
             template(#contextmenu)
-                contextmenu(:ele='course.subgroups.id')
+                contextmenu
 //- Subgroups
 v-container
     div(v-if='course.subgroups')
@@ -20,14 +20,14 @@ v-container
             variant='outlined'
         )
             v-icon mdi-plus
-        customCard(
+        custom-card(
             :each='course.subgroups'
             chips='students'
             :evalChipsTitle='fullName'
             :openContext="openSubgroupContext"
         )
             template(#contextmenu)
-                contextmenu(:ele='course.subgroups.id')
+                contextmenu
 //- confirm message dialog
 subgroup-dialogs
 </template>
@@ -46,12 +46,10 @@ export default {
     components: { contextmenu, confirmDialog, subgroupDialogs },
     async setup() {
         // fetch user
-        definePageMeta({ middleware: "fetch-user" });
+        definePageMeta({ middleware: ["fetch-user", "fetch-groups"] });
         // use store
         const groupsStore = useGroupsStore();
         const customCardStore = useCustomCardStore();
-        // fetch groups
-        await groupsStore.fetchGroups();
         // return the store
         return {
             groupsStore,
@@ -80,27 +78,12 @@ export default {
     },
     methods: {
         // context
-        openContext(e, entity) {
-            this.contextMenu.entity = entity;
-            // reposition
-            $(".contextMenu").css({
-                top: e.clientY + "" + "px",
-                left: e.clientX + "px",
-            });
-            // open
-            this.contextMenu.show = false;
-            this.$nextTick(() => {
-                this.contextMenu.show = true;
-            });
-        },
-        openStudentContext(e, entity) {
+        openStudentContext() {
             this.contextMenu.type = "floating_student";
             this.contextMenu.subgroups = this.course.subgroups;
-            this.openContext(e, entity);
         },
-        openSubgroupContext(e, entity) {
+        openSubgroupContext() {
             this.contextMenu.type = "subgroup";
-            this.openContext(e, entity);
         },
         // get full name or title
         fullName(entity) {

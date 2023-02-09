@@ -1,6 +1,6 @@
 <template lang="pug">
 v-container
-    v-row.mb-8
+    v-row
         v-col.text-h3(cols='12') {{$vuetify.locale.t(`$vuetify.${mode}`)}}
         v-col(cols='12')
             //- add user
@@ -48,48 +48,57 @@ v-container
                 variant='solo'
             )
     //- users cards
-    customCard(
+    custom-card(
         :each='searchResults'
         :evalTitle='fullName'
         chips='rules'
         :evalChipsTitle='(rule) => rule.title'
-        translate
-        link=false
+        :openContext="openStudentContext"
+        :link='false' translate
+        :description='mode == "centers"'
     )
-    //- v-row
-        v-col(
-            v-for='entity in searchResults'
-            md=4 sm=6 xs=12
-        )
-            v-card(@click='openEditUserDialog(entity)')
-                v-card-title {{fullName(entity)}}
-                v-card-text(v-if='mode == "users"') 
-                    v-chip.ma-3(v-for='rule in entity.rules' :key='rule.id') {{rule.title}}
-                v-card-text(v-else-if='mode == "centers"') {{entity.description}}
-        v-col(v-if='!searchResults.length') there is no search results
+        template(#contextmenu)
+            contextmenu
 //- dialogs
-add-user-dialog(v-if='mode == "users"')
+user-form(v-if='mode === "users"')
+confirm-dialog(type='remove' :action='removeAction')
+    span(v-html='confirmRemoveMsg')
 </template>
 
 <script>
 // Stores
 import { storeToRefs } from "pinia";
 import { useAdminStore } from "~/store/admin";
+import { useGroupsStore } from "~/store/groups";
+import { useUserFormStore } from "~/store/admin/userForm";
 import { useAuthStore } from "~/store/auth";
+import { useCustomCardStore } from "~/store/customCard";
 // components
 import customCard from "~/components/customCard";
-import addUserDialog from "~/components/admin/addUserDialog";
+import contextmenu from "~/components/customCard/contextmenu";
+import userForm from "~/components/admin/userForm";
+import confirmDialog from "~/components/customCard/contextmenu/confirmDialog";
 
 export default {
-    components: { customCard, addUserDialog },
+    components: { customCard, contextmenu, userForm, confirmDialog },
     async setup() {
-        const authStore = useAuthStore();
-        const adminStore = useAdminStore();
         // fetch data middleware
         definePageMeta({
-            middleware: ["fetch-user", "admin-entity"],
+            middleware: ["fetch-user", "fetch-groups", "admin-entity"],
         });
-        return { ...storeToRefs(authStore), ...storeToRefs(adminStore) };
+        const authStore = useAuthStore();
+        const adminStore = useAdminStore();
+        const userFormStore = useUserFormStore();
+        const customCardStore = useCustomCardStore();
+        const groupsStore = useGroupsStore();
+        // return the store
+        return {
+            ...storeToRefs(authStore),
+            ...storeToRefs(adminStore),
+            ...storeToRefs(userFormStore),
+            ...storeToRefs(customCardStore),
+            ...storeToRefs(groupsStore),
+        };
     },
     mounted() {
         // select all rules
@@ -113,6 +122,16 @@ export default {
         };
     },
     computed: {
+        // eval params
+        group() {
+            const { groupId } = useRoute().params;
+            return this.groups?.find((g) => g.id == groupId);
+        },
+        course() {
+            const { courseId } = useRoute().params;
+            return this.group?.courses?.find((s) => s.id == courseId);
+        },
+        //
         allEntitiesInfo() {
             return this.users?.map((user) => {
                 const group = user.groups?.map((g) => g.title)?.join(", ");
@@ -153,11 +172,27 @@ export default {
                 .map((r) => r.title);
             return Array.from(new Set(rules));
         },
+        // translate remove text
+        confirmRemoveMsg() {
+            const translate = this.$vuetify.locale.t(
+                "$vuetify.confirmRemoveMsg"
+            );
+            const text = this.fullName(this.contextMenu.entity);
+            const classes = "font-weight-bold";
+            return translate.replace(
+                "###",
+                `<span class='${classes}'> ${text}</span>`
+            );
+        },
     },
     methods: {
+        // context
+        openStudentContext() {
+            this.contextMenu.type = "user";
+        },
         // open dialogs actions
         openAddUserDialog() {
-            this.addUserDialog = true;
+            this.userForm.dialog = true;
             // this.updateModel(["addUserDialog", true]);
         },
         openEditUserDialog(user) {
@@ -169,6 +204,18 @@ export default {
         },
         openImport() {
             // this.updateModel(["importExcel.dialog", true]);
+        },
+        async removeAction() {
+            this.confirmDialogLoading = true;
+            // do action
+            // await this.groupsStore.removeSubgroup({
+            //     id: this.contextMenu.entity.id,
+            //     course_id,
+            // });
+
+            // stop loading and close dialog
+            // this.confirmDialogLoading = false;
+            // this.contextMenu.dialog.show = false;
         },
         // get full name or title
         fullName(entity) {

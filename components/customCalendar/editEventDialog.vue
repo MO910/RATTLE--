@@ -21,7 +21,7 @@ v-dialog(
                             :items='subgroup.plans'
                             itemTitle='title'
                             itemValue='id'
-                            enableSearch=false
+                            :enableSearch='false'
                         )
                     //- select date
                     v-col.d-flex.justify-start.align-center.text-h6(cols='6')

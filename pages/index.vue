@@ -1,6 +1,6 @@
 <template lang="pug">
 v-container
-    customCard(:each='user.rules' to='title' :evalRouter='ruleRouter' translate)
+    custom-card(:each='user.rules' to='title' :evalRouter='ruleRouter' translate)
 </template>
 
 <script>
@@ -20,13 +20,11 @@ export default {
             switch (rule.toLowerCase()) {
                 case "teacher":
                     return "groups";
-                    break;
-                case "owner":
+                case "owner_organization":
+                case "owner_center":
                     return "admin";
-                    break;
                 case "parent":
                     return "children";
-                    break;
                 default:
                     return "/";
             }

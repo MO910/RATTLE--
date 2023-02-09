@@ -32,7 +32,7 @@ export default {
     components: { editEventDialog },
     async setup() {
         // fetch user
-        definePageMeta({ middleware: "fetch-user" });
+        definePageMeta({ middleware: ["fetch-user", "fetch-groups"] });
         // use groups data
         const groupsStore = useGroupsStore();
         const quranStore = useQuranStore();
@@ -40,8 +40,6 @@ export default {
         const selectedVarsStore = useSelectedVarsStore();
         const inputNumberStore = useInputNumberStore();
         const datesStore = useDatesStore();
-        // fetch groups
-        await groupsStore.fetchGroups();
         // return the store
         return {
             ...storeToRefs(groupsStore),

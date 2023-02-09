@@ -1,5 +1,5 @@
 <template lang="pug">
-v-row.pt-10
+v-row.pt-5
     v-col.mb-5.col-xs-12(
         :lg='lg' md='6' sm='12'
         v-for='item in each'
@@ -8,15 +8,14 @@ v-row.pt-10
             v-card.py-7.px-5(
                 :id='item.id'
                 :v-ripple='link'
-                @contextmenu.prevent='openContext($event, item)'
+                @contextmenu.prevent='applyOpenContext($event, item)'
             )
                 v-card-title.text-h {{applyEvalTitle(item)}}
                 v-card-text(v-if='chips')
                     v-chip.ma-2(
                         v-for='chip in evalChips(item)'
                     ) {{evalChipsTitle(chip)}}
-                //- v-card-text
-                    slot(:student_id='item.id')
+                v-card-text(v-if='description') {{item.description}}
                 //- contextmenu
 slot(name='contextmenu')
 </template>
@@ -29,6 +28,9 @@ import { useCustomCardStore } from "~/store/customCard";
 import linkOr from "./linkOr";
 
 export default {
+    mounted() {
+        console.log("link", this.link);
+    },
     props: {
         // loop array
         each: Array,
@@ -45,6 +47,7 @@ export default {
         lg: { type: Number, default: 4 },
         link: { default: true },
         openContext: Function,
+        description: { default: false },
     },
     setup() {
         // use groups data
@@ -54,6 +57,21 @@ export default {
     },
     components: { linkOr },
     methods: {
+        applyOpenContext(e, entity) {
+            this.contextMenu.entity = entity;
+            // reposition
+            $(".contextMenu").css({
+                top: e.pageY + "px",
+                left: e.pageX + "px",
+            });
+            // open
+            this.contextMenu.show = false;
+            this.$nextTick(() => {
+                this.contextMenu.show = true;
+            });
+            // apply
+            this.openContext();
+        },
         // openContext(e) {
         //     // reposition
         //     $(".subgroupContextMenu").css({

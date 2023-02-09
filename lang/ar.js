@@ -106,7 +106,7 @@ export default {
     //
     drag2Arrow: "اسحب باتجاه السهم",
     // remove plan messages
-    confirmRemoveMsg: "هل انت متأكد من حذفك لخطة ###",
+    confirmRemoveMsg: "هل انت متأكد من حذفك لـ ###",
     someCustomsRemainingMsg:
         "لم يتم حذف كل الخطة لان هناك بعض التقدم تم حفظه لبعض المستخدمين تابع لهذة الخطة مثل:",
     confirmForceRemoveMsg:

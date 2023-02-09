@@ -1,6 +1,6 @@
 <template lang="pug">
 v-container
-    customCard(:each='courses')
+    custom-card(:each='courses')
 </template>
 
 <script>
@@ -10,11 +10,9 @@ import { storeToRefs } from "pinia";
 export default {
     async setup() {
         // fetch user
-        definePageMeta({ middleware: "fetch-user" });
+        definePageMeta({ middleware: ["fetch-user", "fetch-groups"] });
         // use groups data
         const groupsStore = useGroupsStore();
-        // fetch groups
-        await groupsStore.fetchGroups();
         // return the store
         return { ...storeToRefs(groupsStore) };
     },

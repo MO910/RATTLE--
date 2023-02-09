@@ -89,7 +89,7 @@ export default {
     //
     drag2Arrow: "Drag toward the arrows",
     // remove plan messages
-    confirmRemoveMsg: "are you sure you want to remove ### plan",
+    confirmRemoveMsg: "are you sure you want to remove",
     someCustomsRemainingMsg:
         "the plan was removed partially because there is some progress been made by other users like:",
     confirmForceRemoveMsg: "do you want to force delete ### plan?",

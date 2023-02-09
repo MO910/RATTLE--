@@ -8,7 +8,7 @@ v-menu(
     v-list(width='200')
         v-list-item(
             v-for='item in contextMenuItems'
-            @click='openDialog(item.title)'
+            @click='openDialog(item)'
             :class='`text-${item.color}`'
         )
             template(v-slot:prepend)
@@ -24,21 +24,21 @@ import { useCustomCardStore } from "~/store/customCard";
 import confirmDialog from "./confirmDialog";
 
 export default {
-    props: ["ele"],
     setup() {
-        // use groups data
         const customCardStore = useCustomCardStore();
         // return the store
         return { ...storeToRefs(customCardStore) };
     },
     mounted() {
-        console.log(this.ele);
+        // console.log(this.ele);
     },
     components: { confirmDialog },
     methods: {
-        openDialog(type) {
+        openDialog({ title, openAction }) {
             this.contextMenu.dialog.show = true;
-            this.contextMenu.dialog.type = type;
+            this.contextMenu.dialog.type = title;
+            // apply open action
+            if (openAction) openAction();
         },
         updateModel(val) {
             this.contextMenu.show = val;
