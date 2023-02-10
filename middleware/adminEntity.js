@@ -7,6 +7,6 @@ export default defineNuxtRouteMiddleware(async ({ query }) => {
     // console.log({ to, t, y });
     const mode = query.mode;
     // do actions
-    await adminStore.getOrganization();
-    if (mode === "users") await adminStore.getUsers();
+    // await adminStore.getOrganization();
+    if (mode === "users") await adminStore.getGroupsAsAdmin();
 });

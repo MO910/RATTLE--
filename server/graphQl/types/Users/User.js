@@ -8,6 +8,8 @@ const {
 } = require("graphql");
 const userBaseFields = require("../shared/userBaseFields"),
     getGroupFromStudentId = require("../shared/getGroupFromStudentId"),
+    groupsAsAdmin = require("../shared/groupsAsAdmin"),
+    groupsAsTeacher = require("../shared/groupsAsTeacher"),
     // Groups
     Group_type = require("../Groups/Group"),
     Groups_schema = require("../../../models/Groups/Groups"),
@@ -20,45 +22,24 @@ const userBaseFields = require("../shared/userBaseFields"),
     //
     Rule_type = require("../Users/Rule"),
     rulesConverter = require("../shared/rulesConverter");
+// prepare group as admin query
+const groupsAsAdminQuery = groupsAsAdmin(true);
+const groupsAsTeacherQuery = groupsAsTeacher(true);
 // User Type
 const User_type = new GraphQLObjectType({
     name: `User`,
     fields: () => ({
         ...userBaseFields,
         // admin
-        groupsAsAdmin: {
-            type: new GraphQLList(Group_type),
-            async resolve({ id: owner_id, rule_ids }) {
-                let rules = await rulesConverter({ rule_ids });
-                rules = rules.map((rule) => rule.title);
-                // organization admin
-                if (rules.indexOf("OWNER_organization") !== -1) {
-                    let organizations = await Organizations_schema.find({
-                            owner_id,
-                        }),
-                        $in = organizations.map(
-                            (organization) => organization.id
-                        );
-                    var centers = await Centers_schema.find({
-                        organization_id: { $in },
-                    });
-                }
-                // center admin
-                else if (rules.indexOf("OWNER_center") !== -1) {
-                    var centers = await Centers_schema.find({ owner_id });
-                } else return [];
-                // return groups
-                let $in = centers.map((center) => center.id);
-                return await Groups_schema.find({ center_id: { $in } });
-            },
-        },
+        groupsAsAdmin: groupsAsAdminQuery,
         // teachers
-        groupsAsTeacher: {
-            type: new GraphQLList(Group_type),
-            async resolve({ id }) {
-                return await Groups_schema.find({ teacher_id: id });
-            },
-        },
+        groupsAsTeacher: groupsAsTeacherQuery,
+        // groupsAsTeacher: {
+        //     type: new GraphQLList(Group_type),
+        //     async resolve({ id }) {
+        //         return await Groups_schema.find({ teacher_id: id });
+        //     },
+        // },
         // students or parents
         groupsAsParticipant: {
             type: new GraphQLList(Group_type),

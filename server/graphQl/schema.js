@@ -5,7 +5,9 @@ const {
     GraphQLString,
     GraphQLSchema,
 } = require("graphql");
-const // user
+const groupsAsAdmin = require("./types/shared/groupsAsAdmin"),
+    groupsAsTeacher = require("./types/shared/groupsAsTeacher"),
+    // user
     User_type = require("./types/Users/User"),
     Users_schema = require("../models/Users/Users"),
     Rules_schema = require("../models/Users/Rules"),
@@ -29,7 +31,7 @@ const // user
     Centers_schema = require("../models/Centers");
 
 // mutations
-const // Goals
+const // Plans
     addPlan = require("./mutations/Plans/addPlan"),
     removePlan = require("./mutations/Plans/removePlan"),
     updatePlanHistory = require("./mutations/Plans/updateHistory"),
@@ -48,6 +50,9 @@ const // Goals
     transportToSubgroup = require("./mutations/Groups/transportToSubgroup"),
     // attendance
     updateAttendance = require("./mutations/attendance/updateAttendance");
+// prepare group as admin query
+const groupsAsAdminQuery = groupsAsAdmin(false);
+const groupsAsTeacherQuery = groupsAsTeacher(false);
 // Queries
 const query = new GraphQLObjectType({
         name: "RootQueryType",
@@ -90,6 +95,9 @@ const query = new GraphQLObjectType({
                     return students;
                 },
             },
+            // groups
+            groupsAsAdmin: groupsAsAdminQuery,
+            groupsAsTeacher: groupsAsTeacherQuery,
             groups: {
                 type: new GraphQLList(Group_type),
                 args: { userId: { type: GraphQLID } },

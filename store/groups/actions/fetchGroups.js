@@ -4,7 +4,7 @@ export default async function () {
     const authStore = useAuthStore();
     const query = gql`
         query {
-            groups(userId: "${authStore.userId}") {
+            groupsAsTeacher(id: "${authStore.userId}") {
                 id
                 title
                 working_days
@@ -86,10 +86,10 @@ export default async function () {
     try {
         const {
             data: {
-                value: { groups },
+                value: { groupsAsTeacher },
             },
         } = await useAsyncQuery(query);
-        this.groups = groups;
+        this.groups = groupsAsTeacher;
     } catch (err) {
         console.log(err);
     }

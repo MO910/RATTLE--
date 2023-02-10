@@ -7,7 +7,7 @@
 v-container
     v-row
         v-col.text-h3 {{$vuetify.locale.t("$vuetify.groups")}}
-    custom-card(:each='groups')
+    custom-card(:each='groupsAsAdmin')
     //- v-window(v-model="activeTab")
         v-window-item(:value="0")
             v-container
@@ -37,7 +37,7 @@ export default {
     async setup() {
         // fetch data middleware
         definePageMeta({
-            middleware: ["fetch-user", "fetch-groups", "admin-entity"],
+            middleware: ["fetch-user", "admin-entity"],
         });
         const authStore = useAuthStore();
         const adminStore = useAdminStore();

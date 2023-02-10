@@ -35,7 +35,8 @@ v-container
             v-tab(v-for='tab, i in tabs' :value="i") {{tab.title}}
         v-window(v-model="activeSubTab")
             v-window-item(v-for='i in [0, 1]' :value="i")
-                users(:searchResults='searchResults')
+                users(v-if='searchResults.length' :searchResults='searchResults')
+                span(v-else) there is no users here!!
             v-window-item(:value="2")
                 custom-card(:each='group.courses')
 //- dialogs
@@ -90,7 +91,7 @@ export default {
         // eval params
         group() {
             const { groupId } = useRoute().params;
-            return this.groups?.filter((g) => g.id == groupId)[0];
+            return this.groupsAsAdmin?.filter((g) => g.id == groupId)[0];
         },
         // course() {
         //     const { courseId } = useRoute().params;
@@ -140,19 +141,28 @@ export default {
             ];
         },
         //
-        allEntitiesInfo() {
-            return this.users?.map((user) => {
-                // const group = user.groups?.map((g) => g.title)?.join(", ");
-                // const subgroup = user.subgroups
-                //     ?.map((g) => g.title)
-                //     ?.join(", ");
-                return { ...user };
-            });
+        allUsers() {
+            return this.groupsAsAdmin
+                ?.reduce((acc, group) => {
+                    // push floating students
+                    const floatingStudents = group.courses.map(
+                        (course) => course.floatingStudents
+                    );
+                    if (floatingStudents) acc.push(floatingStudents.flat());
+                    // push subgroups students
+                    const subgroupStudents = group.courses.map((course) =>
+                        course.subgroups
+                            .map((subgroup) => subgroup.students)
+                            .flat()
+                    );
+                    if (subgroupStudents) acc.push(subgroupStudents.flat());
+                    return acc;
+                }, [])
+                .flat();
         },
         searchResults() {
-            let results;
             //search by rules
-            results = this.users.filter((user) =>
+            let results = this.allUsers.filter((user) =>
                 user.rules.some(
                     (rule) => this.tabs[this.activeSubTab].value === rule.title
                 )

@@ -8,12 +8,12 @@ v-dialog(
     v-card
         v-card-title.text-h4.text-capitalize
             span {{$vuetify.locale.t("$vuetify.addUser")}}
-            v-btn delete
+            //- v-btn(:click='userFormRef.validate()') delete
         v-card-text
             v-container
                 v-form(v-model="userForm.textFieldsValid" ref="userFormRef")
                     v-row
-                        v-col(cols='12')
+                        //- v-col(cols='12')
                             v-chip-group(
                                 v-model='userForm.selectedRules'
                                 active-class='text-blue' column multiple
@@ -41,7 +41,6 @@ v-dialog(
                             v-text-field(
                                 v-model="userForm.email"
                                 :variant='variant'
-                                :rules="[requiredRole]"
                                 name="email"
                                 autocomplete="email"
                                 :label="$vuetify.locale.t('$vuetify.email')"
@@ -54,25 +53,25 @@ v-dialog(
                                 autocomplete="phone"
                                 :label="$vuetify.locale.t('$vuetify.phone')"
                             )
-                        v-col(cols='6')
-                            v-select(
-                                v-model="userForm.selectedCenterId"
-                                :variant='variant'
-                                :items="organization.centers"
-                                item-text='title'
-                                item-value='id'
-                                label="center"
-                            )
-                        v-col(cols='6')
-                            v-select(
-                                v-model="userForm.selectedGroupId"
-                                :variant='variant'
-                                :disabled='!selectedCenterGroups'
-                                :items="selectedCenterGroups"
-                                item-text='title'
-                                item-value='id'
-                                label="group"
-                            )
+                        //- v-col(cols='6')
+                        //-     v-select(
+                        //-         v-model="userForm.selectedCenterId"
+                        //-         :variant='variant'
+                        //-         :items="organization.centers"
+                        //-         item-text='title'
+                        //-         item-value='id'
+                        //-         label="center"
+                        //-     )
+                        //- v-col(cols='6')
+                        //-     v-select(
+                        //-         v-model="userForm.selectedGroupId"
+                        //-         :variant='variant'
+                        //-         :disabled='!selectedCenterGroups'
+                        //-         :items="selectedCenterGroups"
+                        //-         item-text='title'
+                        //-         item-value='id'
+                        //-         label="group"
+                        //-     )
                 v-card-actions
                     v-spacer
                     v-btn(color='red darken-1' text @click='close(false)')
