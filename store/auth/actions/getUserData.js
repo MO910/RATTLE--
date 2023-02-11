@@ -27,6 +27,32 @@ export default async function () {
                         }
                     }
                 }
+                groupsAsAdmin {
+                    id
+                    title
+                    working_days
+                    courses {
+                        id
+                        title
+                        subgroups{
+                            id
+                            title
+                        }
+                    }
+                }
+                groupsAsParticipant {
+                    id
+                    title
+                    working_days
+                    courses {
+                        id
+                        title
+                        subgroups{
+                            id
+                            title
+                        }
+                    }
+                }
                 subgroups {
                     id
                     title

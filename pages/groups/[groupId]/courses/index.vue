@@ -10,7 +10,7 @@ import { storeToRefs } from "pinia";
 export default {
     async setup() {
         // fetch user
-        definePageMeta({ middleware: ["fetch-user", "fetch-groups"] });
+        definePageMeta({ middleware: ["fetch-user"] });
         // use groups data
         const groupsStore = useGroupsStore();
         // return the store

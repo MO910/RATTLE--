@@ -5,5 +5,5 @@ export default defineNuxtRouteMiddleware(async () => {
     // do not fetch if already fetched
     if (groupsStore.groups) return;
     // fetch
-    await groupsStore.fetchGroups();
+    // await groupsStore.fetchGroups();
 });

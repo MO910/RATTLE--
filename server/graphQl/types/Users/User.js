@@ -34,12 +34,6 @@ const User_type = new GraphQLObjectType({
         groupsAsAdmin: groupsAsAdminQuery,
         // teachers
         groupsAsTeacher: groupsAsTeacherQuery,
-        // groupsAsTeacher: {
-        //     type: new GraphQLList(Group_type),
-        //     async resolve({ id }) {
-        //         return await Groups_schema.find({ teacher_id: id });
-        //     },
-        // },
         // students or parents
         groupsAsParticipant: {
             type: new GraphQLList(Group_type),

@@ -1,6 +1,6 @@
 import { useAuthStore } from "~/store/auth";
 
-export default defineNuxtRouteMiddleware(async (to) => {
+export default defineNuxtRouteMiddleware(async () => {
     const authStore = useAuthStore();
     // do not fetch if already fetched
     if (authStore.user) return;

@@ -4,17 +4,20 @@ v-container
 </template>
 
 <script>
-import { useGroupsStore } from "~/store/groups";
 import { storeToRefs } from "pinia";
+import { useGroupsStore } from "~/store/groups";
+import { useAuthStore } from "~/store/auth";
 
 export default {
     async setup() {
         // fetch user
-        definePageMeta({ middleware: ["fetch-user", "fetch-groups"] });
+        definePageMeta({ middleware: ["fetch-user"] });
         // use groups data
         const groupsStore = useGroupsStore();
+        const authStore = useAuthStore();
         // return the store
-        return { ...storeToRefs(groupsStore) };
+        return { ...storeToRefs(authStore), ...storeToRefs(groupsStore) };
     },
+    computed: {},
 };
 </script>

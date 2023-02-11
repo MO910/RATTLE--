@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { useAuthStore } from "~/store/auth";
 import fetchGroups from "./actions/fetchGroups";
 import getSubgroupHistoryAtDate from "./actions/getSubgroupHistoryAtDate";
 import updatePlanHistory from "./actions/updatePlanHistory";
@@ -12,7 +13,7 @@ import updateAttendance from "./actions/attendance/updateAttendance";
 
 export const useGroupsStore = defineStore("groups", {
     state: () => ({
-        groups: null,
+        // groups: null,
         attendanceHistory: [],
         addSubgroupDialog: false,
     }),
@@ -27,5 +28,22 @@ export const useGroupsStore = defineStore("groups", {
         // attendance
         groupAttendanceAtDate,
         updateAttendance,
+    },
+    getters: {
+        groups() {
+            let authStore = useAuthStore(),
+                groups = [];
+            if (!authStore.user) return;
+            groups.push(authStore.user.groupsAsAdmin);
+            groups.push(authStore.user.groupsAsTeacher);
+            groups.push(authStore.user.groupsAsParticipant);
+            // filter repeated ones
+            return groups
+                .flat()
+                .filter(
+                    (group, i, arr) =>
+                        arr.findIndex((v2) => v2.id === group.id) === i
+                );
+        },
     },
 });

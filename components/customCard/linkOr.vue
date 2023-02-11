@@ -6,9 +6,6 @@ slot(v-else)
 <script>
 export default {
     props: ["link", "to"],
-    mounted() {
-        console.log("link", this.link);
-    },
 };
 </script>
 
