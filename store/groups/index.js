@@ -13,6 +13,9 @@ import updateAttendance from "./actions/attendance/updateAttendance";
 
 export const useGroupsStore = defineStore("groups", {
     state: () => ({
+        groupsAsAdmin: [],
+        groupsAsTeacher: [],
+        groupsAsParticipant: [],
         // groups: null,
         attendanceHistory: [],
         addSubgroupDialog: false,
@@ -34,9 +37,9 @@ export const useGroupsStore = defineStore("groups", {
             let authStore = useAuthStore(),
                 groups = [];
             if (!authStore.user) return;
-            groups.push(authStore.user.groupsAsAdmin);
-            groups.push(authStore.user.groupsAsTeacher);
-            groups.push(authStore.user.groupsAsParticipant);
+            groups.push(this.groupsAsAdmin);
+            groups.push(this.groupsAsTeacher);
+            groups.push(this.groupsAsParticipant);
             // filter repeated ones
             return groups
                 .flat()

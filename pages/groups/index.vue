@@ -11,7 +11,7 @@ import { useAuthStore } from "~/store/auth";
 export default {
     async setup() {
         // fetch user
-        definePageMeta({ middleware: ["fetch-user"] });
+        definePageMeta({ middleware: ["fetch-user", "fetch-groups"] });
         // use groups data
         const groupsStore = useGroupsStore();
         const authStore = useAuthStore();

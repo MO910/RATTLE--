@@ -4,10 +4,13 @@ import Optimistic from "~/store/functions/Optimistic";
 import stringify from "~/store/functions/stringify";
 // Function
 export default async function (args) {
-    const nodePath = args.nodePath,
+    console.log({ args });
+    const tree = args.tree,
+        targetArray = args.targetArray,
         rules = [...args.rules];
     args.rules = args.rules.map((rule) => rule.title);
-    delete args.nodePath;
+    delete args.tree;
+    delete args.targetArray;
     // generate a random password if there is null passed
     args.password = args.password || randomPassword();
     //  stringify
@@ -24,8 +27,9 @@ export default async function (args) {
         request,
         dataKey: "createUser",
     });
-    optimistic.add({
+    await optimistic.add({
         requestData: { ...args, rules },
-        nodePath,
+        tree,
+        targetArray,
     });
 }

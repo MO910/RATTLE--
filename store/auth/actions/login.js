@@ -5,7 +5,7 @@ export default async function () {
     try {
         const res = await useFetch(`/api/auth/login`, {
             body: {
-                username: this.email,
+                username: this.id_number,
                 password: this.password,
             },
             method: "post",

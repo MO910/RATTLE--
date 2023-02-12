@@ -7,6 +7,7 @@ const {
 } = require("graphql");
 const groupsAsAdmin = require("./types/shared/groupsAsAdmin"),
     groupsAsTeacher = require("./types/shared/groupsAsTeacher"),
+    groupsAsParticipant = require("./types/shared/groupsAsParticipant"),
     // user
     User_type = require("./types/Users/User"),
     Users_schema = require("../models/Users/Users"),
@@ -53,6 +54,7 @@ const // Plans
 // prepare group as admin query
 const groupsAsAdminQuery = groupsAsAdmin(false);
 const groupsAsTeacherQuery = groupsAsTeacher(false);
+const groupsAsParticipantQuery = groupsAsParticipant(false);
 // Queries
 const query = new GraphQLObjectType({
         name: "RootQueryType",
@@ -98,13 +100,14 @@ const query = new GraphQLObjectType({
             // groups
             groupsAsAdmin: groupsAsAdminQuery,
             groupsAsTeacher: groupsAsTeacherQuery,
-            groups: {
-                type: new GraphQLList(Group_type),
-                args: { userId: { type: GraphQLID } },
-                async resolve(_, { userId }) {
-                    return await Groups_schema.find({ teacher_id: userId });
-                },
-            },
+            groupsAsParticipant: groupsAsParticipantQuery,
+            // groups: {
+            //     type: new GraphQLList(Group_type),
+            //     args: { userId: { type: GraphQLID } },
+            //     async resolve(_, { userId }) {
+            //         return await Groups_schema.find({ teacher_id: userId });
+            //     },
+            // },
             organization: {
                 type: Organization_type,
                 args: { userId: { type: GraphQLID } },

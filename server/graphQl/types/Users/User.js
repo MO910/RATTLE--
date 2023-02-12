@@ -10,6 +10,7 @@ const userBaseFields = require("../shared/userBaseFields"),
     getGroupFromStudentId = require("../shared/getGroupFromStudentId"),
     groupsAsAdmin = require("../shared/groupsAsAdmin"),
     groupsAsTeacher = require("../shared/groupsAsTeacher"),
+    groupsAsParticipant = require("../shared/groupsAsParticipant"),
     // Groups
     Group_type = require("../Groups/Group"),
     Groups_schema = require("../../../models/Groups/Groups"),
@@ -25,6 +26,7 @@ const userBaseFields = require("../shared/userBaseFields"),
 // prepare group as admin query
 const groupsAsAdminQuery = groupsAsAdmin(true);
 const groupsAsTeacherQuery = groupsAsTeacher(true);
+const groupsAsParticipantQuery = groupsAsParticipant(true);
 // User Type
 const User_type = new GraphQLObjectType({
     name: `User`,
@@ -35,12 +37,8 @@ const User_type = new GraphQLObjectType({
         // teachers
         groupsAsTeacher: groupsAsTeacherQuery,
         // students or parents
-        groupsAsParticipant: {
-            type: new GraphQLList(Group_type),
-            async resolve({ group_ids }, i) {
-                return await Groups_schema.find({ _id: { $in: group_ids } });
-            },
-        },
+        groupsAsParticipant: groupsAsParticipantQuery,
+        //
         subgroups: {
             type: new GraphQLList(Subgroup_type),
             async resolve({ id }) {

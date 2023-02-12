@@ -115,8 +115,11 @@ export default {
     noPlansMsg: "لا يوجد خطط",
     today: "اليوم",
     plan: "الخطة",
+    // admin
     groups: "المجموعات",
     competitions: "المسابقات",
     about: "حول",
     parents: "اولياء الامور",
+    male: "ذكر",
+    female: "انثى",
 };

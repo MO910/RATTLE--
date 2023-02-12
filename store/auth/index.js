@@ -15,10 +15,19 @@ export const useAuthStore = defineStore("auth", {
         loading: false,
         showPassword: false,
 
-        email: "",
+        id_number: "",
         password: "",
 
         authorizationForCurrentGroup: [],
+        // all authes to check
+        groupsTree: [
+            // is admin
+            ["groupsAsAdmin", "admin"],
+            // is teacher
+            ["groupsAsTeacher", "teacher"],
+            // is participant
+            ["groupsAsParticipant", "participant"],
+        ],
     }),
     actions: {
         // text field rules

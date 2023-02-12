@@ -13,8 +13,23 @@ export const useUserFormStore = defineStore("userForm", {
             phone: "",
             selectedCenterId: null,
             selectedGroupId: null,
+            genderSelected: null,
             rules: ["student", "parent", "teacher", "admin"],
             selectedRules: [],
         },
     }),
+    // getters: {
+    //     genders() {
+    //         return [
+    //             {
+    //                 title: this.$vuetify.locale.t("$vuetify.male"),
+    //                 value: "male",
+    //             },
+    //             {
+    //                 title: this.$vuetify.locale.t("$vuetify.female"),
+    //                 value: "female",
+    //             },
+    //         ];
+    //     },
+    // },
 });

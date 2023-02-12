@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
     // login
     let auth = (
         await usersSchema.find({
-            username: body.username,
+            id_number: body.username,
             password: body.password,
         })
     )[0];

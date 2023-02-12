@@ -19,7 +19,9 @@ export default {
     components: { manageGroupBtn },
     async setup() {
         // fetch user
-        definePageMeta({ middleware: ["fetch-user", "has-auth"] });
+        definePageMeta({
+            middleware: ["fetch-user", "fetch-groups", "has-auth"],
+        });
         // use groups data
         const authStore = useAuthStore();
         const groupsStore = useGroupsStore();

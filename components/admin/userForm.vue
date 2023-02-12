@@ -12,14 +12,29 @@ v-dialog(
         v-card-text
             v-container
                 v-form(v-model="userForm.textFieldsValid" ref="userFormRef")
+                    //- select gender
+                    v-item-group(mandatory v-model='userForm.genderSelected')
+                        v-row
+                            v-col(
+                                v-for='gender in genders'
+                                cols=12 md=6
+                            )
+                                v-item(v-slot='{isSelected, toggle}')
+                                    v-card(
+                                        :color="isSelected ? 'blue' : 'grey-darken-3'"
+                                        class="d-flex align-center"
+                                        height="125" flat
+                                        @click="toggle" 
+                                    )
+                                        v-card-title.text-h3.flex-grow-1.text-center.text-capitalize {{ gender.title }}
                     v-row
-                        //- v-col(cols='12')
+                        v-col(cols='12')
                             v-chip-group(
                                 v-model='userForm.selectedRules'
                                 active-class='text-blue' column multiple
                             )
                                 v-chip(v-for='rule in userForm.rules' filter) {{ rule }}
-                        v-col(cols='6')
+                        v-col(cols=12)
                             v-text-field(
                                 v-model='userForm.first_name'
                                 :variant='variant'
@@ -28,7 +43,7 @@ v-dialog(
                                 autocomplete="first name"
                                 :label="$vuetify.locale.t('$vuetify.first_name')"
                             )
-                        v-col(cols='6')
+                        v-col(cols=12)
                             v-text-field(
                                 v-model='userForm.parent_name'
                                 :variant='variant'
@@ -37,7 +52,7 @@ v-dialog(
                                 autocomplete="parent name"
                                 :label="$vuetify.locale.t('$vuetify.parent_name')"
                             )
-                        v-col(cols='12')
+                        v-col(cols=12)
                             v-text-field(
                                 v-model="userForm.email"
                                 :variant='variant'
@@ -45,7 +60,7 @@ v-dialog(
                                 autocomplete="email"
                                 :label="$vuetify.locale.t('$vuetify.email')"
                             )
-                        v-col(cols='12')
+                        v-col(cols=12)
                             v-text-field(
                                 v-model='userForm.phone'
                                 :variant='variant'
@@ -79,13 +94,14 @@ v-dialog(
                     v-btn(
                         @click='apply'
                         color='blue darken-1' text
-                        :loading='loading'
+                        :loading='userForm.loading'
                         :disabled='!valid'
                     ) {{$vuetify.locale.t(`$vuetify.${userForm.edit ? 'edit' : 'add'}`)}}
 </template>
 <script>
 // Stores
 import { storeToRefs } from "pinia";
+import { useAuthStore } from "~/store/auth";
 import { useAdminStore } from "~/store/admin";
 import { useGroupsStore } from "~/store/groups";
 import { useUserFormStore } from "~/store/admin/userForm";
@@ -94,6 +110,7 @@ import { useCustomCardStore } from "~/store/customCard";
 export default {
     props: ["newUserRule", "nodePath"],
     setup() {
+        const authStore = useAuthStore();
         const adminStore = useAdminStore();
         const groupsStore = useGroupsStore();
         const userFormStore = useUserFormStore();
@@ -102,6 +119,7 @@ export default {
             adminStore,
             userFormStore,
             customCardStore,
+            ...storeToRefs(authStore),
             ...storeToRefs(adminStore),
             ...storeToRefs(customCardStore),
             ...storeToRefs(userFormStore),
@@ -111,10 +129,15 @@ export default {
     data: () => ({
         requiredRole: (v) => !!v || "this field is required",
         variant: "outlined",
-        form: null,
+        selection: null,
     }),
     mounted() {
-        // console.log({ form: this.form });
+        // const { groupId } = useRoute().params;
+        // for (let auth of this.groupsTree) {
+        //     if (this.user[auth[0]].find(checkGroup))
+        //         authStore.authorizationForCurrentGroup.push(auth[1]);
+        // }
+        // this.user.groupsAsAdmin;
     },
     computed: {
         selectedCenterGroups() {
@@ -123,10 +146,20 @@ export default {
             )?.[0]?.groups;
         },
         valid() {
-            return (
-                this.userForm.textFieldsValid &&
-                this.userForm.selectedRules.length
-            );
+            return this.userForm.textFieldsValid;
+            // this.userForm.selectedRules.length
+        },
+        genders() {
+            return [
+                {
+                    title: this.$vuetify.locale.t("$vuetify.male"),
+                    value: "male",
+                },
+                {
+                    title: this.$vuetify.locale.t("$vuetify.female"),
+                    value: "female",
+                },
+            ];
         },
     },
     methods: {
@@ -146,14 +179,15 @@ export default {
         },
         async apply() {
             this.userForm.loading = true;
-            if (!this.valid) return;
+            // console.log(this.valid);
+            // if (!this.valid) return;
             // prepare data
             let rules = this.userForm.selectedRules?.map(
                     (ti) => this.userForm.rules[ti]
                 ),
                 args = {
-                    organization_id: this.organization.id,
-                    group_id: this.userForm.selectedGroupId,
+                    // organization_id: this.organization.id,
+                    // group_id: this.userForm.selectedGroupId,
                     email: this.userForm.email,
                     first_name: this.userForm.first_name,
                     parent_name: this.userForm.parent_name,
@@ -161,8 +195,18 @@ export default {
                     rules: rules.map((title) => ({
                         title,
                     })),
-                    nodePath: "users",
+                    // tree: ["user"],
+                    targetArray: "courses[0].floatingStudents",
                 };
+            // prepare the tree
+            let trees = [];
+            for (let auth of this.authorizationForCurrentGroup) {
+                let newTree = ["user", null];
+                for (let groupTypes of this.groupsTree)
+                    if (auth === groupTypes[1]) newTree[1] = groupTypes[0];
+                trees.push(newTree);
+            }
+            args.tree = trees[0];
             // do action
             if (this.userForm.edit) {
                 await this.adminStore.updateUser(args);

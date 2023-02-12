@@ -4,11 +4,11 @@ v-form(v-model="valid")
         v-row
             v-col(cols="12" sm="6")
                 v-text-field(
-                    v-model="email"
+                    v-model="id_number"
                     :rules="[authStore.requiredRule]"
-                    name="email"
-                    autocomplete="email"
-                    label="email"
+                    name="id_number"
+                    autocomplete="id_number"
+                    label="id_number"
                 )
                 v-text-field(
                     v-model="password"
@@ -29,10 +29,6 @@ v-form(v-model="valid")
                 @click="callLogin"
                 variant="outlined"
             ) login #[template(v-slot:loader) #[span loging in...]]
-        div(v-for='item in badfsafasdf')
-            v-tooltip(:text="item" left)
-                template(v-slot:activator="{ props }")
-                    v-btn(v-bind="props") Tooltip
 </template>
 
 <script>

@@ -65,7 +65,7 @@ export default {
     async setup() {
         // fetch data middleware
         definePageMeta({
-            middleware: ["fetch-user", "fetch-groups", "admin-entity"],
+            middleware: ["fetch-user", "has-auth", "admin-entity"],
         });
         const authStore = useAuthStore();
         const adminStore = useAdminStore();
@@ -182,7 +182,7 @@ export default {
         // open dialogs actions
         openAddUserDialog() {
             this.userForm.dialog = true;
-            console.log({ form: this.userForm });
+            // console.log({ form: this.userForm });
             // this.updateModel(["addUserDialog", true]);
         },
         // get full name or title
