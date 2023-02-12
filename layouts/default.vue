@@ -2,6 +2,7 @@
 v-app
     navigation-drawer
     v-app-bar
+        loading
         v-app-bar-nav-icon
         v-app-bar-title ايبش
         //- v-spacer

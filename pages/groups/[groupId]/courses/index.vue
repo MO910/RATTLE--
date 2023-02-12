@@ -1,5 +1,6 @@
 <template lang="pug">
 v-container
+    .text-h3 {{$vuetify.locale.t('$vuetify.subjects')}}
     custom-card(:each='courses')
 </template>
 

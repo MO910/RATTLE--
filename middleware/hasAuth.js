@@ -2,6 +2,8 @@ import { useAuthStore } from "~/store/auth";
 
 export default defineNuxtRouteMiddleware(async ({ params }) => {
     const authStore = useAuthStore();
+    // do nothing if there is any authorization recorded
+    if (authStore.authorizationForCurrentGroup.length) return;
     // check auth for group
     const checkGroup = (group) => group.id === params.groupId;
     // all authes to check
@@ -15,9 +17,7 @@ export default defineNuxtRouteMiddleware(async ({ params }) => {
     ];
     // loop throw all aths
     for (let auth of auths) {
-        if (authStore.user[auth[0]].find(checkGroup)) {
-            authStore.authorizationForCurrentGroup = auth[1];
-            break;
-        }
+        if (authStore.user[auth[0]].find(checkGroup))
+            authStore.authorizationForCurrentGroup.push(auth[1]);
     }
 });

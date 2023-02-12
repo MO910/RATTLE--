@@ -1,5 +1,6 @@
 <template lang="pug">
 //- Floating Students
+manage-group-btn
 v-container
     div(v-if='floatingStudentsExists')
         v-col.text-h3(cols='12') الطلاب
@@ -41,12 +42,13 @@ import { useCustomCardStore } from "~/store/customCard";
 import contextmenu from "~/components/customCard/contextmenu";
 import confirmDialog from "~/components/customCard/contextmenu/confirmDialog";
 import subgroupDialogs from "~/components/customCard/contextmenu/subgroupDialogs";
+import manageGroupBtn from "~/components/admin/manageGroupBtn";
 
 export default {
-    components: { contextmenu, confirmDialog, subgroupDialogs },
+    components: { contextmenu, confirmDialog, subgroupDialogs, manageGroupBtn },
     async setup() {
         // fetch user
-        definePageMeta({ middleware: ["fetch-user", "fetch-groups"] });
+        definePageMeta({ middleware: ["fetch-user", "has-auth"] });
         // use store
         const groupsStore = useGroupsStore();
         const customCardStore = useCustomCardStore();

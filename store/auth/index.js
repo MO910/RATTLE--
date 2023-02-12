@@ -18,7 +18,7 @@ export const useAuthStore = defineStore("auth", {
         email: "",
         password: "",
 
-        authorizationForCurrentGroup: null,
+        authorizationForCurrentGroup: [],
     }),
     actions: {
         // text field rules

@@ -104,14 +104,14 @@ export default {
                     title: this.$vuetify.locale.t("$vuetify.students"),
                     value: "student",
                 },
-                {
-                    title: this.$vuetify.locale.t("$vuetify.parents"),
-                    value: "parent",
-                },
-                {
-                    title: this.$vuetify.locale.t("$vuetify.subjects"),
-                    value: "subject",
-                },
+                // {
+                //     title: this.$vuetify.locale.t("$vuetify.parents"),
+                //     value: "parent",
+                // },
+                // {
+                //     title: this.$vuetify.locale.t("$vuetify.subjects"),
+                //     value: "subject",
+                // },
                 {
                     title: this.$vuetify.locale.t("$vuetify.about"),
                     value: "about",
