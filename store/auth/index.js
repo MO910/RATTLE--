@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import login from "./actions/login";
+import logout from "./actions/logout";
 import decodeUserId from "./actions/decodeUserId";
 import getUserData from "./actions/getUserData";
 
@@ -35,6 +36,8 @@ export const useAuthStore = defineStore("auth", {
         emailRules: [(v) => /(.+@.+)|SHARK/.test(v) || "E-mail must be valid"],
         // login action and store the res in cookies
         login,
+        // logout
+        logout,
         // decode cookies to get user id
         decodeUserId,
         // get user data

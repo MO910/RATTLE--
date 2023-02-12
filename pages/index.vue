@@ -1,35 +1,26 @@
 <template lang="pug">
 v-container
-    custom-card(:each='user.rules' to='title' :evalRouter='ruleRouter' translate)
+    v-row
+        v-col.text-h3 {{$vuetify.locale.t("$vuetify.groups")}}
+    custom-card(:each='groups')
 </template>
 
 <script>
 import { storeToRefs } from "pinia";
+import { useGroupsStore } from "~/store/groups";
 import { useAuthStore } from "~/store/auth";
 
 export default {
     async setup() {
         // fetch user
-        definePageMeta({ middleware: "fetch-user" });
-        // use auth data
+        definePageMeta({ middleware: ["fetch-user", "fetch-groups"] });
+        // use groups data
+        const groupsStore = useGroupsStore();
         const authStore = useAuthStore();
-        return { ...storeToRefs(authStore) };
+        // return the store
+        return { ...storeToRefs(authStore), ...storeToRefs(groupsStore) };
     },
-    methods: {
-        ruleRouter(rule) {
-            switch (rule.toLowerCase()) {
-                case "teacher":
-                    return "groups";
-                case "owner_organization":
-                case "owner_center":
-                    return "admin";
-                case "parent":
-                    return "children";
-                default:
-                    return "/";
-            }
-        },
-    },
+    computed: {},
 };
 </script>
 

@@ -93,7 +93,6 @@ export default async function () {
                 value: { groupsAsAdmin, groupsAsTeacher, groupsAsParticipant },
             },
         } = await useAsyncQuery(query);
-        console.log({ groupsAsAdmin, groupsAsTeacher, groupsAsParticipant });
         this.groupsAsAdmin = groupsAsAdmin;
         this.groupsAsTeacher = groupsAsTeacher;
         this.groupsAsParticipant = groupsAsParticipant;

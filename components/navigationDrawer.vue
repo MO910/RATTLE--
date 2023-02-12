@@ -72,7 +72,7 @@ export default {
                 {
                     title: this.$vuetify.locale.t("$vuetify.logout"),
                     icon: "mdi-logout",
-                    action: this.logout,
+                    action: this.authStore.logout,
                 },
             ];
         },
