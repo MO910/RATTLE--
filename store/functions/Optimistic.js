@@ -37,11 +37,10 @@ export default class {
                 tree,
                 branch: state,
             });
-        console.log({ nodePath });
         let fullPath = nodePath;
+        // ! ADD: if targetArray is array push to all
         if (targetArray) fullPath += `.${targetArray}`;
         // push the object to it
-        console.log(`state.${fullPath}?.length`);
         const itemIndex = eval(`state.${fullPath}?.length`);
         let spread = requestData instanceof Array;
         // push to state
@@ -50,7 +49,6 @@ export default class {
         try {
             if (doRequest) {
                 this.data = await this.request(this.stringifyArgs);
-                console.log(this.data);
                 const response = this.data[this.dataKey];
                 // update state and add ID (real response)
                 if (response instanceof Array) {
@@ -72,7 +70,6 @@ export default class {
     }
     // remove item response
     async remove({ id, tree, callbackBefore, callbackAfter }) {
-        console.log({ id, tree });
         const { state } = this;
         const nodePath = treeFinder({
                 id,

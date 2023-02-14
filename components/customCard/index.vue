@@ -28,9 +28,6 @@ import { useCustomCardStore } from "~/store/customCard";
 import linkOr from "./linkOr";
 
 export default {
-    mounted() {
-        console.log("link", this.link);
-    },
     props: {
         // loop array
         each: Array,

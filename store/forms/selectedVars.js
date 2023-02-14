@@ -2,8 +2,8 @@ import { defineStore } from "pinia";
 
 export const useSelectedVarsStore = defineStore("selectedVars", {
     state: () => ({
-        type: null,
-        direction: null,
+        type: 0,
+        direction: 0,
         color: null,
         surahIndex: 0,
         has_rabt: false,

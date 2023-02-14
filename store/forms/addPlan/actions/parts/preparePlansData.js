@@ -19,9 +19,10 @@ export default function ({ group, subgroup_id, isStudent }) {
             ? +useInputNumberStore().rabtPagesValue
             : undefined,
         working_days: useSelectedVarsStore().days_selected,
-        starting_at: new Date(useDatesStore().startingDate),
+        starting_at: new Date(useDatesStore().newPlanStartingDate),
         tree: isStudent
-            ? ["groups", "courses", "floatingStudents"]
+            ? // ! CHANGE: groups => groupsAsTeacher
+              ["groups", "courses", "floatingStudents"]
             : ["groups", "courses", "subgroups"],
         color: useSelectedVarsStore().color,
     };

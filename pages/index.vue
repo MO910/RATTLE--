@@ -2,7 +2,7 @@
 v-container
     v-row
         v-col.text-h3 {{$vuetify.locale.t("$vuetify.groups")}}
-    custom-card(:each='groupsAsAdmin' :evalRouter='evalRouter')
+    custom-card(:each='groups' :evalRouter='evalRouter')
 </template>
 
 <script>

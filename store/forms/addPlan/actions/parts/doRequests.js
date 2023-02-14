@@ -25,7 +25,6 @@ export default async function (plan) {
         tree,
         targetArray: "plans",
     });
-    console.log(newPlan);
     // prepare spread args
     const spreadArgs = { plan_id: newPlan.id, custom_plans },
         stringifySpreadArgs = stringify(spreadArgs, true);

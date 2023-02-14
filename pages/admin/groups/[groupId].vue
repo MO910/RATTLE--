@@ -142,19 +142,17 @@ export default {
         },
         //
         allUsers() {
-            return this.group.courses
-                ?.reduce((acc, course) => {
-                    // push floating students
-                    const floatingStudents = course.floatingStudents;
-                    if (floatingStudents) acc.push(floatingStudents.flat());
-                    // push subgroups students
-                    const subgroupStudents = course.subgroups
-                        .map((subgroup) => subgroup.students)
-                        .flat();
-                    if (subgroupStudents) acc.push(subgroupStudents.flat());
-                    return acc;
-                }, [])
-                ?.flat();
+            const course = this.group.courses[0];
+            let allUsers = [];
+            // push floating students
+            const floatingStudents = course.floatingStudents;
+            if (floatingStudents) allUsers.push(floatingStudents.flat());
+            // push subgroups students
+            const subgroupStudents = course.subgroups
+                .map((subgroup) => subgroup.students)
+                .flat();
+            if (subgroupStudents) allUsers.push(subgroupStudents.flat());
+            return allUsers.flat();
         },
         searchResults() {
             console.log({ allUsers: this.allUsers });
