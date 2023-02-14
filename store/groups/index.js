@@ -31,6 +31,17 @@ export const useGroupsStore = defineStore("groups", {
         // attendance
         groupAttendanceAtDate,
         updateAttendance,
+        //
+        checkAuthForGroup(groupId) {
+            const checkGroup = (group) => group.id === groupId;
+            const authStore = useAuthStore();
+            let auths = [];
+            // loop throw all auths
+            for (let auth of authStore.groupsTree) {
+                if (this[auth[0]].find(checkGroup)) auths.push(auth[1]);
+            }
+            return auths;
+        },
     },
     getters: {
         groups() {

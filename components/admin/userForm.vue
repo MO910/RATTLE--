@@ -6,9 +6,8 @@ v-dialog(
     max-width='570px'
 )
     v-card
-        v-card-title.text-h4.text-capitalize
-            span {{$vuetify.locale.t("$vuetify.addUser")}}
-            //- v-btn(:click='userFormRef.validate()') delete
+        v-card-title.text-h4.text-capitalize {{cardTitle}}
+        //- v-btn(:click='userFormRef.validate()') delete
         v-card-text
             v-container
                 v-form(v-model="userForm.textFieldsValid" ref="userFormRef")
@@ -28,7 +27,7 @@ v-dialog(
                                     )
                                         v-card-title.text-h3.flex-grow-1.text-center.text-capitalize {{ gender.title }}
                     v-row
-                        v-col(cols='12')
+                        //- v-col(cols='12')
                             v-chip-group(
                                 v-model='userForm.selectedRules'
                                 active-class='text-blue' column multiple
@@ -117,6 +116,7 @@ export default {
         const customCardStore = useCustomCardStore();
         return {
             adminStore,
+            groupsStore,
             userFormStore,
             customCardStore,
             ...storeToRefs(authStore),
@@ -140,14 +140,21 @@ export default {
         // this.user.groupsAsAdmin;
     },
     computed: {
+        cardTitle() {
+            if (this.userForm.selectedRules.includes(0))
+                return this.$vuetify.locale.t("$vuetify.addStudent");
+        },
         selectedCenterGroups() {
             return this.organization.centers?.filter(
                 (c) => c.id == this.userForm.selectedCenterId
             )?.[0]?.groups;
         },
         valid() {
-            return this.userForm.textFieldsValid;
-            // this.userForm.selectedRules.length
+            return (
+                this.userForm.first_name &&
+                this.userForm.parent_name &&
+                this.userForm.selectedRules
+            );
         },
         genders() {
             return [
@@ -187,7 +194,7 @@ export default {
                 ),
                 args = {
                     // organization_id: this.organization.id,
-                    // group_id: this.userForm.selectedGroupId,
+                    group_ids: [this.userForm.selectedGroupId],
                     email: this.userForm.email,
                     first_name: this.userForm.first_name,
                     parent_name: this.userForm.parent_name,
@@ -195,18 +202,13 @@ export default {
                     rules: rules.map((title) => ({
                         title,
                     })),
-                    // tree: ["user"],
+                    tree: ["groupsAsAdmin"],
                     targetArray: "courses[0].floatingStudents",
                 };
             // prepare the tree
-            let trees = [];
-            for (let auth of this.authorizationForCurrentGroup) {
-                let newTree = ["user", null];
-                for (let groupTypes of this.groupsTree)
-                    if (auth === groupTypes[1]) newTree[1] = groupTypes[0];
-                trees.push(newTree);
-            }
-            args.tree = trees[0];
+            // args.tree = this.groupsStore.checkAuthForGroup(
+            //     this.userForm.selectedGroupId
+            // );
             // do action
             if (this.userForm.edit) {
                 await this.adminStore.updateUser(args);

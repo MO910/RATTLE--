@@ -104,4 +104,5 @@ export default {
     parents: "parents",
     male: "male",
     female: "female",
+    addStudent: "add student",
 };

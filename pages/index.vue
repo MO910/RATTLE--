@@ -2,13 +2,13 @@
 v-container
     v-row
         v-col.text-h3 {{$vuetify.locale.t("$vuetify.groups")}}
-    custom-card(:each='groups')
+    custom-card(:each='groupsAsAdmin' :evalRouter='evalRouter')
 </template>
 
 <script>
 import { storeToRefs } from "pinia";
-import { useGroupsStore } from "~/store/groups";
 import { useAuthStore } from "~/store/auth";
+import { useGroupsStore } from "~/store/groups";
 
 export default {
     async setup() {
@@ -18,9 +18,20 @@ export default {
         const groupsStore = useGroupsStore();
         const authStore = useAuthStore();
         // return the store
-        return { ...storeToRefs(authStore), ...storeToRefs(groupsStore) };
+        return {
+            groupsStore,
+            ...storeToRefs(authStore),
+            ...storeToRefs(groupsStore),
+        };
     },
     computed: {},
+    methods: {
+        evalRouter(groupId) {
+            let auths = this.groupsStore.checkAuthForGroup(groupId)?.[0];
+            if (auths === "admin") return `admin/groups/${groupId}`;
+            if (auths === "teacher") return groupId;
+        },
+    },
 };
 </script>
 

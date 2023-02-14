@@ -15,7 +15,7 @@ module.exports = {
     type: User_type,
     args: {
         email: { type: GraphQLString },
-        group_id: { type: GraphQLID },
+        group_ids: { type: new GraphQLList(GraphQLID) },
         organization_id: { type: GraphQLID },
         password: { type: GraphQLString },
         first_name: { type: GraphQLString },

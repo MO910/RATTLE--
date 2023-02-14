@@ -16,6 +16,11 @@ function queryString(q, id) {
                 email
                 phone
                 gender
+                rules {
+                    id
+                    title
+                    permissions
+                }
                 plans {
                     id
                     title
@@ -68,6 +73,11 @@ function queryString(q, id) {
                     email
                     phone
                     gender
+                    rules {
+                        id
+                        title
+                        permissions
+                    }
                     plans_history {
                         custom_plan_id
                         amount_done

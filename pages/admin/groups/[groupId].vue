@@ -1,14 +1,14 @@
 <template lang="pug">
 v-container
     v-row 
-        v-col.text-h3 {{ group.title }}
+        v-col.text-h3 {{ group?.title }}
         //- add user
         v-col
             v-btn.mx-2(
-                @click='openAddUserDialog'
+                @click='openAddStudentDialog'
                 color='blue' 
                 variant='outlined'
-            ) add user
+            ) add student
         //- searching
         v-col(cols='12' v-if='mode == "users"')
             | Rules:
@@ -65,7 +65,7 @@ export default {
     async setup() {
         // fetch data middleware
         definePageMeta({
-            middleware: ["fetch-user", "has-auth", "admin-entity"],
+            middleware: ["fetch-user", "fetch-groups", "has-auth"],
         });
         const authStore = useAuthStore();
         const adminStore = useAdminStore();
@@ -142,25 +142,22 @@ export default {
         },
         //
         allUsers() {
-            return this.groupsAsAdmin
-                ?.reduce((acc, group) => {
+            return this.group.courses
+                ?.reduce((acc, course) => {
                     // push floating students
-                    const floatingStudents = group.courses.map(
-                        (course) => course.floatingStudents
-                    );
+                    const floatingStudents = course.floatingStudents;
                     if (floatingStudents) acc.push(floatingStudents.flat());
                     // push subgroups students
-                    const subgroupStudents = group.courses.map((course) =>
-                        course.subgroups
-                            .map((subgroup) => subgroup.students)
-                            .flat()
-                    );
+                    const subgroupStudents = course.subgroups
+                        .map((subgroup) => subgroup.students)
+                        .flat();
                     if (subgroupStudents) acc.push(subgroupStudents.flat());
                     return acc;
                 }, [])
-                .flat();
+                ?.flat();
         },
         searchResults() {
+            console.log({ allUsers: this.allUsers });
             //search by rules
             let results = this.allUsers.filter((user) =>
                 user.rules.some(
@@ -180,10 +177,11 @@ export default {
     },
     methods: {
         // open dialogs actions
-        openAddUserDialog() {
+        openAddStudentDialog() {
+            const { groupId } = useRoute().params;
+            this.userForm.selectedGroupId = groupId;
+            this.userForm.selectedRules = [0];
             this.userForm.dialog = true;
-            // console.log({ form: this.userForm });
-            // this.updateModel(["addUserDialog", true]);
         },
         // get full name or title
         fullName(entity) {

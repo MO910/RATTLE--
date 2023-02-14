@@ -7,12 +7,20 @@ export default defineNuxtRouteMiddleware(async ({ params }) => {
     // do nothing if there is any authorization recorded
     if (authStore.authorizationForCurrentGroup.length) return;
     // check auth for group
-    const checkGroup = (group) => group.id === params.groupId;
-    // loop throw all auths
-    for (let auth of authStore.groupsTree) {
-        if (groupsStore[auth[0]].find(checkGroup))
-            authStore.authorizationForCurrentGroup.push(auth[1]);
-    }
+    console.log("groupId", params.groupId);
+    authStore.authorizationForCurrentGroup = groupsStore.checkAuthForGroup(
+        params.groupId
+    );
+    // const checkGroup = (group) => group.id === params.groupId;
+    // // loop throw all auths
+    // for (let auth of authStore.groupsTree) {
+    //     if (groupsStore[auth[0]].find(checkGroup))
+    //         authStore.authorizationForCurrentGroup.push(auth[1]);
+    // }
     // if no authorization found for this user redirect home
-    if (!authStore.authorizationForCurrentGroup?.length) await navigateTo("/");
+    console.log(
+        "authorizationForCurrentGroup",
+        authStore.authorizationForCurrentGroup
+    );
+    // if (!authStore.authorizationForCurrentGroup?.length) await navigateTo("/");
 });

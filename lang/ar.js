@@ -122,4 +122,5 @@ export default {
     parents: "اولياء الامور",
     male: "ذكر",
     female: "انثى",
+    addStudent: "اضف طالب",
 };

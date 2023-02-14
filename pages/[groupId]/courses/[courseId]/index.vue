@@ -48,7 +48,7 @@ export default {
     components: { contextmenu, confirmDialog, subgroupDialogs, manageGroupBtn },
     async setup() {
         // fetch user
-        definePageMeta({ middleware: ["fetch-user", "has-auth"] });
+        definePageMeta({ middleware: ["fetch-user", "fetch-groups"] });
         // use store
         const groupsStore = useGroupsStore();
         const customCardStore = useCustomCardStore();

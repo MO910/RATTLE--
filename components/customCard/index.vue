@@ -115,4 +115,8 @@ export default {
 <style lang="sass" scoped>
 .v-card
     height: 100%
+    transition: all .5s ease
+    &:hover
+        background: #4c4c8b
+        box-shadow: 0px 0px 14px 3px #4c4c8b70
 </style>
