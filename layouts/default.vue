@@ -1,4 +1,5 @@
 <template lang="pug">
+NuxtLoadingIndicator
 v-app
     navigation-drawer
     v-app-bar

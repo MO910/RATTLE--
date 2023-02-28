@@ -1,13 +1,13 @@
 <template lang="pug">
 v-container
     manage-group-btn
-//- teacher
-v-container(v-if='authorizationForCurrentGroup?.includes("teacher")')
-    v-row
-        v-col(cols=12) 
-            v-btn(to='attendance' nuxt) {{$vuetify.locale.t("$vuetify.attend")}}
-        v-col.text-h3(cols=12) {{$vuetify.locale.t("$vuetify.subjects")}}
-    custom-card(:each='courses' to='to')
+    //- teacher
+    template(v-if='authorizationForCurrentGroup?.includes("teacher")')
+        v-row
+            v-col(cols=12) 
+                v-btn(to='attendance' nuxt) {{$vuetify.locale.t("$vuetify.attend")}}
+            v-col.text-h3(cols=12) {{$vuetify.locale.t("$vuetify.subjects")}}
+        custom-card(:each='courses' to='to')
 </template>
 
 <script>

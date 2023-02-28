@@ -1,36 +1,37 @@
 <template lang="pug">
-//- Floating Students
-manage-group-btn
-v-container
-    div(v-if='floatingStudentsExists')
-        v-col.text-h3(cols='12') الطلاب
-        custom-card(
-            :each='course.floatingStudents'
-            :evalTitle='fullName'
-            :openContext="openStudentContext"
-        )
-            template(#contextmenu)
-                contextmenu
-//- Subgroups
-v-container
-    div(v-if='course.subgroups')
-        v-col.text-h3(cols='12') المجموعات الفرعية
-        v-btn.mx-5(
-            @click='addSubgroupDialog = true'
-            color='success' icon 
-            variant='outlined'
-        )
-            v-icon mdi-plus
-        custom-card(
-            :each='course.subgroups'
-            chips='students'
-            :evalChipsTitle='fullName'
-            :openContext="openSubgroupContext"
-        )
-            template(#contextmenu)
-                contextmenu
-//- confirm message dialog
-subgroup-dialogs
+div
+    //- Floating Students
+    manage-group-btn
+    v-container
+        div(v-if='floatingStudentsExists')
+            v-col.text-h3(cols='12') الطلاب
+            custom-card(
+                :each='course.floatingStudents'
+                :evalTitle='fullName'
+                :openContext="openStudentContext"
+            )
+                template(#contextmenu)
+                    contextmenu
+    //- Subgroups
+    v-container
+        div(v-if='course.subgroups')
+            v-col.text-h3(cols='12') المجموعات الفرعية
+            v-btn.mx-5(
+                @click='addSubgroupDialog = true'
+                color='success' icon 
+                variant='outlined'
+            )
+                v-icon mdi-plus
+            custom-card(
+                :each='course.subgroups'
+                chips='students'
+                :evalChipsTitle='fullName'
+                :openContext="openSubgroupContext"
+            )
+                template(#contextmenu)
+                    contextmenu
+    //- confirm message dialog
+    subgroup-dialogs
 </template>
 
 <script>

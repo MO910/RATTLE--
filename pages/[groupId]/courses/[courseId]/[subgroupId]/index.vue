@@ -1,60 +1,61 @@
 <template lang="pug">
-//- v-container 
-date-picker(
-    :historyAction='groupsStore.getSubgroupHistoryAtDate'
-    :historyParams='historyParams'
-    :allowedDates='allowedDates'
-)
-//- Plans
-v-container 
-    v-row.mt-10
-        v-col(cols='12')
-            NuxtLink(:to='calendarRouter')
-                v-btn(
-                    color='blue lighten-2'
-                    variant='outlined' block
-                    size='x-large'
-                )
-                    v-icon.mx-5 mdi-calendar-today
-                    | {{$vuetify.locale.t('$vuetify.showCalendar')}}
-        v-col.text-h4(cols='12')
-            p.d-inline-block {{$vuetify.locale.t('$vuetify.plans')}}
-            add-plan-form(
-                :default_days='groupWorkingDays'
-                :group='group'
-                :subgroup_id='subgroup?.id'
-                :isStudent='isStudent'
-            )
-        v-col.px-0.text-h4(
-            v-if='plansOfDate.length'
-            v-for='plan in plansOfDate'
-            md='4' sm='6' xs='12'
-        )
-            v-card.mx-5(v-if='!plan.hide' :color='plan.color')
-                v-btn(icon='mdi-delete' variant="text")
-                v-card-title.d-block.text-center {{$vuetify.locale.t(`$vuetify.${plan.title}`)}}
-                v-card-text(
-                    v-for='strings in getPlanString(plan, false)'
-                    v-text='strings'
-                )
-        v-col(v-else) {{$vuetify.locale.t(`$vuetify.noPlansMsg`)}}
-//- Students of Subgroup
-v-container(v-if='subgroup?.students')
-    v-row.mt-10
-        v-col.text-h4(cols='12') {{$vuetify.locale.t('$vuetify.students')}}
-    custom-card(
-        :each='subgroup.students'
-        :evalTitle='fullName'
-        v-slot="{ student_id }"
-        :link='false' lg=6
+div
+    //- v-container 
+    date-picker(
+        :historyAction='groupsStore.getSubgroupHistoryAtDate'
+        :historyParams='historyParams'
+        :allowedDates='allowedDates'
     )
-        advantage(
-            v-for='plan in eachDay'
-            :plan='plan'
-            :student_id='student_id'
+    //- Plans
+    v-container 
+        v-row.mt-10
+            v-col(cols='12')
+                NuxtLink(:to='calendarRouter')
+                    v-btn(
+                        color='blue lighten-2'
+                        variant='outlined' block
+                        size='x-large'
+                    )
+                        v-icon.mx-5 mdi-calendar-today
+                        | {{$vuetify.locale.t('$vuetify.showCalendar')}}
+            v-col.text-h4(cols='12')
+                p.d-inline-block {{$vuetify.locale.t('$vuetify.plans')}}
+                add-plan-form(
+                    :default_days='groupWorkingDays'
+                    :group='group'
+                    :subgroup_id='subgroup?.id'
+                    :isStudent='isStudent'
+                )
+            v-col.px-0.text-h4(
+                v-if='plansOfDate.length'
+                v-for='plan in plansOfDate'
+                md='4' sm='6' xs='12'
+            )
+                v-card.mx-5(v-if='!plan.hide' :color='plan.color')
+                    v-btn(icon='mdi-delete' variant="text")
+                    v-card-title.d-block.text-center {{$vuetify.locale.t(`$vuetify.${plan.title}`)}}
+                    v-card-text(
+                        v-for='strings in getPlanString(plan, false)'
+                        v-text='strings'
+                    )
+            v-col(v-else) {{$vuetify.locale.t(`$vuetify.noPlansMsg`)}}
+    //- Students of Subgroup
+    v-container(v-if='subgroup?.students')
+        v-row.mt-10
+            v-col.text-h4(cols='12') {{$vuetify.locale.t('$vuetify.students')}}
+        custom-card(
+            :each='subgroup.students'
+            :evalTitle='fullName'
+            v-slot="{ student_id }"
+            :link='false' lg=6
         )
-//- floating student plans
-v-container(v-else)
+            advantage(
+                v-for='plan in eachDay'
+                :plan='plan'
+                :student_id='student_id'
+            )
+    //- floating student plans
+    v-container(v-else)
 </template>
 
 <script>
