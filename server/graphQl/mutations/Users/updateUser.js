@@ -15,7 +15,7 @@ module.exports = {
     type: User_type,
     args: {
         id: { type: GraphQLID },
-        group_id: { type: GraphQLID },
+        group_ids: { type: new GraphQLList(GraphQLID) },
         organization_id: { type: GraphQLID },
         first_name: { type: GraphQLString },
         parent_name: { type: GraphQLString },

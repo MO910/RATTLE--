@@ -1,46 +1,14 @@
 <template lang="pug">
-v-container
-    v-row
-        //- v-col.text-h3(cols='12') {{$vuetify.locale.t(`$vuetify.${mode}`)}}
-        //- v-col(cols='12')
-            //- add user
-            v-btn.mx-2(
-                v-if='mode == "users"'
-                @click='openAddUserDialog'
-                color='blue' 
-                icon='mdi-plus' 
-                variant='outlined'
-            )
-            //- add center
-            v-btn.mx-2(
-                v-else-if='mode == "centers"'
-                @click='openCenterDialog'
-                color='blue'
-                icon='mdi-plus' 
-                variant='outlined'
-            )
-            //- v-btn.mx-2(
-            //-     @click='openImport'
-            //-     color='green'
-            //-     icon='mdi-table' 
-            //-     variant='outlined'
-            //- )
-            //- v-btn.mx-2(
-            //-     @click='select=!select'
-            //-     color='secondary'
-            //-     icon='mdi-pencil'
-            //-     variant='outlined'
-            //- ) 
-    //- users cards
-    custom-card(
-        :each="searchResults"
-        :evalTitle='fullName'
-        :openContext="openStudentContext"
-        :link='false' translate
-        :description='mode == "centers"'
-    )
-        template(#contextmenu)
-            contextmenu
+//- users cards
+custom-card(
+    :each="searchResults"
+    :evalTitle='fullName'
+    :openContext="openStudentContext"
+    :link='false' translate
+    :description='mode == "centers"'
+)
+    template(#contextmenu)
+        contextmenu
 </template>
 
 <script>

@@ -6,6 +6,7 @@ import Optimistic from "~/store/functions/Optimistic";
 import stringify from "~/store/functions/stringify";
 // create user
 export default async function (args) {
+    console.log({ args });
     const tree = args.tree,
         targetArray = args.targetArray,
         rules = [...args.rules];

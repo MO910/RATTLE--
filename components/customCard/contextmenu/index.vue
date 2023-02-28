@@ -29,9 +29,6 @@ export default {
         // return the store
         return { ...storeToRefs(customCardStore) };
     },
-    mounted() {
-        // console.log(this.ele);
-    },
     components: { confirmDialog },
     methods: {
         openDialog({ title, openAction }) {
@@ -52,7 +49,6 @@ export default {
 };
 </script>
 
-//
 <style lang="sass">
 // .subgroupContextMenu
 //     x: 200px

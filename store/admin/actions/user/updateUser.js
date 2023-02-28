@@ -2,8 +2,15 @@
 import stringify from "~/store/functions/stringify";
 // Function
 export default async function (args) {
+    const tree = args.tree,
+        targetArray = args.targetArray,
+        rules = [...args.rules];
+    args.rules = args.rules.map((rule) => rule.title);
+    delete args.tree;
+    delete args.targetArray;
     //  stringify
     const stringifyArgs = stringify(args);
+    console.log(stringifyArgs);
     // GraphQl request
     const request = async () => {
         const mutation = gql`mutation { updateUser(${stringifyArgs}){ id }}`;

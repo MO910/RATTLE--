@@ -29,9 +29,10 @@ export const useCustomCardStore = defineStore("customCard", {
                 ];
             else if (this.contextMenu.type === "floating_student")
                 outList = [{ title: "transport", icon: "mdi-arrow-decision" }];
-            // add action
+            // add action to edit item
             if (this.contextMenu.type === "user") {
                 outList[0].openAction = () => {
+                    // console.log("params", useRoute().params);
                     const userFormStore = useUserFormStore();
                     const { first_name, parent_name, email, phone } =
                         this.contextMenu.entity;

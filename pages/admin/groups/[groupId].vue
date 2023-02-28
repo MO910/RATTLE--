@@ -34,11 +34,13 @@ v-container
             )
                 v-tab(v-for='tab, i in tabs' :value="i") {{tab.title}}
             v-window(v-model="activeSubTab")
-                v-window-item(v-for='i in [0, 1]' :value="i")
+                //- v-window-item(v-for='i in [0, 1]' :value="i")
+                v-window-item(:value="0")
                     users(v-if='searchResults.length' :searchResults='searchResults')
                     span(v-else) there is no users here!!
-                v-window-item(:value="2")
+                v-window-item(:value="1")
                     custom-card(:each='group.courses')
+                v-window-item(:value="2") about
     //- dialogs
     user-form
     confirm-dialog(type='remove' :action='removeUser')
@@ -105,13 +107,13 @@ export default {
                     title: this.$vuetify.locale.t("$vuetify.students"),
                     value: "student",
                 },
+                {
+                    title: this.$vuetify.locale.t("$vuetify.subjects"),
+                    value: "subject",
+                },
                 // {
                 //     title: this.$vuetify.locale.t("$vuetify.parents"),
                 //     value: "parent",
-                // },
-                // {
-                //     title: this.$vuetify.locale.t("$vuetify.subjects"),
-                //     value: "subject",
                 // },
                 {
                     title: this.$vuetify.locale.t("$vuetify.about"),

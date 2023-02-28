@@ -71,12 +71,19 @@ export default class {
     // remove item response
     async remove({ id, tree, callbackBefore, callbackAfter }) {
         const { state } = this;
-        const nodePath = treeFinder({
+        // deal with multi trees
+        if (!(tree[0] instanceof Array)) tree = [tree];
+        let nodePath;
+        for (let t of tree) {
+            nodePath = treeFinder({
                 id,
-                tree,
+                tree: t,
                 branch: state,
-            }),
-            indexRegExp = /\[\d+\]$/,
+            });
+            if (nodePath) break;
+        }
+        console.log({ nodePath });
+        const indexRegExp = /\[\d+\]$/,
             allListPath = nodePath.replace(indexRegExp, ""),
             findItemPath = `${allListPath}.find(x => x.id =="${id}")`;
         // and store it for returning
