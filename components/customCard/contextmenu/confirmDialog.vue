@@ -11,7 +11,7 @@ v-dialog(
         v-card-actions
             v-spacer
             v-btn(color='error' text @click='close') {{$vuetify.locale.t('$vuetify.cancel')}}
-            v-btn(color='blue' @click='action' :loading='confirmDialogLoading') {{$vuetify.locale.t(`$vuetify.${contextMenu.dialog.type}`)}}
+            v-btn(color='blue' @click='doAction' :loading='confirmDialogLoading') {{$vuetify.locale.t(`$vuetify.${contextMenu.dialog.type}`)}}
 </template>
 <script>
 import { storeToRefs } from "pinia";
@@ -28,6 +28,14 @@ export default {
     methods: {
         close() {
             this.customCardStore.$reset();
+        },
+        async doAction() {
+            this.confirmDialogLoading = true;
+            // do action
+            await this.action();
+            // stop loading and close dialog
+            this.confirmDialogLoading = false;
+            this.contextMenu.dialog.show = false;
         },
     },
 };

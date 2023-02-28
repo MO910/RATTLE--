@@ -25,24 +25,24 @@ v-container
                 single-line hide-details
                 variant='solo'
             )
-    //- v-window(v-model="activeTab")
-    //-     v-window-item(:value="0")
-    v-container
-        v-tabs(
-            v-model="activeSubTab"
-            align-tabs="end" grow
-        )
-            v-tab(v-for='tab, i in tabs' :value="i") {{tab.title}}
-        v-window(v-model="activeSubTab")
-            v-window-item(v-for='i in [0, 1]' :value="i")
-                users(v-if='searchResults.length' :searchResults='searchResults')
-                span(v-else) there is no users here!!
-            v-window-item(:value="2")
-                custom-card(:each='group.courses')
-//- dialogs
-user-form
-confirm-dialog(type='remove' :action='removeAction')
-    span(v-html='confirmRemoveMsg')
+    //- tabs
+    v-row 
+        v-col
+            v-tabs(
+                v-model="activeSubTab"
+                align-tabs="end" grow
+            )
+                v-tab(v-for='tab, i in tabs' :value="i") {{tab.title}}
+            v-window(v-model="activeSubTab")
+                v-window-item(v-for='i in [0, 1]' :value="i")
+                    users(v-if='searchResults.length' :searchResults='searchResults')
+                    span(v-else) there is no users here!!
+                v-window-item(:value="2")
+                    custom-card(:each='group.courses')
+    //- dialogs
+    user-form
+    confirm-dialog(type='remove' :action='removeUser')
+        span(v-html='confirmRemoveMsg')
 </template>
 
 <script>
@@ -74,6 +74,7 @@ export default {
         const groupsStore = useGroupsStore();
         // return the store
         return {
+            adminStore,
             ...storeToRefs(authStore),
             ...storeToRefs(adminStore),
             ...storeToRefs(userFormStore),
@@ -172,6 +173,13 @@ export default {
             );
             return results || [];
         },
+        // remove message
+        confirmRemoveMsg() {
+            const name = this.fullName(this.contextMenu.entity);
+            return this.$vuetify.locale
+                .t(`$vuetify.confirmRemoveMsg`)
+                .replace("###", name);
+        },
     },
     methods: {
         // open dialogs actions
@@ -184,6 +192,10 @@ export default {
         // get full name or title
         fullName(entity) {
             return `${entity.first_name} ${entity.parent_name || ""}`;
+        },
+        // remove user
+        async removeUser() {
+            await this.adminStore.removeUser(this.contextMenu.entity.id);
         },
     },
 };

@@ -28,6 +28,6 @@ module.exports = {
     async resolve(_, args) {
         // extract id from rule title
         args.rule_ids = await rulesConverter({ rules: args.rules });
-        return User_Schema.findByIdAndUpdate(args.id, args);
+        return await User_Schema.findByIdAndUpdate(args.id, args);
     },
 };

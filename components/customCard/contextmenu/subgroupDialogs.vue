@@ -72,12 +72,12 @@ export default {
             });
         },
         async doAction(callBack) {
-            this.confirmDialogLoading = true;
+            // this.confirmDialogLoading = true;
             // do action
             await callBack();
             // stop loading and close dialog
-            this.confirmDialogLoading = false;
-            this.contextMenu.dialog.show = false;
+            // this.confirmDialogLoading = false;
+            // this.contextMenu.dialog.show = false;
         },
     },
 };

@@ -1,6 +1,4 @@
 // Dependencies
-import randomPassword from "~/store/functions/randomPassword";
-import Optimistic from "~/store/functions/Optimistic";
 import stringify from "~/store/functions/stringify";
 // Function
 export default async function (args) {

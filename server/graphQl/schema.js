@@ -41,6 +41,7 @@ const // Plans
     // Users
     createUser = require("./mutations/Users/createUser"),
     updateUser = require("./mutations/Users/updateUser"),
+    removeUser = require("./mutations/Users/removeUser"),
     // rule convert function
     rulesConverter = require("./types/shared/rulesConverter"),
     // Center
@@ -167,6 +168,7 @@ const query = new GraphQLObjectType({
             // users
             createUser,
             updateUser,
+            removeUser,
             // plans
             addPlan,
             updatePlanHistory,
