@@ -46,10 +46,14 @@ const // Plans
     rulesConverter = require("./types/shared/rulesConverter"),
     // Center
     createCenter = require("./mutations/createCenter"),
+    // courses
+    createCourse = require("./mutations/courses/createCourse"),
     // Groups
-    createSubgroup = require("./mutations/Groups/createSubgroup"),
-    removeSubgroup = require("./mutations/Groups/removeSubgroup"),
-    transportToSubgroup = require("./mutations/Groups/transportToSubgroup"),
+    createGroup = require("./mutations/Groups/createGroup"),
+    // Subgroups
+    createSubgroup = require("./mutations/Groups/subgroups/createSubgroup"),
+    removeSubgroup = require("./mutations/Groups/subgroups/removeSubgroup"),
+    transportToSubgroup = require("./mutations/Groups/subgroups/transportToSubgroup"),
     // attendance
     updateAttendance = require("./mutations/attendance/updateAttendance");
 // prepare group as admin query
@@ -177,7 +181,11 @@ const query = new GraphQLObjectType({
             editCustomPlan,
             // centers
             // createCenter,
+            // course
+            createCourse,
             // groups
+            createGroup,
+            // subgroups
             createSubgroup,
             removeSubgroup,
             transportToSubgroup,

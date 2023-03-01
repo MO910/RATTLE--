@@ -5,8 +5,8 @@ const {
     GraphQLBoolean,
     GraphQLList,
 } = require("graphql");
-const Subgroups_Schema = require("../../../models/Groups/Subgroups"),
-    Subgroup_type = require("../../types/Groups/Subgroup");
+const Subgroups_Schema = require("../../../../models/Groups/Subgroups"),
+    Subgroup_type = require("../../../types/Groups/Subgroup");
 // Function
 module.exports = {
     type: Subgroup_type,

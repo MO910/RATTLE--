@@ -27,6 +27,9 @@ export default class {
         tree,
         targetArray,
         doRequest = true,
+        // callback
+        callbackAfter,
+        addCallbackResponse,
     }) {
         const { state } = this;
         // search for node if not provided
@@ -49,13 +52,22 @@ export default class {
         try {
             if (doRequest) {
                 this.data = await this.request(this.stringifyArgs);
-                const response = this.data[this.dataKey];
+                let response = this.data[this.dataKey];
                 // update state and add ID (real response)
                 if (response instanceof Array) {
                     eval(`state.${fullPath} = response`);
                 } else {
                     const itemId = response?.id;
                     eval(`state.${fullPath}[${itemIndex}].id = "${itemId}"`);
+                }
+                // do action after actually removing
+                if (callbackAfter) {
+                    var callbackResponse = await callbackAfter(response.id);
+                    // add the callback response
+                    if (addCallbackResponse) {
+                        const blockOfCode = `state.${fullPath}[${itemIndex}] = {...state.${fullPath}[${itemIndex}], ...callbackResponse}`;
+                        eval(blockOfCode);
+                    }
                 }
             }
         } catch (err) {

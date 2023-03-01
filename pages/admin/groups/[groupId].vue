@@ -40,7 +40,10 @@ v-container
                     span(v-else) there is no users here!!
                 v-window-item(:value="1")
                     custom-card(:each='group.courses')
-                v-window-item(:value="2") about
+                v-window-item(:value="2") 
+                    v-card
+                        v-card-title(v-if='group.teacher') {{teacherName}}
+                        v-card-title(v-else) there is no teacher assigned for this group
     //- dialogs
     user-form
     confirm-dialog(type='remove' :action='removeUser')
@@ -145,16 +148,18 @@ export default {
         },
         //
         allUsers() {
-            const course = this.group.courses[0];
+            const course = this.group.courses?.[0];
             let allUsers = [];
-            // push floating students
-            const floatingStudents = course.floatingStudents;
-            if (floatingStudents) allUsers.push(floatingStudents.flat());
-            // push subgroups students
-            const subgroupStudents = course.subgroups
-                .map((subgroup) => subgroup.students)
-                .flat();
-            if (subgroupStudents) allUsers.push(subgroupStudents.flat());
+            if (course) {
+                // push floating students
+                const floatingStudents = course.floatingStudents;
+                if (floatingStudents) allUsers.push(floatingStudents.flat());
+                // push subgroups students
+                const subgroupStudents = course.subgroups
+                    .map((subgroup) => subgroup.students)
+                    .flat();
+                if (subgroupStudents) allUsers.push(subgroupStudents.flat());
+            }
             return allUsers.flat();
         },
         searchResults() {
@@ -181,6 +186,10 @@ export default {
             return this.$vuetify.locale
                 .t(`$vuetify.confirmRemoveMsg`)
                 .replace("###", name);
+        },
+        // get teacher name
+        teacherName() {
+            return this.fullName(this.group.teacher);
         },
     },
     methods: {

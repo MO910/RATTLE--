@@ -1,5 +1,5 @@
 <template lang="pug">
-v-row.pt-5
+v-row.pt-5(v-if='each?.length')
     v-col.mb-5.col-xs-12(
         :lg='lg' md='6' sm='12'
         v-for='item in each'
@@ -16,7 +16,18 @@ v-row.pt-5
                         v-for='chip in evalChips(item)'
                     ) {{evalChipsTitle(chip)}}
                 v-card-text(v-if='description') {{item.description}}
-                //- contextmenu
+    v-col.mb-5.col-xs-12(
+        v-if='addButton'
+        :lg='lg' md='6' sm='12'
+    )
+        v-btn.add.py-7.px-5(
+            @click='addAction'
+            block variant='outlined'
+        ) 
+            v-card-title.text-center
+                span.px-2 Add
+                v-icon mdi-plus
+//- contextmenu
 slot(name='contextmenu')
 </template>
 
@@ -45,6 +56,9 @@ export default {
         link: { default: true },
         openContext: Function,
         description: { default: false },
+        // add button
+        addButton: Boolean,
+        addAction: Function,
     },
     setup() {
         // use groups data
@@ -110,10 +124,10 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.v-card
+.v-card, .v-btn
     height: 100%
     transition: all .5s ease
-    &:hover
+    &:hover:not(.v-btn)
         background: #4c4c8b
         box-shadow: 0px 0px 14px 3px #4c4c8b70
 </style>

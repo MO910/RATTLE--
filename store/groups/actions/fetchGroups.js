@@ -1,101 +1,16 @@
 import { useAuthStore } from "~/store/auth";
-function queryString(q, id) {
-    return `${q}(id: "${id}") {
-        id
-        title
-        working_days
-        description
-        courses {
-            id
-            title
-            description
-            floatingStudents {
-                id
-                first_name
-                parent_name
-                email
-                phone
-                gender
-                rules {
-                    id
-                    title
-                    permissions
-                }
-                plans {
-                    id
-                    title
-                    color
-                    order_reversed
-                    from
-                    amount
-                    weeks
-                    rabt_amount
-                    working_days
-                    starting_at
-                    custom_plans {
-                        id
-                        from
-                        to
-                        date
-                    }
-                }
-                plans_history {
-                    custom_plan_id
-                    amount_done
-                    grade
-                }
-            }
-            subgroups {
-                id
-                title
-                plans {
-                    id
-                    title
-                    color
-                    order_reversed
-                    from
-                    amount
-                    weeks
-                    rabt_amount
-                    working_days
-                    starting_at
-                    custom_plans {
-                        id
-                        from
-                        to
-                        date
-                    }
-                }
-                students {
-                    id
-                    first_name
-                    parent_name
-                    email
-                    phone
-                    gender
-                    rules {
-                        id
-                        title
-                        permissions
-                    }
-                    plans_history {
-                        custom_plan_id
-                        amount_done
-                        grade
-                    }
-                }
-            }
-        }
-    }`;
-}
+import groupQuery from "~/store/functions/groupQuery";
+
+// function
 export default async function () {
     const authStore = useAuthStore();
     // repair query
+    const args = { id: authStore.userId };
     const query = gql`
         query {
-            ${queryString("groupsAsAdmin", authStore.userId)}
-            ${queryString("groupsAsTeacher", authStore.userId)}
-            ${queryString("groupsAsParticipant", authStore.userId)}
+            ${groupQuery("groupsAsAdmin", args)}
+            ${groupQuery("groupsAsTeacher", args)}
+            ${groupQuery("groupsAsParticipant", args)}
         }`;
     try {
         const {

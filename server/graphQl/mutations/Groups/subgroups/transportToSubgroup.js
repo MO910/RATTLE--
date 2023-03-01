@@ -6,14 +6,14 @@ const {
     GraphQLList,
 } = require("graphql");
 const //subgroup
-    Subgroups_Schema = require("../../../models/Groups/Subgroups"),
-    Subgroup_type = require("../../types/Groups/Subgroup"),
+    Subgroups_Schema = require("../../../../models/Groups/Subgroups"),
+    Subgroup_type = require("../../../types/Groups/Subgroup"),
     //course
-    Courses_Schema = require("../../../models/Courses/Courses"),
+    Courses_Schema = require("../../../../models/Courses/Courses"),
     //group
-    Groups_Schema = require("../../../models/Groups/Groups"),
+    Groups_Schema = require("../../../../models/Groups/Groups"),
     // user
-    Users_Schema = require("../../../models/Users/Users");
+    Users_Schema = require("../../../../models/Users/Users");
 // Subgroup_type = require("../../types/Groups/Subgroup");
 // Function
 module.exports = {
