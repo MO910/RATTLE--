@@ -4,7 +4,7 @@ div
     date-picker(
         :historyAction='groupsStore.getSubgroupHistoryAtDate'
         :historyParams='historyParams'
-        :allowedDates='allowedDates'
+        :disabledWeekDays='disabledWeekDays'
     )
     //- Plans
     v-container 
@@ -159,6 +159,11 @@ export default {
             const fullPath = useRoute().fullPath;
             return `${fullPath.replace(/\/$/, "")}/calendar`;
         },
+        // get allowed dates in calender (avoiding not working days)
+        disabledWeekDays() {
+            // !disabled
+            return this.groupWorkingDays;
+        },
     },
     methods: {
         // get full name or title
@@ -184,11 +189,6 @@ export default {
             return forToday?.length
                 ? forToday
                 : [this.$vuetify.locale.t("$vuetify.nothingTodayMessage")];
-        },
-        // get allowed dates in calender (avoiding not working days)
-        allowedDates(val) {
-            const weekDay = new Date(val).getDay();
-            return weekDay in this.groupWorkingDays;
         },
         // debounce update
         debounce(cb, delay = 1000) {

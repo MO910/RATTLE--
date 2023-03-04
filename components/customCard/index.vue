@@ -15,6 +15,8 @@ v-row.pt-5(v-if='each?.length')
                     v-chip.ma-2(
                         v-for='chip in evalChips(item)'
                     ) {{evalChipsTitle(chip)}}
+                v-card-text
+                    slot(:student_id='item.id')
                 v-card-text(v-if='description') {{item.description}}
     v-col.mb-5.col-xs-12(
         v-if='addButton'
@@ -124,7 +126,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.v-card, .v-btn
+a .v-card, .v-btn
     height: 100%
     transition: all .5s ease
     &:hover:not(.v-btn)

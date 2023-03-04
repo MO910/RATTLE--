@@ -1,15 +1,16 @@
 <template lang="pug">
-//- v-overlay.datePickerOverlay(v-model="overlay" persistent :scrim='false')
-//- v-container
+//- https://vue3datepicker.com/
 Datepicker(
     v-model='selected'
     :enable-time-picker="false"
+    :disabled-week-days="disabledWeekDays" 
 
     :locale="$vuetify.locale.current"
     :cancelText="$vuetify.locale.t('$vuetify.cancel')"
     :selectText="$vuetify.locale.t('$vuetify.select')"
     :day-names="weekDaysShort"
-    
+    week-start=0
+
     :dark='$vuetify.theme.current.dark'
     calendar-cell-class-name="custom-cell"
     menu-class-name="custom-menu"
@@ -26,8 +27,8 @@ Datepicker(
 
 <script>
 // Stores
-import { useDatesStore } from "~/store/forms/dates";
 import { storeToRefs } from "pinia";
+import { useDatesStore } from "~/store/forms/dates";
 // components
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
@@ -40,6 +41,7 @@ export default {
         color: { default: "blue" },
         historyAction: Function,
         historyParams: Object,
+        disabledWeekDays: Array,
     },
     setup() {
         // use stores data
@@ -65,6 +67,7 @@ export default {
     mounted() {
         this.selected = this[this.selectedVar] || new Date();
         this.getHistory(this.selected);
+        console.log({ disabledWeekDays: this.disabledWeekDays });
     },
     components: { Datepicker },
     computed: {
