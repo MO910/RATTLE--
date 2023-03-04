@@ -123,4 +123,6 @@ export default {
     male: "ذكر",
     female: "انثى",
     addStudent: "اضف طالب",
+    createGroup: "انشئ مجموعة",
+    create: "انشئ",
 };

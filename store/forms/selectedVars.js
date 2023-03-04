@@ -8,6 +8,7 @@ export const useSelectedVarsStore = defineStore("selectedVars", {
         surahIndex: 0,
         has_rabt: false,
         days_selected: [0],
+        add_group_days_selected: [0],
         // events
         fromSurahIndex: null,
         toSurahIndex: null,

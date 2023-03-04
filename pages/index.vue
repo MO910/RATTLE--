@@ -1,22 +1,31 @@
 <template lang="pug">
 v-container
+    //- title
     v-row
         v-col.text-h3 {{$vuetify.locale.t("$vuetify.groups")}}
+    //- groups
     custom-card(
         :each='groups'
         :evalRouter='evalRouter'
         :addButton='isAdmin'
         :addAction='addAction'
     )
+    //- dialog
+    create-group-dialog
 </template>
 
 <script>
+// stores
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "~/store/auth";
 import { useGroupsStore } from "~/store/groups";
 import { useAdminStore } from "~/store/admin";
+import { useCreateGroupStore } from "~/store/admin/createGroup";
+// components
+import createGroupDialog from "~/components/admin/createGroupDialog";
 
 export default {
+    components: { createGroupDialog },
     async setup() {
         // fetch user
         definePageMeta({ middleware: ["fetch-user", "fetch-groups"] });
@@ -24,12 +33,14 @@ export default {
         const groupsStore = useGroupsStore();
         const authStore = useAuthStore();
         const adminStore = useAdminStore();
+        const createGroupStore = useCreateGroupStore();
         // return the store
         return {
             groupsStore,
             adminStore,
             ...storeToRefs(authStore),
             ...storeToRefs(groupsStore),
+            ...storeToRefs(createGroupStore),
         };
     },
     computed: {
@@ -44,9 +55,7 @@ export default {
             if (auths === "teacher") return groupId;
         },
         async addAction() {
-            await this.adminStore.createGroup({
-                title: "hello",
-            });
+            this.dialog = true;
         },
     },
 };

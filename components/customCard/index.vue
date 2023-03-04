@@ -25,7 +25,7 @@ v-row.pt-5(v-if='each?.length')
             block variant='outlined'
         ) 
             v-card-title.text-center
-                span.px-2 Add
+                span.px-2 {{$vuetify.locale.t("$vuetify.add")}}
                 v-icon mdi-plus
 //- contextmenu
 slot(name='contextmenu')

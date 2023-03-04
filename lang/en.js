@@ -105,4 +105,6 @@ export default {
     male: "male",
     female: "female",
     addStudent: "add student",
+    createGroup: "create group",
+    create: "create",
 };

@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import createGroup from "./actions/groups/createGroup";
 import getOrganization from "./actions/getOrganization";
 // mutate user
 import createUser from "./actions/user/createUser";
@@ -22,7 +21,5 @@ export const useAdminStore = defineStore("admin", {
         createUser,
         updateUser,
         removeUser,
-        // groups
-        createGroup,
     },
 });
