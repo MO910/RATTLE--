@@ -26,19 +26,32 @@ div
                     :subgroup_id='subgroup?.id'
                     :isStudent='isStudent'
                 )
-            v-col.px-0.text-h4(
-                v-if='plansOfDate.length'
-                v-for='plan in plansOfDate'
-                md='4' sm='6' xs='12'
+        //- plans
+        custom-card(
+            v-if='plansOfDate.length'
+            :each='plansOfDate'
+            :translate='true'
+            titleStyling='d-block text-center'
+            :openContext="openPlanContext"
+            v-slot="props"
+        )
+            div(
+                v-for='strings in getPlanString(props.entity, false)'
+                v-text='strings'
             )
-                v-card.mx-5(v-if='!plan.hide' :color='plan.color')
-                    v-btn(icon='mdi-delete' variant="text")
-                    v-card-title.d-block.text-center {{$vuetify.locale.t(`$vuetify.${plan.title}`)}}
-                    v-card-text(
-                        v-for='strings in getPlanString(plan, false)'
-                        v-text='strings'
-                    )
-            v-col(v-else) {{$vuetify.locale.t(`$vuetify.noPlansMsg`)}}
+        //- v-col.px-0.text-h4(
+        //-     v-if='plansOfDate.length'
+        //-     v-for='plan in plansOfDate'
+        //-     md='4' sm='6' xs='12'
+        //- )
+            v-card.mx-5(v-if='!plan.hide' :color='plan.color')
+                v-btn(icon='mdi-delete' variant="text")
+                v-card-title.d-block.text-center {{$vuetify.locale.t(`$vuetify.${plan.title}`)}}
+                v-card-text(
+                    v-for='strings in getPlanString(plan, false)'
+                    v-text='strings'
+                )
+        v-col(v-else) {{$vuetify.locale.t(`$vuetify.noPlansMsg`)}}
     //- Students of Subgroup
     v-container(v-if='subgroup?.students')
         v-row.mt-10
@@ -46,16 +59,19 @@ div
         custom-card(
             :each='subgroup.students'
             :evalTitle='fullName'
-            v-slot="{ student_id }"
+            v-slot="{ entity: student }"
+            :openContext="openStudentContext"
             :link='false' lg=6
         )
             advantage(
                 v-for='plan in eachDay'
                 :plan='plan'
-                :student_id='student_id'
+                :student_id='student.id'
             )
     //- floating student plans
     v-container(v-else)
+    //- confirm message dialog
+    student-dialogs(:plans="subgroup.plans")
 </template>
 
 <script>
@@ -64,6 +80,7 @@ import { storeToRefs } from "pinia";
 import { useGroupsStore } from "~/store/groups";
 import { useQuranStore } from "~/store/quran";
 import { useDatesStore } from "~/store/forms/dates";
+import { useCustomCardStore } from "~/store/customCard";
 // functions
 import { stringify } from "~/static/js/stringify";
 import { extractISODate } from "~/static/js/extractISODate";
@@ -71,9 +88,17 @@ import { extractISODate } from "~/static/js/extractISODate";
 import advantage from "~/components/customCard/advantage";
 import datePicker from "~/components/forms/pieces/datePicker";
 import addPlanForm from "~/components/forms/addPlanForm";
+import contextmenu from "~/components/customCard/contextmenu";
+import studentDialogs from "~/components/customCard/contextmenu/studentDialogs";
 
 export default {
-    components: { advantage, datePicker, addPlanForm },
+    components: {
+        advantage,
+        datePicker,
+        addPlanForm,
+        contextmenu,
+        studentDialogs,
+    },
     async setup() {
         // fetch user
         definePageMeta({ middleware: ["fetch-user", "fetch-groups"] });
@@ -81,8 +106,10 @@ export default {
         const groupsStore = useGroupsStore();
         const quranStore = useQuranStore();
         const datesStore = useDatesStore();
+        const customCardStore = useCustomCardStore();
         return {
             groupsStore,
+            ...storeToRefs(customCardStore),
             ...storeToRefs(groupsStore),
             ...storeToRefs(quranStore),
             ...storeToRefs(datesStore),
@@ -166,6 +193,14 @@ export default {
         },
     },
     methods: {
+        // context
+        openStudentContext() {
+            this.contextMenu.type = "student";
+            this.contextMenu.subgroups = this.course.subgroups;
+        },
+        openPlanContext() {
+            this.contextMenu.type = "plan";
+        },
         // get full name or title
         fullName(entity) {
             return `${entity.first_name} ${entity.parent_name || ""}`;

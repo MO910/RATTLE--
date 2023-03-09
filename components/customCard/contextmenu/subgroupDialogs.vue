@@ -9,7 +9,6 @@ confirm-dialog(type='transport' :action='transportAction')
         item-title="title"
         item-value="id"
         active-color="blue"
-        mandatory
     )
 </template>
 <script>

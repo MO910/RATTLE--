@@ -7,8 +7,6 @@ custom-card(
     :link='false' translate
     :description='mode == "centers"'
 )
-    template(#contextmenu)
-        contextmenu
 </template>
 
 <script>

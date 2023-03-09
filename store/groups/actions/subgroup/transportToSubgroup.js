@@ -9,6 +9,8 @@ export default async function (args) {
     console.log({ args, isFloating });
     const treeFrom = isFloating ? floatS_Path : subgroupS_path,
         treeTo = args.subgroup_id ? subgroupS_path : floatS_Path;
+
+    console.log({ treeFrom, treeTo });
     // delete args.treeTo;
     delete args.isFloating;
     const stringifyArgs = stringify(args);

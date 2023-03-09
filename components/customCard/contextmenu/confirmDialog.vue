@@ -18,7 +18,11 @@ import { storeToRefs } from "pinia";
 import { useCustomCardStore } from "~/store/customCard";
 
 export default {
-    props: ["type", "action"],
+    props: {
+        type: String,
+        action: Function,
+        closeCondition: { default: true },
+    },
     setup() {
         // use groups data
         const customCardStore = useCustomCardStore();
@@ -35,7 +39,7 @@ export default {
             await this.action();
             // stop loading and close dialog
             this.confirmDialogLoading = false;
-            this.contextMenu.dialog.show = false;
+            if (this.closeCondition) this.contextMenu.dialog.show = false;
         },
     },
 };

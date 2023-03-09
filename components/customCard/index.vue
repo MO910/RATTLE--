@@ -7,16 +7,17 @@ v-row.pt-5(v-if='each?.length')
         linkOr(:link='link' :to='folderRouter(item)')
             v-card.py-7.px-5(
                 :id='item.id'
+                :color='item.color'
                 :v-ripple='link'
                 @contextmenu.prevent='applyOpenContext($event, item)'
             )
-                v-card-title.text-h {{applyEvalTitle(item)}}
+                v-card-title(:class='titleStyling') {{applyEvalTitle(item)}}
                 v-card-text(v-if='chips')
                     v-chip.ma-2(
                         v-for='chip in evalChips(item)'
                     ) {{evalChipsTitle(chip)}}
                 v-card-text
-                    slot(:student_id='item.id')
+                    slot(:entity='item')
                 v-card-text(v-if='description') {{item.description}}
     v-col.mb-5.col-xs-12(
         v-if='addButton'
@@ -30,7 +31,8 @@ v-row.pt-5(v-if='each?.length')
                 span.px-2 {{$vuetify.locale.t("$vuetify.add")}}
                 v-icon mdi-plus
 //- contextmenu
-slot(name='contextmenu')
+contextmenu(v-if='openContext')
+//- slot(name='contextmenu')
 </template>
 
 <script>
@@ -39,15 +41,18 @@ import { storeToRefs } from "pinia";
 import { useCustomCardStore } from "~/store/customCard";
 // components
 import linkOr from "./linkOr";
+import contextmenu from "~/components/customCard/contextmenu";
 
 export default {
     props: {
         // loop array
         each: Array,
+        // color: String,
         // title
         title: { default: "title" },
         evalTitle: Function,
         translate: Boolean,
+        titleStyling: String,
         // router
         to: { default: "id" },
         evalRouter: Function,
@@ -56,8 +61,9 @@ export default {
         evalChipsTitle: Function,
         lg: { type: Number, default: 4 },
         link: { default: true },
-        openContext: Function,
         description: { default: false },
+        // contextmenu
+        openContext: Function,
         // add button
         addButton: Boolean,
         addAction: Function,
@@ -68,7 +74,7 @@ export default {
         // return the store
         return { ...storeToRefs(customCardStore) };
     },
-    components: { linkOr },
+    components: { linkOr, contextmenu },
     methods: {
         applyOpenContext(e, entity) {
             this.contextMenu.entity = entity;
@@ -85,29 +91,16 @@ export default {
             // apply
             this.openContext();
         },
-        // openContext(e) {
-        //     // reposition
-        //     $(".subgroupContextMenu").css({
-        //         top: e.clientY + "" + "px",
-        //         left: e.clientX + "px",
-        //     });
-        //     // open
-        //     this.subgroupContextMenu.show = false;
-        //     // this.subgroupContextMenu.x = e.clientX;
-        //     // this.subgroupContextMenu.y = e.clientY;
-        //     // this.updateModel(["contextmenu.entity", this.entity]);
-        //     // this.updateModel(["contextmenu.subgroups", this.subgroups]);
-        //     // this.updateModel(["contextmenu.type", this.type]);
-        //     this.$nextTick(() => {
-        //         this.subgroupContextMenu.show = true;
-        //     });
-        // },
         applyEvalTitle(item) {
             // eval title
             if (this.evalTitle) var title = this.evalTitle(item);
             else title = item[this.title];
             // translate the title
-            return this.translate ? this.$vuetify.locale.t(title) : title;
+            if (this.translate)
+                return this.$vuetify.locale.t(
+                    title.includes("$vuetify.") ? title : `$vuetify.${title}`
+                );
+            return title;
         },
         // evaluate the router if any
         folderRouter(item) {
@@ -129,7 +122,7 @@ export default {
 a .v-card, .v-btn
     height: 100%
     transition: all .5s ease
-    &:hover:not(.v-btn)
+    &:hover:not(.v-btn):not([class*='bg-'])
         background: #4c4c8b
         box-shadow: 0px 0px 14px 3px #4c4c8b70
 </style>

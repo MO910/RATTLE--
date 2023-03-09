@@ -13,57 +13,62 @@ export const useCustomCardStore = defineStore("customCard", {
             entity: {},
             subgroups: [],
         },
+        listItems: {
+            edit: {
+                title: "edit",
+                icon: "mdi-pencil",
+            },
+            remove: {
+                title: "remove",
+                icon: "mdi-trash-can-outline",
+                color: "red",
+            },
+            transport: { title: "transport", icon: "mdi-arrow-decision" },
+        },
     }),
     getters: {
         contextMenuItems() {
             let outList = [];
             // init
             if (this.contextMenu.type.match(/subgroup|user/))
-                outList = [
-                    { title: "edit", icon: "mdi-pencil" },
-                    {
-                        title: "remove",
-                        icon: "mdi-trash-can-outline",
-                        color: "red",
-                    },
-                ];
-            else if (this.contextMenu.type === "floating_student")
-                outList = [{ title: "transport", icon: "mdi-arrow-decision" }];
+                outList = [this.listItems.edit, this.listItems.remove];
+            else if (this.contextMenu.type.match(/student/))
+                outList = [this.listItems.transport];
+            else if (this.contextMenu.type === "plan")
+                outList = [this.listItems.remove];
             // add action to edit item
-            if (this.contextMenu.type === "user") {
-                outList[0].openAction = () => {
-                    // console.log("params", useRoute().params);
-                    const userFormStore = useUserFormStore();
-                    const { first_name, parent_name, email, phone } =
-                        this.contextMenu.entity;
-                    const selectedRules = this.contextMenu.entity.rules.map(
-                        (rule) =>
-                            userFormStore.userForm.rules.indexOf(rule.title)
-                    );
-                    console.log({ selectedRules });
-                    const newData = {
-                        dialog: true,
-                        edit: true,
-                        first_name,
-                        parent_name,
-                        email,
-                        phone,
-                        selectedRules,
-                        // selectedCenterId: null,
-                        // selectedGroupId: null,
-                    };
-                    userFormStore.userForm = {
-                        ...userFormStore.userForm,
-                        ...newData,
-                    };
-                };
-                // outList[0].closeAction = this.close;
-            }
+            if (this.contextMenu.type === "user")
+                outList[0].openAction = this.editAction;
             // return
             return outList;
         },
     },
     actions: {
+        editAction() {
+            // console.log("params", useRoute().params);
+            const userFormStore = useUserFormStore();
+            const { first_name, parent_name, email, phone } =
+                this.contextMenu.entity;
+            const selectedRules = this.contextMenu.entity.rules.map((rule) =>
+                userFormStore.userForm.rules.indexOf(rule.title)
+            );
+            console.log({ selectedRules });
+            const newData = {
+                dialog: true,
+                edit: true,
+                first_name,
+                parent_name,
+                email,
+                phone,
+                selectedRules,
+                // selectedCenterId: null,
+                // selectedGroupId: null,
+            };
+            userFormStore.userForm = {
+                ...userFormStore.userForm,
+                ...newData,
+            };
+        },
         close() {
             this.contextMenu.dialog.show = false;
             this.contextMenu.type = "";

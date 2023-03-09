@@ -10,8 +10,6 @@ div
                 :evalTitle='fullName'
                 :openContext="openStudentContext"
             )
-                template(#contextmenu)
-                    contextmenu
     //- Subgroups
     v-container
         div(v-if='course.subgroups')
