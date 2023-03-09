@@ -2,13 +2,6 @@
 v-container
     v-row 
         v-col.text-h3 {{ group?.title }}
-        //- add user
-        v-col
-            v-btn.mx-2(
-                @click='openAddStudentDialog'
-                color='blue' 
-                variant='outlined'
-            ) add student
         //- searching
         v-col(cols='12' v-if='mode == "users"')
             | Rules:
@@ -17,14 +10,21 @@ v-container
                 selected-class='text-blue' column multiple mandatory
             )
                 v-chip(v-for='rule in rules' filter) {{ rule }}
-        v-col(cols='12')
+        v-col(cols=12)
             v-text-field(
                 v-model="search"
-                append-icon="mdi-magnify"
                 :label="$vuetify.locale.t(`$vuetify.search`)"
                 single-line hide-details
                 variant='solo'
             )
+                template(#append)
+                    v-btn.appendBtn.mx-2(
+                        size='large'
+                        @click='openAddUserDialog()'
+                        color='blue' 
+                        variant='outlined'
+                    ) {{$vuetify.locale.t(`$vuetify.addStudent`)}}
+        v-col
     //- tabs
     v-row 
         v-col
@@ -34,18 +34,34 @@ v-container
             )
                 v-tab(v-for='tab, i in tabs' :value="i") {{tab.title}}
             v-window(v-model="activeSubTab")
-                //- v-window-item(v-for='i in [0, 1]' :value="i")
+                //- students
                 v-window-item(:value="0")
                     users(v-if='searchResults.length' :searchResults='searchResults')
-                    span(v-else) there is no users here!!
+                    empty-message(
+                        v-else-if='!allUsers.length'
+                        message='noStudentsYetMessage'
+                        btn='addStudent' :btnAction='openAddUserDialog()'
+                    )
                 v-window-item(:value="1")
                     custom-card(:each='group.courses')
                 v-window-item(:value="2") 
-                    v-card
-                        v-card-title(v-if='group.teacher') {{teacherName}}
-                        v-card-title(v-else) there is no teacher assigned for this group
+                    custom-card(
+                        :each='[group.teacher]'
+                        v-if='group.teacher'
+                        :evalTitle='fullName'
+                        :link='false'
+                    )
+                    //- v-card(v-if='group.teacher')
+                        v-card-title {{teacherName}}
+                    empty-message(
+                        v-else
+                        message='noTeacherYetMessage'
+                        btn='assignTeacher'
+                        :options='teacherOptions'
+                    )
     //- dialogs
     user-form
+    assign-teacher-dialog
     confirm-dialog(type='remove' :action='removeUser')
         span(v-html='confirmRemoveMsg')
 </template>
@@ -62,11 +78,21 @@ import { useCustomCardStore } from "~/store/customCard";
 import users from "~/components/admin/users";
 import customCard from "~/components/customCard";
 import contextmenu from "~/components/customCard/contextmenu";
+import emptyMessage from "~/components/customCard/emptyMessage";
 import userForm from "~/components/admin/userForm";
+import assignTeacherDialog from "~/components/admin/assignTeacherDialog";
 import confirmDialog from "~/components/customCard/contextmenu/confirmDialog";
 
 export default {
-    components: { users, customCard, contextmenu, userForm, confirmDialog },
+    components: {
+        users,
+        customCard,
+        emptyMessage,
+        contextmenu,
+        userForm,
+        assignTeacherDialog,
+        confirmDialog,
+    },
     async setup() {
         // fetch data middleware
         definePageMeta({
@@ -191,14 +217,33 @@ export default {
         teacherName() {
             return this.fullName(this.group.teacher);
         },
+        // assign teacher options
+        teacherOptions() {
+            return [
+                {
+                    text: "addTeacher",
+                    action: this.openAddUserDialog(true),
+                },
+                {
+                    text: "assignExistingTeacher",
+                    action: this.assignExistingTeacher,
+                },
+            ];
+        },
     },
     methods: {
-        // open dialogs actions
-        openAddStudentDialog() {
-            const { groupId } = useRoute().params;
-            this.userForm.selectedGroupId = groupId;
-            this.userForm.selectedRules = [0];
-            this.userForm.dialog = true;
+        // open user dialogs
+        openAddUserDialog(isTeacher) {
+            return () => {
+                const { groupId } = useRoute().params;
+                this.userForm.selectedGroupId = groupId;
+                this.userForm.selectedRules = [isTeacher ? 2 : 0];
+                this.userForm.dialog = true;
+            };
+        },
+        // teacher
+        assignExistingTeacher() {
+            this.assignTeacherForm.dialog = true;
         },
         // get full name or title
         fullName(entity) {
@@ -211,3 +256,10 @@ export default {
     },
 };
 </script>
+
+<style lang="sass">
+.v-input__append
+    padding: 0
+.appendBtn
+    height: 100% !important
+</style>

@@ -104,7 +104,12 @@ export default {
     parents: "parents",
     male: "male",
     female: "female",
-    addStudent: "add student",
+    addStudent: "add new student",
     createGroup: "create group",
     create: "create",
+    noTeacherYetMessage: "there is no teacher assigned to this group yet",
+    assignTeacher: "assign teacher",
+    noStudentsYetMessage: "there is no students in this group",
+    addTeacher: "create new teacher",
+    assignExistingTeacher: "assign existing teacher",
 };

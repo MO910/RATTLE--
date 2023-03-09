@@ -131,14 +131,6 @@ export default {
         variant: "outlined",
         selection: null,
     }),
-    mounted() {
-        // const { groupId } = useRoute().params;
-        // for (let auth of this.groupsTree) {
-        //     if (this.user[auth[0]].find(checkGroup))
-        //         authStore.authorizationForCurrentGroup.push(auth[1]);
-        // }
-        // this.user.groupsAsAdmin;
-    },
     computed: {
         cardTitle() {
             if (this.userForm.selectedRules.includes(0))
@@ -213,7 +205,8 @@ export default {
             if (this.userForm.edit) {
                 await this.adminStore.updateUser(args);
             } else {
-                await this.adminStore.createUser(args);
+                console.log({ args });
+                // await this.adminStore.createUser(args);
             }
             // stop loading and close dialog
             this.userForm.loading = false;

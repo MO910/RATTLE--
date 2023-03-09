@@ -17,19 +17,8 @@ export const useUserFormStore = defineStore("userForm", {
             rules: ["student", "parent", "teacher", "admin"],
             selectedRules: [],
         },
+        assignTeacherForm: {
+            dialog: false,
+        },
     }),
-    // getters: {
-    //     genders() {
-    //         return [
-    //             {
-    //                 title: this.$vuetify.locale.t("$vuetify.male"),
-    //                 value: "male",
-    //             },
-    //             {
-    //                 title: this.$vuetify.locale.t("$vuetify.female"),
-    //                 value: "female",
-    //             },
-    //         ];
-    //     },
-    // },
 });

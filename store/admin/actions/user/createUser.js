@@ -10,10 +10,14 @@ export default async function (args) {
     const tree = args.tree,
         targetArray = args.targetArray,
         rules = [...args.rules];
-    console.log({ args, tree });
+    // console.log({ args, tree });
     args.rules = args.rules.map((rule) => rule.title);
     delete args.tree;
     delete args.targetArray;
+    //
+    if (args.rules.includes("teacher")) {
+        targetArray = "teacher";
+    }
     // generate a random password if there is null passed
     args.password = args.password || randomPassword();
     //  stringify

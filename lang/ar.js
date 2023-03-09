@@ -122,7 +122,12 @@ export default {
     parents: "اولياء الامور",
     male: "ذكر",
     female: "انثى",
-    addStudent: "اضف طالب",
+    addStudent: "اضف طالب جديد",
     createGroup: "انشئ مجموعة",
     create: "انشئ",
+    noTeacherYetMessage: "لم يتم تعيين معلم لهذه المجموعة بعد",
+    assignTeacher: "تعيين معلم",
+    noStudentsYetMessage: "لم يتم اضافة طلاب الى هذه المجموعة",
+    addTeacher: "اضف معلم جديد",
+    assignExistingTeacher: "تعيين معلم موجود",
 };

@@ -13,7 +13,7 @@ export default async function (args) {
     async function addCourse(groupId) {
         const mutation = gql`
             mutation { 
-                createCourse(title: "qquran", group_id: "${groupId}") {
+                createCourse(title: "quran", group_id: "${groupId}") {
                     id
                     title
                     description
