@@ -10,6 +10,7 @@ const groupsAsAdmin = require("./types/shared/groupsAsAdmin"),
     groupsAsParticipant = require("./types/shared/groupsAsParticipant"),
     // user
     User_type = require("./types/Users/User"),
+    ShortUser_type = require("./types/Users/ShortUser"),
     Users_schema = require("../models/Users/Users"),
     Rules_schema = require("../models/Users/Rules"),
     // Attendance
@@ -102,17 +103,24 @@ const query = new GraphQLObjectType({
                     return students;
                 },
             },
+            organizationTeachers: {
+                type: new GraphQLList(ShortUser_type),
+                args: { organization_id: { type: GraphQLID } },
+                async resolve(_, { organization_id }) {
+                    const teacherRule = await rulesConverter({
+                        rules: ["teacher"],
+                    });
+                    console.log({ teacherRule });
+                    return await Users_schema.find({
+                        organization_id,
+                        rule_ids: { $in: teacherRule },
+                    });
+                },
+            },
             // groups
             groupsAsAdmin: groupsAsAdminQuery,
             groupsAsTeacher: groupsAsTeacherQuery,
             groupsAsParticipant: groupsAsParticipantQuery,
-            // groups: {
-            //     type: new GraphQLList(Group_type),
-            //     args: { userId: { type: GraphQLID } },
-            //     async resolve(_, { userId }) {
-            //         return await Groups_schema.find({ teacher_id: userId });
-            //     },
-            // },
             organization: {
                 type: Organization_type,
                 args: { userId: { type: GraphQLID } },

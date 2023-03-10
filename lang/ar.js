@@ -1,4 +1,6 @@
 export default {
+    home: "الرئيسية",
+    exams: "الاختبارات",
     subjects: "المقررات",
     attend: "الغياب",
     quran: "قرآن",
@@ -46,6 +48,7 @@ export default {
     date: "التاريخ",
     // titles
     teachers: "المعلمين",
+    teacher: "المعلم",
     students: "الطلاب",
     student: "الطالب",
     centers: "المراكز",

@@ -2,6 +2,12 @@
 v-container
     v-row 
         v-col.text-h3 {{ group?.title }}
+        v-col.d-flex.justify-end.align-center
+            v-btn(
+                @click='openGroupSettingsDialog'
+                color='transparent'  size='x-large' icon 
+            ) 
+                v-icon mdi-cog
         //- searching
         v-col(cols='12' v-if='mode == "users"')
             | Rules:
@@ -20,7 +26,7 @@ v-container
                 template(#append)
                     v-btn.appendBtn.mx-2(
                         size='large'
-                        @click='openAddUserDialog()'
+                        @click='openAddUserDialog()()'
                         color='blue' 
                         variant='outlined'
                     ) {{$vuetify.locale.t(`$vuetify.addStudent`)}}
@@ -32,36 +38,45 @@ v-container
                 v-model="activeSubTab"
                 align-tabs="end" grow
             )
-                v-tab(v-for='tab, i in tabs' :value="i") {{tab.title}}
+                v-tab(v-for='tab, i in tabs' :value="i") {{$vuetify.locale.t(`$vuetify.${tab}`)}}
             v-window(v-model="activeSubTab")
                 //- students
                 v-window-item(:value="0")
-                    users(v-if='searchResults.length' :searchResults='searchResults')
+                    users(
+                        v-if='searchResults.length'
+                        :searchResults='searchResults'
+                        :addAction='openAddUserDialog()'
+                    )
                     empty-message(
                         v-else-if='!allUsers.length'
                         message='noStudentsYetMessage'
-                        btn='addStudent' :btnAction='openAddUserDialog()'
+                        btn='addStudent'
+                        :options='studentOptions'
                     )
-                v-window-item(:value="1")
-                    custom-card(:each='group.courses')
-                v-window-item(:value="2") 
-                    custom-card(
-                        :each='[group.teacher]'
-                        v-if='group.teacher'
-                        :evalTitle='fullName'
-                        :link='false'
-                    )
-                    //- v-card(v-if='group.teacher')
-                        v-card-title {{teacherName}}
-                    empty-message(
-                        v-else
-                        message='noTeacherYetMessage'
-                        btn='assignTeacher'
-                        :options='teacherOptions'
-                    )
+                v-window-item(v-for='_, i in (tabs.slice(1))' :value="i + 1")
+                    soon
+                //- div
+                    //- courses
+                    v-window-item(:value="1")
+                        custom-card(:each='group.courses')
+                    //- teachers in about
+                    v-window-item(:value="2") 
+                        custom-card(
+                            :each='group.teacher'
+                            v-if='group.teacher.length'
+                            :evalTitle='fullName'
+                            :link='false'
+                        )
+                        empty-message(
+                            v-else
+                            message='noTeacherYetMessage'
+                            btn='assignTeacher'
+                            :options='teacherOptions'
+                        )
     //- dialogs
     user-form
     assign-teacher-dialog
+    group-settings-dialog(:addTeacherAction='openAddUserDialog(true)')
     confirm-dialog(type='remove' :action='removeUser')
         span(v-html='confirmRemoveMsg')
 </template>
@@ -81,6 +96,7 @@ import contextmenu from "~/components/customCard/contextmenu";
 import emptyMessage from "~/components/customCard/emptyMessage";
 import userForm from "~/components/admin/userForm";
 import assignTeacherDialog from "~/components/admin/assignTeacherDialog";
+import groupSettingsDialog from "~/components/admin/groupSettingsDialog";
 import confirmDialog from "~/components/customCard/contextmenu/confirmDialog";
 
 export default {
@@ -90,6 +106,7 @@ export default {
         emptyMessage,
         contextmenu,
         userForm,
+        groupSettingsDialog,
         assignTeacherDialog,
         confirmDialog,
     },
@@ -117,6 +134,7 @@ export default {
     data() {
         return {
             search: "",
+            tabs: ["students", "parents", "subjects", "about"],
         };
     },
     computed: {
@@ -124,53 +142,6 @@ export default {
         group() {
             const { groupId } = useRoute().params;
             return this.groupsAsAdmin?.filter((g) => g.id == groupId)[0];
-        },
-        // course() {
-        //     const { courseId } = useRoute().params;
-        //     return this.group?.courses?.find((s) => s.id == courseId);
-        // },
-        // tabs
-        tabs() {
-            return [
-                {
-                    title: this.$vuetify.locale.t("$vuetify.students"),
-                    value: "student",
-                },
-                {
-                    title: this.$vuetify.locale.t("$vuetify.subjects"),
-                    value: "subject",
-                },
-                // {
-                //     title: this.$vuetify.locale.t("$vuetify.parents"),
-                //     value: "parent",
-                // },
-                {
-                    title: this.$vuetify.locale.t("$vuetify.about"),
-                    value: "about",
-                },
-            ];
-            return [
-                {
-                    title: this.$vuetify.locale.t("$vuetify.groups"),
-                    tabs: [
-                        {
-                            title: this.$vuetify.locale.t("$vuetify.students"),
-                        },
-                        {
-                            title: this.$vuetify.locale.t("$vuetify.subjects"),
-                        },
-                        {
-                            title: this.$vuetify.locale.t("$vuetify.about"),
-                        },
-                    ],
-                },
-                {
-                    title: this.$vuetify.locale.t("$vuetify.plans"),
-                },
-                {
-                    title: this.$vuetify.locale.t("$vuetify.competitions"),
-                },
-            ];
         },
         //
         allUsers() {
@@ -189,11 +160,10 @@ export default {
             return allUsers.flat();
         },
         searchResults() {
-            console.log({ allUsers: this.allUsers });
             //search by rules
             let results = this.allUsers.filter((user) =>
-                user.rules.some(
-                    (rule) => this.tabs[this.activeSubTab].value === rule.title
+                user.rules.some((rule) =>
+                    this.tabs[this.activeSubTab].includes(rule.title)
                 )
             );
             // search by name
@@ -230,10 +200,14 @@ export default {
                 },
             ];
         },
+        studentOptions() {
+            return [{ action: this.openAddUserDialog() }];
+        },
     },
     methods: {
         // open user dialogs
         openAddUserDialog(isTeacher) {
+            console.log({ isTeacher });
             return () => {
                 const { groupId } = useRoute().params;
                 this.userForm.selectedGroupId = groupId;
@@ -244,6 +218,9 @@ export default {
         // teacher
         assignExistingTeacher() {
             this.assignTeacherForm.dialog = true;
+        },
+        openGroupSettingsDialog() {
+            this.groupSettingsDialog = true;
         },
         // get full name or title
         fullName(entity) {

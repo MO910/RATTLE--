@@ -195,19 +195,14 @@ export default {
                         title,
                     })),
                     tree: ["groupsAsAdmin"],
-                    targetArray: "courses[0].floatingStudents",
                 };
             // prepare the tree
             // args.tree = this.groupsStore.checkAuthForGroup(
             //     this.userForm.selectedGroupId
             // );
             // do action
-            if (this.userForm.edit) {
-                await this.adminStore.updateUser(args);
-            } else {
-                console.log({ args });
-                // await this.adminStore.createUser(args);
-            }
+            if (this.userForm.edit) await this.adminStore.updateUser(args);
+            else await this.adminStore.createUser(args);
             // stop loading and close dialog
             this.userForm.loading = false;
             this.close();

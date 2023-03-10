@@ -26,9 +26,9 @@ module.exports = new GraphQLObjectType({
         working_days: { type: new GraphQLList(GraphQLInt) },
         description: { type: GraphQLString },
         teacher: {
-            type: ShortUser_type,
+            type: new GraphQLList(ShortUser_type),
             async resolve({ teacher_id }) {
-                return await Users_schema.findById(teacher_id);
+                return [await Users_schema.findById(teacher_id)];
             },
         },
         courses: {

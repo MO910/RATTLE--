@@ -1,4 +1,6 @@
 export default {
+    home: "home",
+    exams: "exams",
     subjects: "subjects",
     attend: "attend",
     quran: "quran",
@@ -29,6 +31,7 @@ export default {
     date: "date",
     // titles
     teachers: "teachers",
+    teacher: "teacher",
     students: "students",
     student: "student",
     centers: "centers",

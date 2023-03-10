@@ -1,7 +1,7 @@
 <template lang="pug">
 v-row.pt-5(v-if='each?.length')
     v-col.mb-5.col-xs-12(
-        :lg='lg' md='6' sm='12'
+        :lg='lg' :md='md' sm=12
         v-for='item in each'
     )
         linkOr(:link='link' :to='folderRouter(item)')
@@ -10,6 +10,7 @@ v-row.pt-5(v-if='each?.length')
                 :color='item.color'
                 :v-ripple='link'
                 @contextmenu.prevent='applyOpenContext($event, item)'
+                @click='clickEvent(item)'
             )
                 v-card-title(:class='titleStyling') {{applyEvalTitle(item)}}
                 v-card-text(v-if='chips')
@@ -19,9 +20,10 @@ v-row.pt-5(v-if='each?.length')
                 v-card-text
                     slot(:entity='item')
                 v-card-text(v-if='description') {{item.description}}
+    //- add new entity card
     v-col.mb-5.col-xs-12(
         v-if='addButton'
-        :lg='lg' md='6' sm='12'
+        :lg='lg' :md='md' sm=12
     )
         v-btn.add.py-7.px-5(
             @click='addAction'
@@ -59,14 +61,18 @@ export default {
         // chips
         chips: String,
         evalChipsTitle: Function,
-        lg: { type: Number, default: 4 },
         link: { default: true },
         description: { default: false },
+        // sizes
+        lg: { type: Number, default: 4 },
+        md: { type: Number, default: 6 },
         // contextmenu
         openContext: Function,
         // add button
         addButton: Boolean,
         addAction: Function,
+
+        clickEvent: Function,
     },
     setup() {
         // use groups data
