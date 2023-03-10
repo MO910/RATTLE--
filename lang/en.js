@@ -6,6 +6,7 @@ export default {
     quran: "quran",
     group: "group",
     subgroup: "subgroup",
+    advantage: "advantage",
     // organization
     creatingOrganization: "creating organization",
     organizationName: "organization name",
@@ -81,6 +82,7 @@ export default {
     settings: "settings",
     dark_mode: "dark_mode",
     logout: "logout",
+    login: "login",
     //
     attendance_status: "attendance_status",
     note: "note",

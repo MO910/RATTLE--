@@ -4,10 +4,15 @@ v-container
         v-col.text-h3 {{ group?.title }}
         v-col.d-flex.justify-end.align-center
             v-btn(
+                color='blue-darken-3' size='large' prepend-icon="mdi-human-male-board"
+                nuxt :to='teacherModeURL'
+            ) وضع المعلم
+            v-btn.ms-5(
                 @click='openGroupSettingsDialog'
-                color='transparent'  size='x-large' icon 
-            ) 
-                v-icon mdi-cog
+                size='large' variant='outlined'
+                prepend-icon='mdi-cog'
+            ) الاعدادات
+        v-col(cols='12')
         //- searching
         v-col(cols='12' v-if='mode == "users"')
             | Rules:
@@ -24,7 +29,7 @@ v-container
                 variant='solo'
             )
                 template(#append)
-                    v-btn.appendBtn.mx-2(
+                    v-btn.appendBtn.ms-2(
                         size='large'
                         @click='openAddUserDialog()()'
                         color='blue' 
@@ -202,6 +207,10 @@ export default {
         },
         studentOptions() {
             return [{ action: this.openAddUserDialog() }];
+        },
+        teacherModeURL() {
+            const { groupId } = useRoute().params;
+            return `/${groupId}`;
         },
     },
     methods: {

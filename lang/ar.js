@@ -3,9 +3,10 @@ export default {
     exams: "الاختبارات",
     subjects: "المقررات",
     attend: "الغياب",
-    quran: "قرآن",
+    quran: "القرآن",
     group: "مجموعة",
     subgroup: "مجموعة فرعية",
+    advantage: "التقدم",
     // organization
     creatingOrganization: "انشاء منظمة",
     organizationName: "اسم المنظمة",
@@ -98,6 +99,7 @@ export default {
     settings: "الاعدادات",
     dark_mode: "الوضع الليلي",
     logout: "تسجيل خروج",
+    login: "تسجيل الدخول",
     //
     attendance_status: "حالة الحضور",
     note: "ملاحظة",

@@ -1,13 +1,13 @@
 <template lang="pug">
 v-container
-    manage-group-btn
+    //- manage-group-btn
     //- teacher
-    template(v-if='authorizationForCurrentGroup?.includes("teacher")')
+    template(v-if='hasAuth')
         v-row
-            v-col(cols=12) 
+            //- v-col(cols=12) 
                 v-btn(to='attendance' nuxt) {{$vuetify.locale.t("$vuetify.attend")}}
             v-col.text-h3(cols=12) {{$vuetify.locale.t("$vuetify.subjects")}}
-        custom-card(:each='courses' to='to')
+        custom-card(:each='courses' to='to' translate titleStyling='text-h4')
 </template>
 
 <script>
@@ -68,6 +68,14 @@ export default {
                     to: "attendance",
                 },
             ];
+        },
+        hasAuth() {
+            console.log({
+                authorizationForCurrentGroup: this.authorizationForCurrentGroup,
+            });
+            return this.authorizationForCurrentGroup?.some((rule) =>
+                rule.match(/(teacher)|(owner)|(admin)/i)
+            );
         },
     },
 };

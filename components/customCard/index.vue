@@ -10,8 +10,8 @@ v-row.pt-5(v-if='each?.length')
                 :color='item.color'
                 :v-ripple='link'
                 @contextmenu.prevent='applyOpenContext($event, item)'
-                @click='clickEvent(item)'
             )
+                //- @click='clickEvent(item)'
                 v-card-title(:class='titleStyling') {{applyEvalTitle(item)}}
                 v-card-text(v-if='chips')
                     v-chip.ma-2(

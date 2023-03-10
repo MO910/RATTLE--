@@ -62,6 +62,10 @@ export default {
             ...storeToRefs(selectedVarsStore),
         };
     },
+    data: () => ({
+        title: "",
+        description: "",
+    }),
     computed: {
         days() {
             return JSON.parse(this.$vuetify.locale.t("$vuetify.weekDays"));
@@ -70,7 +74,9 @@ export default {
     methods: {
         create() {
             this.createGroupStore.createGroup({
-                title: "hello",
+                title: this.title,
+                description: this.description,
+                working_days: this.add_group_days_selected,
             });
         },
     },

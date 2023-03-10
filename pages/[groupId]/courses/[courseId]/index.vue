@@ -1,7 +1,7 @@
 <template lang="pug">
 div
     //- Floating Students
-    manage-group-btn
+    //- manage-group-btn
     v-container
         div(v-if='floatingStudentsExists')
             v-col.text-h3(cols='12') الطلاب

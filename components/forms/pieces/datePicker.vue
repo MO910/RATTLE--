@@ -107,4 +107,7 @@ export default {
 .v-overlay.datePickerOverlay
     pointer-events: all
     backdrop-filter: blur(3px)
+.dp__main
+    > *, .v-btn
+        height: 100%
 </style>

@@ -1,13 +1,14 @@
 <template lang="pug">
 div
-    //- v-container 
-    date-picker(
-        :historyAction='groupsStore.getSubgroupHistoryAtDate'
-        :historyParams='historyParams'
-        :disabledWeekDays='disabledWeekDays'
-    )
     //- Plans
-    v-container 
+    v-container
+        v-row
+            v-col.text-h2 {{title}}
+            v-col.d-flex.justify-end
+                date-picker(
+                    :historyAction='groupsStore.getSubgroupHistoryAtDate'
+                    :historyParams='historyParams'
+                )
         v-row.mt-10
             v-col(cols='12')
                 NuxtLink(:to='calendarRouter')
@@ -53,7 +54,7 @@ div
                 )
         v-col(v-else) {{$vuetify.locale.t(`$vuetify.noPlansMsg`)}}
     //- Students of Subgroup
-    v-container(v-if='subgroup?.students')
+    v-container(v-if='!isStudent')
         v-row.mt-10
             v-col.text-h4(cols='12') {{$vuetify.locale.t('$vuetify.students')}}
         custom-card(
@@ -69,7 +70,16 @@ div
                 :student_id='student.id'
             )
     //- floating student plans
-    v-container(v-else)
+    v-container(v-else-if='eachDay.length') 
+        v-row.mt-10
+            v-col.text-h4(cols=12) {{$vuetify.locale.t('$vuetify.advantage')}}
+            v-col(cols=12)
+                v-card.px-5.py-8
+                    advantage(
+                        v-for='plan in eachDay'
+                        :plan='plan'
+                        :student_id='subgroup.id'
+                    )
     //- confirm message dialog
     student-dialogs(:plans="subgroup.plans")
 </template>
@@ -119,7 +129,9 @@ export default {
         isStudent: null,
         overlay: false,
     }),
-    mounted() {},
+    mounted() {
+        console.log({ subgroup: this.subgroup });
+    },
     computed: {
         group() {
             const { groupId } = useRoute().params;
@@ -140,6 +152,12 @@ export default {
                     );
             this.isStudent = !sub;
             return student;
+        },
+        // page title
+        title() {
+            return this.isStudent
+                ? this.fullName(this.subgroup)
+                : this.subgroup.title;
         },
         // get this day plans
         plansOfDate() {

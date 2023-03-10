@@ -38,6 +38,7 @@ import { verseKeyToName } from "~/static/js/stringify";
 import { extractISODate } from "~/static/js/extractISODate";
 
 export default {
+    props: { plan: Object, student_id: String, divider: { default: true } },
     setup(props) {
         // use stores data
         const groupsStore = useGroupsStore();
@@ -106,8 +107,6 @@ export default {
             ...storeToRefs(quranStore),
         };
     },
-    data: () => ({}),
-    props: ["plan", "student_id", "divider"],
     computed: {
         // verse
         versesKeys() {
