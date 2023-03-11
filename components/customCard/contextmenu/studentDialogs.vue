@@ -37,7 +37,7 @@ import confirmDialog from "~/components/customCard/contextmenu/confirmDialog";
 import addSubgroupDialog from "~/components/forms/addSubgroupDialog";
 
 export default {
-    props: ["plans"],
+    props: ["plans", "isStudent"],
     setup() {
         // use groups data
         const groupsStore = useGroupsStore();
@@ -88,13 +88,12 @@ export default {
         select(selected) {
             this.selectedSubgroupId = selected[0];
         },
-        // actions
-        async removePlan(force) {
-            const { courseId: course_id } = this.$route.params;
-            // do action
+        // remove plan
+        async removePlan() {
             await this.plansStore.removePlan({
                 id: this.contextMenu.entity.id,
                 force: !!this.removePlanResponse,
+                isStudent: this.isStudent,
             });
         },
         async transportAction() {
@@ -112,14 +111,6 @@ export default {
                 // guid ones
                 isFloating,
             });
-        },
-        async doAction(callBack) {
-            // this.confirmDialogLoading = true;
-            // do action
-            await callBack();
-            // stop loading and close dialog
-            // this.confirmDialogLoading = false;
-            // this.contextMenu.dialog.show = false;
         },
     },
 };

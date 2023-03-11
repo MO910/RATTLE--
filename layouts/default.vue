@@ -56,8 +56,11 @@ export default {
                     to: "/soon",
                 },
                 {
-                    icon: "mdi-home",
                     title: this.$vuetify.locale.t("$vuetify.exams"),
+                    to: "/soon",
+                },
+                {
+                    title: this.$vuetify.locale.t("$vuetify.analysis"),
                     to: "/soon",
                 },
             ];

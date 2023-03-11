@@ -1,5 +1,6 @@
 export default {
     home: "الرئيسية",
+    analysis: "التحليلات",
     exams: "الاختبارات",
     subjects: "المقررات",
     attend: "الغياب",

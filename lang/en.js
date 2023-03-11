@@ -1,5 +1,6 @@
 export default {
     home: "home",
+    analysis: "analysis",
     exams: "exams",
     subjects: "subjects",
     attend: "attend",

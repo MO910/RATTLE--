@@ -1,8 +1,10 @@
 import Optimistic from "~/store/functions/Optimistic";
 import { useGroupsStore } from "~/store/groups";
 
-export default async function ({ id, force }) {
-    const groupsStore = useGroupsStore();
+export default async function ({ id, force, isStudent }) {
+    const groupsStore = useGroupsStore(),
+        tree = ["groups", "courses", "subgroups", "plans"];
+    if (isStudent) tree[2] = "floatingStudents";
     // repair query
     async function request() {
         const mutation = gql`
@@ -54,7 +56,7 @@ export default async function ({ id, force }) {
     const [path, __, response] = await optimistic.remove({
         id,
         callbackAfter,
-        tree: ["groups", "courses", "subgroups", "plans"],
+        tree,
     });
     console.log({ path, __, response });
     // remove rabt plan

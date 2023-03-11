@@ -10,9 +10,12 @@ v-dialog(
     transition="scale-transition"
 )
     v-card
-        v-card-title.text-h5.text-capitalize.d-inline-block {{$vuetify.locale.t('$vuetify.addPlan')}}
-        //- color picker
-        color-picker(:colors='colors' selectedVar='color')
+        v-card-title.text-h5.text-capitalize.d-inline-block
+            v-row.pt-3
+                v-col {{$vuetify.locale.t('$vuetify.addPlan')}}
+                //- color picker
+                v-col.d-flex.justify-end
+                    color-picker(:colors='colors' selectedVar='color')
         //- text field
         v-card-text
             v-form(:disabled='loading')
@@ -23,11 +26,11 @@ v-dialog(
                     :each='types'
                 )
                 //- select plan direction
-                btn-toggle-row(
-                    title='$vuetify.direction'
-                    selectedVar='direction'
-                    :each='directions'
-                )
+                //- btn-toggle-row(
+                //-     title='$vuetify.direction'
+                //-     selectedVar='direction'
+                //-     :each='directions'
+                //- )
                 //- select surah
                 select-with-search(
                     :label="$vuetify.locale.t('$vuetify.surah')"
@@ -65,7 +68,7 @@ v-dialog(
                             :init='pagesValue || 1'
                         )
                 //- rabt
-                v-row
+                //- v-row
                     v-col(cols='12')
                         v-divider
                     v-col.text-h6(cols='12')

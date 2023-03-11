@@ -81,7 +81,7 @@ div
                         :student_id='subgroup.id'
                     )
     //- confirm message dialog
-    student-dialogs(:plans="subgroup.plans")
+    student-dialogs(:plans="subgroup.plans" :isStudent="isStudent")
 </template>
 
 <script>
