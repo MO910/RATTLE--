@@ -30,7 +30,9 @@ export const useCustomCardStore = defineStore("customCard", {
         contextMenuItems() {
             let outList = [];
             // init
-            if (this.contextMenu.type.match(/subgroup|user/))
+            if (this.contextMenu.type.match(/subgroup/))
+                outList = [this.listItems.remove];
+            else if (this.contextMenu.type.match(/user/))
                 outList = [this.listItems.edit, this.listItems.remove];
             else if (this.contextMenu.type.match(/student/))
                 outList = [this.listItems.transport];

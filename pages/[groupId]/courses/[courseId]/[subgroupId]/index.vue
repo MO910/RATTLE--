@@ -1,13 +1,15 @@
 <template lang="pug">
 div
+    group-heading-row
     //- Plans
     v-container
         v-row
-            v-col.text-h2 {{title}}
+            v-col.text-h3 {{title}}
             v-col.d-flex.justify-end
                 date-picker(
                     :historyAction='groupsStore.getSubgroupHistoryAtDate'
                     :historyParams='historyParams'
+                    btnStyle='fullHeight'
                 )
         v-row.mt-10
             v-col(cols='12')
@@ -100,6 +102,7 @@ import datePicker from "~/components/forms/pieces/datePicker";
 import addPlanForm from "~/components/forms/addPlanForm";
 import contextmenu from "~/components/customCard/contextmenu";
 import studentDialogs from "~/components/customCard/contextmenu/studentDialogs";
+import groupHeadingRow from "~/components/admin/group/groupHeadingRow";
 
 export default {
     components: {
@@ -108,10 +111,13 @@ export default {
         addPlanForm,
         contextmenu,
         studentDialogs,
+        groupHeadingRow,
     },
     async setup() {
         // fetch user
-        definePageMeta({ middleware: ["fetch-user", "fetch-groups"] });
+        definePageMeta({
+            middleware: ["fetch-user", "fetch-groups", "has-auth"],
+        });
         // use stores data
         const groupsStore = useGroupsStore();
         const quranStore = useQuranStore();

@@ -1,10 +1,10 @@
 <template lang="pug">
 div
     //- Floating Students
-    //- manage-group-btn
+    group-heading-row
     v-container
         div(v-if='floatingStudentsExists')
-            v-col.text-h3(cols='12') الطلاب
+            v-col.text-h4(cols='12') الطلاب
             custom-card(
                 :each='course.floatingStudents'
                 :evalTitle='fullName'
@@ -13,7 +13,7 @@ div
     //- Subgroups
     v-container
         div(v-if='course.subgroups')
-            v-col.text-h3(cols='12') المجموعات الفرعية
+            v-col.text-h4(cols='12') المجموعات الفرعية
             v-btn.mx-5(
                 @click='addSubgroupDialog = true'
                 color='success' icon 
@@ -41,13 +41,20 @@ import { useCustomCardStore } from "~/store/customCard";
 import contextmenu from "~/components/customCard/contextmenu";
 import confirmDialog from "~/components/customCard/contextmenu/confirmDialog";
 import subgroupDialogs from "~/components/customCard/contextmenu/subgroupDialogs";
-import manageGroupBtn from "~/components/admin/manageGroupBtn";
+import groupHeadingRow from "~/components/admin/group/groupHeadingRow";
 
 export default {
-    components: { contextmenu, confirmDialog, subgroupDialogs, manageGroupBtn },
+    components: {
+        contextmenu,
+        confirmDialog,
+        subgroupDialogs,
+        groupHeadingRow,
+    },
     async setup() {
         // fetch user
-        definePageMeta({ middleware: ["fetch-user", "fetch-groups"] });
+        definePageMeta({
+            middleware: ["fetch-user", "fetch-groups", "has-auth"],
+        });
         // use store
         const groupsStore = useGroupsStore();
         const customCardStore = useCustomCardStore();

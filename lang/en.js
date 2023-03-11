@@ -118,4 +118,5 @@ export default {
     noStudentsYetMessage: "there is no students in this group",
     addTeacher: "create new teacher",
     assignExistingTeacher: "assign existing teacher",
+    manageGroup: "manage group",
 };

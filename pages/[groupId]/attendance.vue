@@ -1,5 +1,6 @@
 <template lang="pug">
 v-container
+    group-heading-row
     v-row.mt-8
         v-col(cols='12')
             date-picker(
@@ -15,7 +16,7 @@ v-container
         v-col(cols='12' v-else)
             v-card.mb-8.px-6(v-for='student, si in selectedDateHistory')
                 v-row
-                    v-col(cols='4').d-flex.align-center {{student.first_name}}
+                    v-col(cols='4').d-flex.align-center {{fullName(student)}}
                     v-col(cols='3').d-flex.align-center.justify-space-between
                         v-btn(
                             v-for='state, i in status'
@@ -38,7 +39,6 @@ v-container
                             :placeholder="$vuetify.locale.t(`$vuetify.typeYourNote`)"
                             :hint='noteStatus'
                         )
-
 </template>
 
 <script>
@@ -47,13 +47,16 @@ import { storeToRefs } from "pinia";
 import { useGroupsStore } from "~/store/groups";
 import { useDatesStore } from "~/store/forms/dates";
 // components
+import groupHeadingRow from "~/components/admin/group/groupHeadingRow";
 import datePicker from "~/components/forms/pieces/datePicker";
 
 export default {
-    components: { datePicker },
+    components: { groupHeadingRow, datePicker },
     setup() {
         // fetch user
-        // definePageMeta({ middleware: "fetch-user" });
+        definePageMeta({
+            middleware: ["fetch-user", "fetch-groups", "has-auth"],
+        });
         // use groups data
         const groupsStore = useGroupsStore();
         const datesStore = useDatesStore();
@@ -98,9 +101,6 @@ export default {
             },
         ],
     }),
-    mounted() {
-        console.log(this.fetching);
-    },
     computed: {
         historyParams() {
             const { groupId: group_id } = useRoute().params;
@@ -145,6 +145,10 @@ export default {
                 });
                 this.noteStatus = "saved";
             });
+        },
+        // get full name or entity
+        fullName(entity) {
+            return `${entity.first_name} ${entity.parent_name || ""}`;
         },
     },
 };

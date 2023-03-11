@@ -20,7 +20,7 @@ Datepicker(
     @closed="overlay = false"
 )
     template(#trigger)
-        v-btn(:color='color' flat)
+        v-btn(:color='color' flat :class='btnStyle')
             v-icon mdi-calendar
             span.mx-3 {{dateStyled}}
 </template>
@@ -42,6 +42,7 @@ export default {
         historyAction: Function,
         historyParams: Object,
         disabledWeekDays: Array,
+        btnStyle: String,
     },
     setup() {
         // use stores data
@@ -108,6 +109,6 @@ export default {
     pointer-events: all
     backdrop-filter: blur(3px)
 .dp__main
-    > *, .v-btn
+    > *, .v-btn.fullHeight
         height: 100%
 </style>

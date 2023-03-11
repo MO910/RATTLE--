@@ -1,12 +1,10 @@
 <template lang="pug">
 v-container
-    //- manage-group-btn
+    group-heading-row
     //- teacher
     template(v-if='hasAuth')
         v-row
-            //- v-col(cols=12) 
-                v-btn(to='attendance' nuxt) {{$vuetify.locale.t("$vuetify.attend")}}
-            v-col.text-h3(cols=12) {{$vuetify.locale.t("$vuetify.subjects")}}
+            v-col.text-h4(cols=12) {{$vuetify.locale.t("$vuetify.subjects")}}
         custom-card(:each='courses' to='to' translate titleStyling='text-h4')
 </template>
 
@@ -16,10 +14,10 @@ import { storeToRefs } from "pinia";
 import { useAuthStore } from "~/store/auth";
 import { useGroupsStore } from "~/store/groups";
 // components
-import manageGroupBtn from "~/components/admin/manageGroupBtn";
+import groupHeadingRow from "~/components/admin/group/groupHeadingRow";
 
 export default {
-    components: { manageGroupBtn },
+    components: { groupHeadingRow },
     async setup() {
         // fetch user
         definePageMeta({

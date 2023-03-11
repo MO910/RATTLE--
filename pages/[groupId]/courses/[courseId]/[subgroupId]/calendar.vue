@@ -1,5 +1,6 @@
 <template lang="pug">
 v-container
+    group-heading-row
     custom-calendar(
         :updateEvents='updateEvents'
         :editEvent='editEvent'
@@ -26,13 +27,16 @@ import { useQuranStore } from "~/store/quran";
 import { calendarEvents } from "~/static/js/calendarEvents";
 import { stringify } from "~/static/js/stringify";
 // components
+import groupHeadingRow from "~/components/admin/group/groupHeadingRow";
 import editEventDialog from "~/components/customCalendar/editEventDialog";
 
 export default {
-    components: { editEventDialog },
+    components: { groupHeadingRow, editEventDialog },
     async setup() {
         // fetch user
-        definePageMeta({ middleware: ["fetch-user", "fetch-groups"] });
+        definePageMeta({
+            middleware: ["fetch-user", "fetch-groups", "has-auth"],
+        });
         // use groups data
         const groupsStore = useGroupsStore();
         const quranStore = useQuranStore();

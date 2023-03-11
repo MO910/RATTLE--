@@ -136,4 +136,5 @@ export default {
     noStudentsYetMessage: "لم يتم اضافة طلاب الى هذه المجموعة",
     addTeacher: "اضف معلم جديد",
     assignExistingTeacher: "تعيين معلم موجود",
+    manageGroup: "ادارة المجموعة",
 };

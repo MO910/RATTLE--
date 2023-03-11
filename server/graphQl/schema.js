@@ -95,7 +95,9 @@ const query = new GraphQLObjectType({
                     date: { type: GraphQLString },
                 },
                 async resolve(_, { group_id, date }) {
-                    let students = await Users_schema.find({ group_id });
+                    let students = await Users_schema.find({
+                        group_ids: { $in: group_id },
+                    });
                     students = students.map((s) => {
                         s.attendance_Date = date;
                         return s;
